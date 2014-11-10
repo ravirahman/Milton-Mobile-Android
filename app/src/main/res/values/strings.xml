@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Milton Academy</string>
+    <string name="thumbs_up">Thumbs Up!</string>
+    <string name="thumbs_down">Thumbs Down!</string>
+    <string name="string_Back">Back</string>
+    <string name="desc_comment">Leave a comment...</string>
+
+    <!-- Login -->
+    <string name="string_Login">Login</string>
+    <string name="string_Username">Username</string>
+    <string name="string_Password">Password</string>
+    <string name="string_Sign_In">Sign In</string>
+    <string name="settings_login_errorInvalidUsername">Please enter your myMilton username</string>
+    <string name="settings_login_errorInvalidPassword">Please enter your myMilton password</string>
+    <string name="string_Teacher">Teacher</string>
+    <string name="string_Student">Student</string>
+    <string name="settings_login_viewHelperText">Login with your MyMilton Credentials</string>
+    <string name="settings_login_typeHelperText">I am a:</string>
+
+    <!--Logout -->
+    <string name="string_Logout">Logout</string>
+
+    <!--FLIK -->
+    <string name="string_FLIK">FLIK</string>
+
+
+    <!--SAA-->
+    <string name="string_SAA">SAA</string>
+    <string name="string_Select_Date">Select Date</string>
+    <string name="string_Filter_Events">Filter Events</string>
+    <string name="string_Dont_Show_Again">Don\'t Show Again</string>
+
+
+</resources>
+
