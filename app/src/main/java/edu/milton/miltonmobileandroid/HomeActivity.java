@@ -12,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 import edu.milton.miltonmobileandroid.flik.FlikActivity;
 import edu.milton.miltonmobileandroid.saa.SaaActivity;
@@ -32,6 +35,18 @@ public class HomeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        }
+        catch (Exception e) {
+            // presumably, not relevant
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_home);
         flik = (ImageButton) findViewById(R.id.flik_button);
