@@ -26,11 +26,12 @@
     <string name="string_FLIK">FLIK</string>
 
 
-    <!--SAA-->
-    <string name="string_SAA">SAA</string>
+    <!--Evemts-->
+    <string name="string_SAA">Events</string>
     <string name="string_Select_Date">Select Date</string>
     <string name="string_Filter_Events">Filter Events</string>
     <string name="string_Dont_Show_Again">Don\'t Show Again</string>
+    <string name="string_Refresh">Refresh</string>
 
 
 </resources>

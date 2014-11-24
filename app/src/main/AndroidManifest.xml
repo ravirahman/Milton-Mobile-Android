@@ -57,7 +57,7 @@
                 android:value="edu.milton.miltonmobileandroid.HomeActivity" />
         </activity>
         <activity
-            android:name="edu.milton.miltonmobileandroid.saa.SaaActivity"
+            android:name=".events.EventsActivity"
             android:label="@string/string_SAA"
             android:parentActivityName="edu.milton.miltonmobileandroid.HomeActivity" >
             <meta-data

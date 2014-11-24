@@ -123,7 +123,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            //getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -259,6 +259,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        final Intent answer = new Intent();
+        setResult(RESULT_CANCELED, null);
         finish();
     }
 
