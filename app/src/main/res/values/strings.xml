@@ -19,20 +19,18 @@
     <string name="settings_login_viewHelperText">Login with your MyMilton Credentials</string>
     <string name="settings_login_typeHelperText">I am a:</string>
 
-    <!--Logout -->
+    <!-- Logout -->
     <string name="string_Logout">Logout</string>
 
-    <!--FLIK -->
+    <!-- FLIK -->
     <string name="string_FLIK">FLIK</string>
 
-
-    <!--Evemts-->
+    <!-- Evemts -->
     <string name="string_SAA">Events</string>
     <string name="string_Select_Date">Select Date</string>
     <string name="string_Filter_Events">Filter Events</string>
     <string name="string_Dont_Show_Again">Don\'t Show Again</string>
     <string name="string_Refresh">Refresh</string>
-
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
-
