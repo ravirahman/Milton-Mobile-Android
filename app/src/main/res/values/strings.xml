@@ -27,6 +27,8 @@
 
     <!-- Evemts -->
     <string name="string_SAA">Events</string>
+    <!-- SAA -->
+    <string name="string_SAA">SAA</string>
     <string name="string_Select_Date">Select Date</string>
     <string name="string_Filter_Events">Filter Events</string>
     <string name="string_Dont_Show_Again">Don\'t Show Again</string>
