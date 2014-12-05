@@ -54,6 +54,19 @@
         android:layout_toRightOf="@+id/FlikDesc"
         android:layout_marginLeft="10dp" />
 
+    <ImageButton
+        android:id="@+id/mailbox_button"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:background="@drawable/saa_button_custom"
+        android:scaleType="fitStart"
+        android:src="@drawable/saa_button_custom"
+        android:contentDescription="@string/string_SAA"
+        android:layout_toEndOf="@+id/SaaDesc"
+        android:layout_below="@+id/welcomeLabel"
+        android:layout_toRightOf="@+id/SaaDesc"
+        android:layout_marginLeft="10dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="0dp"

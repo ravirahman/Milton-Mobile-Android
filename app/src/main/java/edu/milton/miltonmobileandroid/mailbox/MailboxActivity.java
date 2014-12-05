@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.accounts.Account;
+import android.accounts.AccountAuthenticatorActivity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -29,12 +30,13 @@ import android.accounts.AccountManager;
 import edu.milton.miltonmobileandroid.R;
 import edu.milton.miltonmobileandroid.util.Consts;
 
-public class MailboxActivity extends Activity{
+public class MailboxActivity extends AccountAuthenticatorActivity {
 
     // Progress Dialog
     private ProgressDialog pDialog;
     private String mailbox, combo;
     private TextView mailboxText, comboText;
+    private boolean updateReady = false;
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
 
@@ -50,6 +52,7 @@ public class MailboxActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_mailbox);
 
         mailboxText = (TextView) findViewById(R.id.mailbox);
         comboText = (TextView) findViewById(R.id.combo);
@@ -57,22 +60,35 @@ public class MailboxActivity extends Activity{
         manager = AccountManager.get(this);
         account = manager.getAccountsByType(Consts.MMA_ACCOUNTTYPE)[0];
         new AttemptLogin().execute();
+        updateText();
     }
 
     protected void updateText() {
+        while(!updateReady) {
+            //forgive me
+        }
+
+        //parse combo text
+        while(combo.endsWith("<")) {
+            combo = combo.substring(0, combo.length()-1);
+        }
+
         mailboxText.setText(mailbox);
-        //TODO: format combo string
         comboText.setText(combo);
     }
 
-    protected String getUser() {
-        String username = "";
-        return username;
-    }
+    protected String[] getAccount() {
+        String[] user = new String[2];
 
-    protected String getPassword() {
-        String password = "";
-        return password;
+        AccountManager newManager = AccountManager.get(this);
+        Account[] accounts = newManager.getAccountsByType(Consts.MMA_ACCOUNTTYPE);
+        final String UserName = newManager.getUserData(accounts[0],AccountManager.KEY_ACCOUNT_NAME);
+        Account newAccount = new Account(UserName, Consts.MMA_ACCOUNTTYPE);
+        final String Password = newManager.getPassword(newAccount);
+        user[0] = UserName;
+        user[1] = Password;
+
+        return user;
     }
 
 
@@ -92,8 +108,11 @@ public class MailboxActivity extends Activity{
         protected String doInBackground(String... args) {
             // TODO Auto-generated method stub
             // Check for success tag
-            String username = getUser();
-            String password = getPassword();
+            String[] user = new String[2];
+            user = getAccount();
+            String username = user[0];
+            String password = user[1];
+            System.out.println("1");
             try {
                 // Building Parameters
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -107,9 +126,10 @@ public class MailboxActivity extends Activity{
                 System.out.println(json.toString());
                 // check your log for json response
                 Log.d("Mailbox Request", json.toString());
-
+                System.out.println(2);
                 // json success tag
                 if (json.toString() != "") {
+                    System.out.println(3);
                     Log.d("Login Successful!", json.toString());
                     // save user data
                     try {
@@ -118,7 +138,8 @@ public class MailboxActivity extends Activity{
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    updateText();
+                    updateReady = true;
+                    //updateText();
                     return json.getString(TAG_MESSAGE);
                 }
             } catch (JSONException e) {
