@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import edu.milton.miltonmobileandroid.flik.FlikActivity;
+import edu.milton.miltonmobileandroid.mailbox.MailboxActivity;
 import edu.milton.miltonmobileandroid.saa.SaaActivity;
 import edu.milton.miltonmobileandroid.settings.LoginActivity;
 import edu.milton.miltonmobileandroid.util.Consts;
@@ -25,6 +26,7 @@ import edu.milton.miltonmobileandroid.util.Consts;
 public class HomeActivity extends Activity {
     ImageButton flik;
     ImageButton saa;
+    ImageButton mailbox;
 
     private static int LOGIN_REQUEST_CODE = 1;
     private static int LOGOUT_REQUEST_CODE = 2;
@@ -36,6 +38,7 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.fragment_home);
         flik = (ImageButton) findViewById(R.id.flik_button);
         saa = (ImageButton) findViewById(R.id.saa_button);
+        mailbox = (ImageButton) findViewById(R.id.mailbox_button);
 
         flik.setOnClickListener(new View.OnClickListener() {
 
@@ -53,6 +56,16 @@ public class HomeActivity extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(),
                         SaaActivity.class);
+                startActivity(i);
+            }
+        });
+
+        mailbox.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),
+                        MailboxActivity.class);
                 startActivity(i);
             }
         });

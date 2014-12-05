@@ -26,7 +26,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="edu.milton.miltonmobileandroid.HomeActivity"
+            android:name=".HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,9 +35,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="edu.milton.miltonmobileandroid.settings.LoginActivity"
+            android:name=".settings.LoginActivity"
             android:label="@string/string_Login"
-            android:parentActivityName="edu.milton.miltonmobileandroid.HomeActivity"
+            android:parentActivityName=".HomeActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -49,23 +49,24 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="edu.milton.miltonmobileandroid.flik.FlikActivity"
+            android:name=".flik.FlikActivity"
             android:label="@string/string_FLIK"
-            android:parentActivityName="edu.milton.miltonmobileandroid.HomeActivity" >
+            android:parentActivityName=".HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.milton.miltonmobileandroid.HomeActivity" />
         </activity>
         <activity
-            android:name="edu.milton.miltonmobileandroid.saa.SaaActivity"
+            android:name=".saa.SaaActivity"
             android:label="@string/string_SAA"
-            android:parentActivityName="edu.milton.miltonmobileandroid.HomeActivity" >
+            android:parentActivityName=".HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.milton.miltonmobileandroid.HomeActivity" />
         </activity>
+
         <service
-            android:name="edu.milton.miltonmobileandroid.settings.AuthenticatorService"
+            android:name=".settings.AuthenticatorService"
             android:enabled="true"
             android:exported="true" >
             <intent-filter>
@@ -76,6 +77,10 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
+        <activity
+            android:name=".mailbox.MailboxActivity">
+        </activity>
     </application>
 
 </manifest>
