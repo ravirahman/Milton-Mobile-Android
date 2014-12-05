@@ -13,17 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import edu.milton.miltonmobileandroid.R;
 
-public class FlikActivity extends Activity {
+public class old_FlikActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_flik);
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(FlikActivity.this);
+        setContentView(R.layout.old_fragment_flik);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(old_FlikActivity.this);
         if (preferences.getBoolean(edu.milton.miltonmobileandroid.util.Consts.FLIK_WARNINGPREFERENCE,true)) {
             View checkboxview = View.inflate(this,R.layout.view_dialog_allergywarning_flik,null);
             final CheckBox box = (CheckBox) checkboxview.findViewById(R.id.hidewarningmessage);
@@ -72,7 +71,7 @@ public class FlikActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_flik, container, false);
+            View rootView = inflater.inflate(R.layout.old_fragment_flik, container, false);
             return rootView;
         }
     }

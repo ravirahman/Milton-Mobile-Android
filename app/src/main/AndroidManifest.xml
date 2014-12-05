@@ -49,7 +49,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".flik.FlikActivity"
+            android:name=".flik.old_FlikActivity"
             android:label="@string/string_FLIK"
             android:parentActivityName=".HomeActivity" >
             <meta-data
