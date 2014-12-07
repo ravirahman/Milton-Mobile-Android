@@ -64,16 +64,10 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
     }
 
     protected void updateText() {
-        while(!updateReady) {
-            //forgive me
-        }
-
-        //parse combo text
-        while(combo.endsWith("<")) {
-            combo = combo.substring(0, combo.length()-1);
-        }
-
         mailboxText.setText(mailbox);
+        //TODO: format combo string
+        comboText.setText(combo);
+    }
         comboText.setText(combo);
     }
 
@@ -89,6 +83,17 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
         user[1] = Password;
 
         return user;
+    }
+
+
+    protected String getUser() {
+        String username = "";
+        return username;
+    }
+
+    protected String getPassword() {
+        String password = "";
+        return password;
     }
 
 
@@ -108,6 +113,8 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
         protected String doInBackground(String... args) {
             // TODO Auto-generated method stub
             // Check for success tag
+            String username = getUser();
+            String password = getPassword();
             String[] user = new String[2];
             user = getAccount();
             String username = user[0];
@@ -130,6 +137,9 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
                 // json success tag
                 if (json.toString() != "") {
                     System.out.println(3);
+
+                // json success tag
+                if (json.toString() != "") {
                     Log.d("Login Successful!", json.toString());
                     // save user data
                     try {
@@ -140,6 +150,7 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
                     }
                     updateReady = true;
                     //updateText();
+                    updateText();
                     return json.getString(TAG_MESSAGE);
                 }
             } catch (JSONException e) {
