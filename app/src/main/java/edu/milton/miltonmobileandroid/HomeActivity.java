@@ -1,6 +1,5 @@
 package edu.milton.miltonmobileandroid;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,12 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import edu.milton.miltonmobileandroid.events.EventsActivity;
+import edu.milton.miltonmobileandroid.saa.SaaActivity;
 import java.lang.reflect.Field;
 
 import edu.milton.miltonmobileandroid.flik.FlikActivity;
 import edu.milton.miltonmobileandroid.mailbox.MailboxActivity;
-import edu.milton.miltonmobileandroid.saa.SaaActivity;
 import edu.milton.miltonmobileandroid.settings.LoginActivity;
 import edu.milton.miltonmobileandroid.util.Consts;
 
@@ -82,7 +80,6 @@ public class HomeActivity extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(),
                         MailboxActivity.class);
-                        EventsActivity.class);
                 startActivity(i);
             }
         });

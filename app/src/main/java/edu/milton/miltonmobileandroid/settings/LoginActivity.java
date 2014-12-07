@@ -2,6 +2,7 @@ package edu.milton.miltonmobileandroid.settings;
 
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
+
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
@@ -113,7 +114,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     }
 
     public boolean isLoggedIn() {
-        return manager.getAccountsByType(Consts.MMA_ACCOUNTTYPE).length > 0;
+        return manager.getAccountsByType(String.valueOf(AccountAuthenticator.class)).length > 0;
     }
 
     /**
