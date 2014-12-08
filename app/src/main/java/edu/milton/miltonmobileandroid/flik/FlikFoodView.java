@@ -10,6 +10,8 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 
+
+
 import edu.milton.miltonmobileandroid.R;
 
 /**
@@ -44,20 +46,20 @@ public class FlikFoodView extends View {
 	private void init(AttributeSet attrs, int defStyle) {
 		// Load attributes
 		final TypedArray a = getContext().obtainStyledAttributes(attrs,
-                FlikFoodView, defStyle, 0);
+               R.styleable.FlikFoodViewAttr, defStyle, 0);
 
-		mExampleString = a.getString(R.styleable.FlikFoodView_exampleString);
-		mExampleColor = a.getColor(R.styleable.FlikFoodView_exampleColor,
+		mExampleString = a.getString(R.styleable.FlikFoodViewAttr_exampleString);
+		mExampleColor = a.getColor(R.styleable.FlikFoodViewAttr_exampleColor,
 				mExampleColor);
 		// Use getDimensionPixelSize or getDimensionPixelOffset when dealing
 		// with
 		// values that should fall on pixel boundaries.
 		mExampleDimension = a.getDimension(
-				R.styleable.FlikFoodView_exampleDimension, mExampleDimension);
+				R.styleable.FlikFoodViewAttr_exampleDimension, mExampleDimension);
 
-		if (a.hasValue(R.styleable.FlikFoodView_exampleDrawable)) {
+		if (a.hasValue(R.styleable.FlikFoodViewAttr_exampleDrawable)) {
 			mExampleDrawable = a
-					.getDrawable(R.styleable.FlikFoodView_exampleDrawable);
+					.getDrawable(R.styleable.FlikFoodViewAttr_exampleDrawable);
 			mExampleDrawable.setCallback(this);
 		}
 

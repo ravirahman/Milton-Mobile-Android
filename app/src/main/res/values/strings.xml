@@ -24,6 +24,10 @@
 
     <!-- FLIK -->
     <string name="string_FLIK">FLIK</string>
+    <string name="title_activity_tabs_test">Flik Menu</string>
+    <string name="placeholder_string">[placeholder]</string>
+    <string name="long_placeholder">This string is very long. It might even have to be two lines long. That would be ok though.</string>
+    <string name="altview">This is simply an alternative view</string>
 
     <!-- SAA -->
     <string name="string_SAA">SAA</string>

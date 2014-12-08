@@ -15,7 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import edu.milton.miltonmobileandroid.flik.old_FlikActivity;
+import edu.milton.miltonmobileandroid.flik.FlikMenuActivity;
+
 import edu.milton.miltonmobileandroid.mailbox.MailboxActivity;
 import edu.milton.miltonmobileandroid.saa.SaaActivity;
 import edu.milton.miltonmobileandroid.settings.LoginActivity;
@@ -44,7 +45,7 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(),
-                        old_FlikActivity.class);
+                        FlikMenuActivity.class);
                 startActivity(i);
             }
         });
