@@ -64,7 +64,8 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
     }
 
     protected void updateText() {
-        while(!updateReady) {
+        long startTime = System.currentTimeMillis();
+        while(!updateReady && System.currentTimeMillis()-startTime < 5*1000) {
             //forgive me
         }
 
@@ -73,8 +74,8 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
             combo = combo.substring(0, combo.length()-1);
         }
 
-        mailboxText.setText(mailbox);
-        comboText.setText(combo);
+        mailboxText.setText("Mailbox: "+ mailbox);
+        comboText.setText("Combo: " + combo);
     }
 
     protected String[] getAccount() {
@@ -128,7 +129,7 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
                 Log.d("Mailbox Request", json.toString());
                 System.out.println(2);
                 // json success tag
-                if (json.toString() != "") {
+                if (!json.toString().equals("")) {
                     System.out.println(3);
                     Log.d("Login Successful!", json.toString());
                     // save user data
@@ -141,6 +142,8 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
                     updateReady = true;
                     //updateText();
                     return json.getString(TAG_MESSAGE);
+                } else {
+                    Log.d("Mailbox Invalid Login", json.toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
