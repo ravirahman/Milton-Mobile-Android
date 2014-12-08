@@ -14,12 +14,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-
 
 import edu.milton.miltonmobileandroid.R;
 
@@ -42,6 +42,8 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 	 * The {@link android.support.v4.view.ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+
+    View vp1;
 	
 	//the string email used for voting
 	String email;
@@ -50,6 +52,8 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.flik_food_view);
+
+        vp1 = (LinearLayout) findViewById(R.id.VPLL);
 		Intent i = getIntent();
 		if (i.getExtras() != null) {
 			email = i.getStringExtra("email");

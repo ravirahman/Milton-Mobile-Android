@@ -6,6 +6,9 @@
     android:paddingLeft="5dp"
     android:paddingRight="5dp" >
 
+
+
+
     <TextView
         android:id="@+id/food_text_view"
         android:layout_width="wrap_content"
@@ -59,5 +62,31 @@
         android:layout_toRightOf="@+id/food_text_view"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".FlikMenuActivity"
+        android:title="@string/title_activity_tabs_test">
+
+        <!--
+        This title strip will display the currently visible page title, as well as the page
+        titles for adjacent pages.
+        -->
+
+        <android.support.v4.view.PagerTitleStrip
+            android:id="@+id/pager_title_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="#004685"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:textColor="#fff" />
+
+    </android.support.v4.view.ViewPager>
 
 </RelativeLayout>
