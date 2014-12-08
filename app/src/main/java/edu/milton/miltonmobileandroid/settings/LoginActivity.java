@@ -253,9 +253,9 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             } else { //is a teacher
                 ringProgressDialog.dismiss();
             }
-            String u = manager.getUserData(manager.getAccounts()[0],AccountManager.KEY_ACCOUNT_NAME);
+            /*String u = manager.getUserData(manager.getAccounts()[0],AccountManager.KEY_ACCOUNT_NAME);
             Account account = new Account(u, Consts.MMA_ACCOUNTTYPE);
-            String p = manager.getPassword(account);
+            String p = manager.getPassword(account);*/
         }
     }
 
