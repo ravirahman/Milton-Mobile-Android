@@ -65,9 +65,6 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
 
     protected void updateText() {
         mailboxText.setText(mailbox);
-        //TODO: format combo string
-        comboText.setText(combo);
-    }
         comboText.setText(combo);
     }
 
@@ -117,8 +114,8 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
             String password = getPassword();
             String[] user = new String[2];
             user = getAccount();
-            String username = user[0];
-            String password = user[1];
+             username = user[0];
+             password = user[1];
             System.out.println("1");
             try {
                 // Building Parameters
@@ -137,7 +134,7 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
                 // json success tag
                 if (json.toString() != "") {
                     System.out.println(3);
-
+                }
                 // json success tag
                 if (json.toString() != "") {
                     Log.d("Login Successful!", json.toString());
