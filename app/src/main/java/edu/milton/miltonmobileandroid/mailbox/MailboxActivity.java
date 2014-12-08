@@ -93,6 +93,17 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
     }
 
 
+    protected String getUser() {
+        String username = "";
+        return username;
+    }
+
+    protected String getPassword() {
+        String password = "";
+        return password;
+    }
+
+
     class AttemptLogin extends AsyncTask<String, String, String> {
 
         @Override
@@ -109,10 +120,12 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
         protected String doInBackground(String... args) {
             // TODO Auto-generated method stub
             // Check for success tag
+            String username = getUser();
+            String password = getPassword();
             String[] user = new String[2];
             user = getAccount();
-            String username = user[0];
-            String password = user[1];
+             username = user[0];
+             password = user[1];
             System.out.println("1");
             try {
                 // Building Parameters
@@ -131,6 +144,9 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
                 // json success tag
                 if (!json.toString().equals("")) {
                     System.out.println(3);
+                }
+                // json success tag
+                if (json.toString() != "") {
                     Log.d("Login Successful!", json.toString());
                     // save user data
                     try {
@@ -141,6 +157,7 @@ public class MailboxActivity extends AccountAuthenticatorActivity {
                     }
                     updateReady = true;
                     //updateText();
+                    updateText();
                     return json.getString(TAG_MESSAGE);
                 } else {
                     Log.d("Mailbox Invalid Login", json.toString());

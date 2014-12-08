@@ -9,24 +9,24 @@
     android:paddingTop="15dp" >
 
     <ImageView
-        android:id="@+id/event_icon"
+        android:id="@+id/view_compact_event_icon"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_launcher" />
 
     <TextView
-        android:id="@+id/event_title_textview"
+        android:id="@+id/view_compact_event_title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/event_icon"
-        android:layout_toRightOf="@+id/event_icon"
+        android:layout_alignTop="@+id/view_compact_event_icon"
+        android:layout_toRightOf="@+id/view_compact_event_icon"
         android:paddingLeft="10dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp"
         android:typeface="normal" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/signup_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,18 +34,18 @@
         android:layout_centerInParent="false"
         android:layout_toRightOf="@id/event_icon"
         android:paddingLeft="10dp"
-        android:textSize="14dp" />
+        android:textSize="14dp" />-->
 
     <TextView
-        android:id="@+id/date_location_textview"
+        android:id="@+id/view_compact_event_location_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/event_title_textview"
-        android:layout_toRightOf="@id/event_icon"
+        android:layout_below="@+id/view_compact_event_title_textview"
+        android:layout_toRightOf="@id/view_compact_event_icon"
         android:paddingLeft="10dp"
         android:textSize="14dp" />
 
-    <ImageButton
+    <!--<ImageButton
         android:id="@+id/expand_button"
         android:layout_width="32dp"
         android:layout_height="32dp"
@@ -54,6 +54,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:background="@color/white"
-        android:src="@drawable/ic_action_expand" />
+        android:src="@drawable/ic_action_expand" />-->
 
 </RelativeLayout>

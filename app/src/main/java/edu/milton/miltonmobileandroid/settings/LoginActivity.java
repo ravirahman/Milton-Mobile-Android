@@ -2,6 +2,7 @@ package edu.milton.miltonmobileandroid.settings;
 
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
+
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
@@ -123,7 +124,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -252,7 +253,9 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             } else { //is a teacher
                 ringProgressDialog.dismiss();
             }
-
+            /*String u = manager.getUserData(manager.getAccounts()[0],AccountManager.KEY_ACCOUNT_NAME);
+            Account account = new Account(u, Consts.MMA_ACCOUNTTYPE);
+            String p = manager.getPassword(account);*/
         }
     }
 

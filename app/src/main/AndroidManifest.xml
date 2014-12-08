@@ -49,6 +49,14 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
+            android:name=".flik.FlikActivity"
+            android:label="@string/string_FLIK"
+            android:parentActivityName=".HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.milton.miltonmobileandroid.HomeActivity" />
+        </activity>
+        <activity
             android:name=".saa.SaaActivity"
             android:label="@string/string_SAA"
             android:parentActivityName=".HomeActivity" >
@@ -56,16 +64,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.milton.miltonmobileandroid.HomeActivity" />
         </activity>
-
-        <activity
-            android:name=".flik.FlikMenuActivity"
-            android:label="@string/string_FLIK"
-            android:parentActivityName=".HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.HomeActivity" />
-        </activity>
-
 
         <service
             android:name=".settings.AuthenticatorService"
