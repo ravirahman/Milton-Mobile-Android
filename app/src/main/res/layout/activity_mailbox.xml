@@ -41,10 +41,10 @@
         android:layout_gravity="center"
 
         android:text="
-1. Turn dial at least four times to the left to clear the combo and stop at 1st number
-2. Turn dial to the right past 1st number and stop at 2nd number
-3. Turn dial to the left and stop at 3rd number
-4. Turn dial slowly to the right until it sticks then slowly pull open
+1. Turn dial at least four times to the left to clear the combo and stop at 1st number\n
+2. Turn dial to the right past 1st number and stop at 2nd number\n
+3. Turn dial to the left and stop at 3rd number\n
+4. Turn dial slowly to the right until it sticks then slowly pull open\n
 "/>
 
 </RelativeLayout>
