@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -19,7 +20,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+
 import edu.milton.miltonmobileandroid.R;
+
+
 
 @SuppressLint("SimpleDateFormat")
 public class FlikMenuActivity extends FragmentActivity implements AllergenWarning.NoticeDialogListener {
@@ -55,9 +59,15 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
+        Log.e("hello", "MSections: " + mSectionsPagerAdapter);
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
+
+        Log.e("something", "Mview: "+mViewPager);
+
 		mViewPager.setAdapter(mSectionsPagerAdapter);
+
+
 		//Log.d("this is the email", email);
 		showNoticeDialog();
 
