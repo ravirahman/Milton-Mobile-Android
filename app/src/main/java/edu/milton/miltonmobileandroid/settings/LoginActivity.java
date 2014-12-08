@@ -114,7 +114,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     }
 
     public boolean isLoggedIn() {
-        return manager.getAccountsByType(String.valueOf(AccountAuthenticator.class)).length > 0;
+        return manager.getAccountsByType(Consts.MMA_ACCOUNTTYPE).length > 0;
     }
 
     /**
@@ -124,7 +124,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
