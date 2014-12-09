@@ -347,7 +347,7 @@ public class FlikListFrag extends ListFragment implements
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			pDialog.dismiss();
-			updateEventList();
+
 		}
 	}
 
@@ -442,7 +442,8 @@ public class FlikListFrag extends ListFragment implements
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			pDialog.dismiss();
-			// updateEventList();
+
+			updateEventList();
 		}
 	}
 

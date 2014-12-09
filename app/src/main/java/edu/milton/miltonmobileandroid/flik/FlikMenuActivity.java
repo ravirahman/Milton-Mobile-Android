@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -53,7 +52,7 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.flik_food_view);
 
-        vp1 = (LinearLayout) findViewById(R.id.VPLL);
+
 		Intent i = getIntent();
 		if (i.getExtras() != null) {
 			email = i.getStringExtra("email");
@@ -83,6 +82,8 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 		//getMenuInflater().inflate(R.menu.main, menu);
 		getMenuInflater().inflate(R.menu.menu_flik, menu);
 		return true;
+
+
 	}
 
 	/**
