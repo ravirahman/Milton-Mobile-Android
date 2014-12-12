@@ -14,9 +14,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -42,6 +45,10 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 	 */
 	ViewPager mViewPager;
 
+    ListView mListView;
+
+    static ArrayList<MenuItem> food = new ArrayList<MenuItem>();
+
     View vp1;
 	
 	//the string email used for voting
@@ -66,9 +73,16 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 
-        Log.e("something", "Mview: "+mViewPager);
+        mListView = (ListView) findViewById(R.id.listView3);
+
+        Log.e("something", "Mviwwww3a w s1sew: "+mViewPager);
 
 		mViewPager.setAdapter(mSectionsPagerAdapter);
+
+
+        buildDisplayString();
+
+
 
 
 		//Log.d("this is the email", email);
@@ -85,6 +99,27 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 
 
 	}
+
+    public void buildDisplayString(){
+
+        ArrayList<String> strings = new ArrayList<String>();
+
+
+        for(MenuItem m : food){
+            String name = m.getItemName();
+            String type = m.getItemClass();
+            String time = m.getItemTime();
+
+            strings.add(name + "  -  " + type + "  -  " + time);
+
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,strings );
+
+        mListView.setAdapter(arrayAdapter);
+
+
+    }
 
 	/**
 	 * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to

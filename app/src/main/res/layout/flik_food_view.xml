@@ -66,6 +66,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
+
+
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/pager"
@@ -100,5 +102,16 @@
             android:textColor="#fff" />
 
     </android.support.v4.view.ViewPager>
+
+
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView3"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/pager"
+        android:layout_alignEnd="@+id/pager" />
+
 
 </RelativeLayout>

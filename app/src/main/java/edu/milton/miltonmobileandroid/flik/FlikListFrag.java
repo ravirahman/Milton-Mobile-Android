@@ -309,12 +309,16 @@ public class FlikListFrag extends ListFragment implements
 						
 					}
 
+                    Log.e("FoodStuffs: ", food.getItemName());
+
 				}
 
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+        Foods = FlikMenuActivity.food;
+
 	}
 
 	public class LoadMeals extends AsyncTask<Void, Void, Boolean> {
@@ -360,7 +364,7 @@ public class FlikListFrag extends ListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.list_frag_layout, null);
+		View view = inflater.inflate(R.layout.flik_food_view, null);
 		return view;
 	}
 
@@ -472,7 +476,7 @@ public class FlikListFrag extends ListFragment implements
 			if (!rowItem.isHeading()) {
 				LayoutInflater inflater = (LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				rowView = inflater.inflate(R.layout.flik_food_view, parent,
+				rowView = inflater.inflate(R.layout.list_frag_layout, parent,
 						false);
 				TextView textView = (TextView) rowView
 						.findViewById(R.id.food_text_view);
