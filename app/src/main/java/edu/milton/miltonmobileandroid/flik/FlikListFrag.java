@@ -310,6 +310,9 @@ public class FlikListFrag extends ListFragment implements
 					}
 
                     Log.e("FoodStuffs: ", food.getItemName());
+                    FlikMenuActivity.food = Foods;
+
+                    FlikMenuActivity.updateReady = true;
 
 				}
 
@@ -317,7 +320,7 @@ public class FlikListFrag extends ListFragment implements
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-        FlikMenuActivity.food = Foods;
+
 
 	}
 

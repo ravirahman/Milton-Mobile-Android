@@ -47,7 +47,7 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 
     ListView mListView;
 
-    boolean updateReady = false;
+    static boolean updateReady = false;
 
     static ArrayList<MenuItem> food = new ArrayList<MenuItem>();
 
@@ -86,9 +86,11 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 
         long startTime = System.currentTimeMillis();
 
-        while(!updateReady && System.currentTimeMillis()-startTime < 5*1000) {
+        while(!updateReady) {
             //forgive me
         }
+
+        Log.e("UR", "Bool: " + updateReady);
 
             buildDisplayString();
 
