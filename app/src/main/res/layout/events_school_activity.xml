@@ -1,0 +1,17 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/events_school_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.milton.miltonmobileandroid.saaEvents.school.SchoolEventsActivity"
+    tools:ignore="MergeRootFrame">
+
+    <fragment
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:name="edu.milton.miltonmobileandroid.events.school.SchoolEventsActivity$SchoolEventsFragment"
+        android:id="@+id/events_school_activity_fragment"
+        android:layout_gravity="center"
+        tools:layout="@layout/events_school_fragment" />
+</FrameLayout>

@@ -1,0 +1,14 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/food_meals_view_dialog_allergywarning">
+    <CheckBox
+        android:id="@+id/food_meals_view_dialog_allergywarning_hidewarningmessage"
+        style="?android:attr/textAppearanceMedium"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/string_Dont_Show_Again"
+        />
+</FrameLayout>
