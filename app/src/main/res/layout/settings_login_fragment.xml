@@ -1,0 +1,80 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/settings_login_fragment">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Login with your MyMilton Credentials"
+        android:id="@+id/settings_login_fragment_textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText android:id="@+id/settings_login_fragment_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/string_Username"
+        android:inputType="textNoSuggestions"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_below="@+id/settings_login_fragment_textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/settings_login_fragment_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/string_Password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_below="@+id/settings_login_fragment_username"
+        android:layout_alignRight="@+id/settings_login_fragment_username"
+        android:layout_alignEnd="@+id/settings_login_fragment_username" />
+
+    <Button
+        android:id="@+id/settings_login_fragment_login"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/string_Sign_In"
+        android:textStyle="bold"
+        android:layout_below="@+id/settings_login_fragment_typeGroup"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <RadioGroup
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/settings_login_fragment_teacher"
+        android:layout_below="@+id/settings_login_fragment_password"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/settings_login_fragment_typeGroup">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/settings_login_typeHelperText"
+            android:id="@+id/settings_login_fragment_typeGroupHelperLabel" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_Teacher"
+            android:id="@+id/settings_login_fragment_teacher"
+            android:longClickable="false" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_Student"
+            android:id="@+id/settings_login_fragment_student"
+            android:checked="true" />
+    </RadioGroup>
+</RelativeLayout>

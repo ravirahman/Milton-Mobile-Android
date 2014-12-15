@@ -1,0 +1,45 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/me_mailbox_fragment">
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+
+        android:id="@+id/me_mailbox_fragment_mailbox"
+        android:text="Mailbox #" />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:layout_below="@+id/me_mailbox_fragment_mailbox"
+        android:layout_gravity="center"
+
+        android:id="@+id/me_mailbox_fragment_combo"
+        android:text="Combo"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_below="@+id/me_mailbox_fragment_combo"
+        android:layout_gravity="center"
+
+        android:text="
+1. Turn dial at least four times to the left to clear the combo and stop at 1st number\n
+2. Turn dial to the right past 1st number and stop at 2nd number\n
+3. Turn dial to the left and stop at 3rd number\n
+4. Turn dial slowly to the right until it sticks then slowly pull open\n
+"/>
+
+</RelativeLayout>
