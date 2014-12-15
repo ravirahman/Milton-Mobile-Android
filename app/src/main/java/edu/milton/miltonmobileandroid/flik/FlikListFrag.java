@@ -317,7 +317,7 @@ public class FlikListFrag extends ListFragment implements
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-        Foods = FlikMenuActivity.food;
+        FlikMenuActivity.food = Foods;
 
 	}
 

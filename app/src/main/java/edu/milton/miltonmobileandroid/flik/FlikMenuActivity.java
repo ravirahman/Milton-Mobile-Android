@@ -47,6 +47,8 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 
     ListView mListView;
 
+    boolean updateReady = false;
+
     static ArrayList<MenuItem> food = new ArrayList<MenuItem>();
 
     View vp1;
@@ -75,14 +77,24 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 
         mListView = (ListView) findViewById(R.id.listView3);
 
-        Log.e("something", "Mviwwww3a w s1sew: "+mViewPager);
+        Log.e("something******************************", "Mview: "+mViewPager);
 
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        Log.e("something*****************************2", "hi");
 
-        buildDisplayString();
+
+        long startTime = System.currentTimeMillis();
+
+        while(!updateReady && System.currentTimeMillis()-startTime < 5*1000) {
+            //forgive me
+        }
+
+            buildDisplayString();
 
 
+
+        Log.e("something*****************************3", "hi");
 
 
 		//Log.d("this is the email", email);
@@ -101,8 +113,15 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 	}
 
     public void buildDisplayString(){
+        Log.e("something*****************************4", "hi");
+
 
         ArrayList<String> strings = new ArrayList<String>();
+
+        Log.e("something*****************************5", "hi");
+
+
+        food.add(new MenuItem(true, "FredTest"));
 
 
         for(MenuItem m : food){
@@ -111,7 +130,16 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
             String time = m.getItemTime();
 
             strings.add(name + "  -  " + type + "  -  " + time);
+            strings.add("Fred");
 
+
+        }
+
+        Log.e("something*****************************6", "hi");
+
+        for(String s : strings){
+
+            Log.e("Strings", s);
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,strings );
