@@ -16,7 +16,7 @@
         android:layout_alignRight="@+id/saa_button"
         android:gravity="center"
         android:text="@string/string_SAA"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/FlikDesc"
@@ -27,7 +27,19 @@
         android:layout_below="@+id/saa_button"
         android:gravity="center"
         android:text="@string/string_FLIK"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/MailboxDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/mailbox_button"
+        android:layout_alignRight="@+id/mailbox_button"
+        android:layout_below="@+id/saa_button"
+        android:gravity="center"
+        android:text="Mailbox"
+        android:textSize="20sp"
+    />
 
     <ImageButton
         android:id="@+id/flik_button"
