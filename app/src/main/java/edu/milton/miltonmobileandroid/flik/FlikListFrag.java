@@ -217,7 +217,7 @@ public class FlikListFrag extends ListFragment implements
 					+ "?type=Side&date=" + date+"&time=Dinner");
 
 				retrievedSides = jsonSides.getJSONArray("Side");
-				Foods.add(new edu.milton.miltonmobileandroid.flik.MenuItem(true, "Sides"));
+				Foods.add(new MenuItem(true, "Sides"));
 				for (int i = 0; i < retrievedSides.length(); i++) {
 					JSONObject c = retrievedSides.getJSONObject(i);
 					// System.out.println(c);
@@ -309,19 +309,12 @@ public class FlikListFrag extends ListFragment implements
 						
 					}
 
-                    Log.e("FoodStuffs: ", food.getItemName());
-                    FlikMenuActivity.food = Foods;
-
-                    FlikMenuActivity.updateReady = true;
-
 				}
 
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-
 	}
 
 	public class LoadMeals extends AsyncTask<Void, Void, Boolean> {
@@ -354,7 +347,7 @@ public class FlikListFrag extends ListFragment implements
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			pDialog.dismiss();
-
+			updateEventList();
 		}
 	}
 
@@ -367,7 +360,7 @@ public class FlikListFrag extends ListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.flik_food_view, null);
+		View view = inflater.inflate(R.layout.list_frag_layout, null);
 		return view;
 	}
 
@@ -449,8 +442,7 @@ public class FlikListFrag extends ListFragment implements
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			pDialog.dismiss();
-
-			updateEventList();
+			// updateEventList();
 		}
 	}
 
@@ -479,7 +471,7 @@ public class FlikListFrag extends ListFragment implements
 			if (!rowItem.isHeading()) {
 				LayoutInflater inflater = (LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				rowView = inflater.inflate(R.layout.list_frag_layout, parent,
+				rowView = inflater.inflate(R.layout.flik_food_view, parent,
 						false);
 				TextView textView = (TextView) rowView
 						.findViewById(R.id.food_text_view);
@@ -648,9 +640,5 @@ public class FlikListFrag extends ListFragment implements
 			return rowView;
 		}
 	}
-
-
-
-
 
 }

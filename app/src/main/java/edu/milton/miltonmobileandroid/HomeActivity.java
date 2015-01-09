@@ -27,6 +27,9 @@ public class HomeActivity extends Activity {
     ImageButton saa;
     ImageButton mailbox;
 
+
+    String email;
+
     private static int LOGIN_REQUEST_CODE = 1;
     private static int LOGOUT_REQUEST_CODE = 2;
     AccountManager manager;
@@ -39,15 +42,25 @@ public class HomeActivity extends Activity {
         saa = (ImageButton) findViewById(R.id.saa_button);
         mailbox = (ImageButton) findViewById(R.id.mailbox_button);
 
+        Intent i = getIntent();
+        if (i.getExtras() != null) {
+            email = i.getStringExtra("email");
+        }
+
+
         flik.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                // TODO Auto-generated method stub
                 Intent i = new Intent(getApplicationContext(),
                         FlikMenuActivity.class);
+                i.putExtra("email", email);
                 startActivity(i);
+
             }
         });
+
 
         saa.setOnClickListener(new View.OnClickListener() {
 

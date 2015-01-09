@@ -1,10 +1,12 @@
 package edu.milton.miltonmobileandroid.flik;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import android.annotation.SuppressLint;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.annotation.SuppressLint;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SuppressLint("SimpleDateFormat")
 public class MenuItem {

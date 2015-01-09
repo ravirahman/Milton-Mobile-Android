@@ -5,5 +5,14 @@
          android:paddingLeft="8dp"
          android:paddingRight="8dp">
 
+     <ListView
+         android:id="@id/android:list"
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+         android:layout_weight="1"
+         android:background="#FFFFFF"
+         android:drawSelectorOnTop="false"
+         android:divider="#F8991D"
+    	android:dividerHeight="1dp"/>
 
  </LinearLayout>

@@ -9,23 +9,17 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
 import edu.milton.miltonmobileandroid.R;
-
-
 
 @SuppressLint("SimpleDateFormat")
 public class FlikMenuActivity extends FragmentActivity implements AllergenWarning.NoticeDialogListener {
@@ -44,14 +38,6 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 	 * The {@link android.support.v4.view.ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-
-    ListView mListView;
-
-    static boolean updateReady = false;
-
-    static ArrayList<MenuItem> food = new ArrayList<MenuItem>();
-
-    View vp1;
 	
 	//the string email used for voting
 	String email;
@@ -59,9 +45,7 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.flik_food_view);
-
-
+		setContentView(R.layout.activity_tabs_test);
 		Intent i = getIntent();
 		if (i.getExtras() != null) {
 			email = i.getStringExtra("email");
@@ -71,34 +55,9 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
-        Log.e("hello", "MSections: " + mSectionsPagerAdapter);
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-
-        mListView = (ListView) findViewById(R.id.listView3);
-
-        Log.e("something******************************", "Mview: "+mViewPager);
-
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        Log.e("something*****************************2", "hi");
-
-
-        long startTime = System.currentTimeMillis();
-
-        while(!updateReady) {
-            //forgive me
-        }
-
-        Log.e("UR", "Bool: " + updateReady);
-
-            buildDisplayString();
-
-
-
-        Log.e("something*****************************3", "hi");
-
-
 		//Log.d("this is the email", email);
 		showNoticeDialog();
 
@@ -110,46 +69,7 @@ public class FlikMenuActivity extends FragmentActivity implements AllergenWarnin
 		//getMenuInflater().inflate(R.menu.main, menu);
 		getMenuInflater().inflate(R.menu.menu_flik, menu);
 		return true;
-
-
 	}
-
-    public void buildDisplayString(){
-        Log.e("something*****************************4", "hi");
-
-
-        ArrayList<String> strings = new ArrayList<String>();
-
-        Log.e("something*****************************5", "hi");
-
-
-        food.add(new MenuItem(true, "FredTest"));
-
-
-        for(MenuItem m : food){
-            String name = m.getItemName();
-            String type = m.getItemClass();
-            String time = m.getItemTime();
-
-            strings.add(name + "  -  " + type + "  -  " + time);
-            strings.add("Fred");
-
-
-        }
-
-        Log.e("something*****************************6", "hi");
-
-        for(String s : strings){
-
-            Log.e("Strings", s);
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,strings );
-
-        mListView.setAdapter(arrayAdapter);
-
-
-    }
 
 	/**
 	 * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to

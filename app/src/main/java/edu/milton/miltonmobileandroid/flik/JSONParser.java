@@ -68,18 +68,12 @@ public class JSONParser {
             // Build the string until null.
             while ((line = reader.readLine()) != null) {
                 sb.append(line + "\n");
-
-
-
-
             }
             
             // Close the input stream.
             is.close();
             // Convert the string builder data to an actual string.
             json = sb.toString();
-
-            Log.e("Tag", json);
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }

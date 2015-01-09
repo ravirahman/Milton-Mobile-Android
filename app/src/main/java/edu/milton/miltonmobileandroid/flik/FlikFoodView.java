@@ -10,8 +10,6 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 
-
-
 import edu.milton.miltonmobileandroid.R;
 
 /**
@@ -46,7 +44,7 @@ public class FlikFoodView extends View {
 	private void init(AttributeSet attrs, int defStyle) {
 		// Load attributes
 		final TypedArray a = getContext().obtainStyledAttributes(attrs,
-               R.styleable.FlikFoodViewAttr, defStyle, 0);
+                R.styleable.FlikFoodViewAttr, defStyle, 0);
 
 		mExampleString = a.getString(R.styleable.FlikFoodViewAttr_exampleString);
 		mExampleColor = a.getColor(R.styleable.FlikFoodViewAttr_exampleColor,
