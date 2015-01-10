@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +18,6 @@ import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -32,7 +30,6 @@ import edu.milton.miltonmobileandroid.R;
 import edu.milton.miltonmobileandroid.util.JsonHttp;
 
 public class SaaActivity extends Activity {
-    AsyncHttpClient client = new AsyncHttpClient();
     int year;
     int month;
     int day;
@@ -140,7 +137,6 @@ public class SaaActivity extends Activity {
         if (year < 100) {
             year += 2000;
         }
-        String hello;
         String yearS = Integer.toString(year);
         String monthS = Integer.toString(month);
         if (monthS.length() < 2) {
@@ -159,7 +155,7 @@ public class SaaActivity extends Activity {
         JsonHttp.request(myUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(JSONObject response) {
-                JSONArray activities = null;
+                JSONArray activities;
                 try {
                     activities = response.getJSONArray("Activities");
                     for (int i = 0; i < activities.length(); i++) {
@@ -195,28 +191,29 @@ public class SaaActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_select_date:
+                DatePickerDialog dialog = new DatePickerDialog(this,new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        monthOfYear++; // range is 0-11
+                        SaaActivity.this.year = year;
+                        SaaActivity.this.month = monthOfYear;
+                        SaaActivity.this.day = dayOfMonth;
 
-        if (id == R.id.action_select_date) {
-            DatePickerDialog dialog = new DatePickerDialog(this,new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    monthOfYear++; // range is 0-11
-                    SaaActivity.this.year = year;
-                    SaaActivity.this.month = monthOfYear;
-                    SaaActivity.this.day = dayOfMonth;
+                        loadEventsForDay(year,monthOfYear,dayOfMonth,false);
 
-                    loadEventsForDay(year,monthOfYear,dayOfMonth,false);
-
-                    //refresh with certain day
-                }
-            },year,month-1,day);
-            dialog.show();
-
-        }
-
-        if (id == R.id.action_filter_events) {
-            //showFeedSelectionDialog();
-            new AlertDialog.Builder(this)
+                        //refresh with certain day
+                    }
+                },year,month-1,day);
+                dialog.show();
+                break;
+            case R.id.action_filter_events:
+                //showFeedSelectionDialog();
+                new AlertDialog.Builder(this)
                     .setTitle("Not Implimented")
                     .setMessage("Will be in future update")
                     .setPositiveButton("OK",new DialogInterface.OnClickListener() {
@@ -225,7 +222,7 @@ public class SaaActivity extends Activity {
                             dialog.dismiss();
                         }
                     }).create().show();
-
+                break;
         }
 
         return super.onOptionsItemSelected(item);

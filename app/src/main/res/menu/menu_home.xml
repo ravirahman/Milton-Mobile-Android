@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="edu.milton.miltonmobileandroid.HomeActivity">
+    tools:context="edu.milton.miltonmobileandroid.home.HomeActivity">
     <item android:id="@+id/action_login" android:title="@string/string_Login"
         android:orderInCategory="100" android:showAsAction="never" />
     <item android:id="@+id/action_logout" android:title="@string/string_Logout"

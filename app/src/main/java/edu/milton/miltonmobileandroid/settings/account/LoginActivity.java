@@ -4,10 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.annotation.TargetApi;
 
 import android.app.AlertDialog;
@@ -21,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -37,10 +34,7 @@ import org.jsoup.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-
 import edu.milton.miltonmobileandroid.R;
-import edu.milton.miltonmobileandroid.util.Consts;
 
 public class LoginActivity extends AccountAuthenticatorActivity {
 
@@ -57,10 +51,6 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         manager = AccountManager.get(this);
-        if (getIntent().getBooleanExtra("logout",false)) {
-            logout();
-            return;
-        }
         setContentView(R.layout.settings_login_activity);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -91,7 +81,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             }
         }
 
-        if (isLoggedIn()) {
+        if (AccountMethods.isLoggedIn(this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);
             builder.setTitle("Not yet available");
@@ -103,12 +93,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
                 }
             });
             builder.create().show();
-            return;
         }
-    }
-
-    public boolean isLoggedIn() {
-        return manager.getAccountsByType(Consts.MMA_ACCOUNTTYPE).length > 0;
     }
 
     /**
@@ -169,7 +154,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             cancel = true;
         }
 
-        if (isLoggedIn()) {
+        if (AccountMethods.isLoggedIn(this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);
             builder.setTitle("Not yet available");
@@ -234,7 +219,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
                             } else if (classRoman.equals("I")) {
                                 classnumber = 1;
                             }
-                            finishLogin(username, password, firstName, lastName, classnumber, Consts.MMA_STUDENT);
+                            finishLogin(username, password, firstName, lastName, classnumber, Consts.STUDENT);
                         }
                     }
 
@@ -254,135 +239,30 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         }
     }
 
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        final Intent answer = new Intent();
         setResult(RESULT_CANCELED, null);
         finish();
     }
 
-    public Account[] getAccounts() {
-
-        return manager.getAccountsByType(Consts.MMA_ACCOUNTTYPE);
-    }
-
-    public void logout() {
-        if (getAccounts().length > 0) {
-            final String username = manager.getUserData(getAccounts()[0],AccountManager.KEY_ACCOUNT_NAME);
-            manager.removeAccount(getAccounts()[0], new AccountManagerCallback<Boolean>() {
-                @Override
-                public void run(AccountManagerFuture<Boolean> future) {
-                    try {
-                        if (future.getResult().booleanValue()) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                            builder.setCancelable(false);
-                            builder.setTitle("Account Removed");
-                            builder.setMessage(username + " has successfully logged out");
-                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                    LoginActivity.this.setResult(RESULT_OK);
-                                    LoginActivity.this.finish();
-
-                                }
-                            });
-                            builder.create().show();
-                        }
-                        else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                            builder.setCancelable(false);
-                            builder.setTitle("Account Not Removed");
-                            builder.setMessage(username + " has could not be logged out");
-                            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                    LoginActivity.this.setResult(RESULT_CANCELED);
-                                    LoginActivity.this.finish();
-
-                                }
-                            });
-                            builder.create().show();
-                        }
-                    } catch (OperationCanceledException e) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setCancelable(false);
-                        builder.setTitle("Account Not Removed");
-                        builder.setMessage(username + " has could not be logged out");
-                        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                LoginActivity.this.setResult(RESULT_CANCELED);
-                                LoginActivity.this.finish();
-
-                            }
-                        });
-                        builder.create().show();
-                    } catch (IOException e) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setCancelable(false);
-                        builder.setTitle("Account Not Removed");
-                        builder.setMessage(username + " has could not be logged out");
-                        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                LoginActivity.this.setResult(RESULT_CANCELED);
-                                LoginActivity.this.finish();
-
-                            }
-                        });
-                        builder.create().show();
-                    } catch (AuthenticatorException e) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setCancelable(false);
-                        builder.setTitle("Account Not Removed");
-                        builder.setMessage(username + " has could not be logged out");
-                        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                LoginActivity.this.setResult(RESULT_CANCELED);
-                                LoginActivity.this.finish();
-
-                            }
-                        });
-                        builder.create().show();
-                    }
-                }
-            }, null);
-        }
-        else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-            builder.setCancelable(false);
-            builder.setTitle("Account Not Removed");
-            builder.setMessage("No accounts were found");
-            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                    LoginActivity.this.setResult(RESULT_CANCELED);
-                    LoginActivity.this.finish();
-
-                }
-            });
-            builder.create().show();
-        }
-    }
-
-
     private void finishLogin(String username, String password, String firstname, String lastname, int classnumber, String userType) {
-        final Account account = new Account(username, Consts.MMA_ACCOUNTTYPE);
+        final Account account = new Account(username, Consts.ACCOUNT_TYPE);
         manager.addAccountExplicitly(account,password,null);
-        manager.setAuthToken(account, Consts.MMA_ACCOUNTTYPE, password);
-        manager.setUserData(account,"firstname",firstname);
-        manager.setUserData(account,"lastname",firstname);
-        manager.setUserData(account,"classnumber",Integer.toString(classnumber));
+        manager.setAuthToken(account, Consts.ACCOUNT_TYPE, password);
+        manager.setUserData(account,Consts.KEY_FIRSTNAME,firstname);
+        manager.setUserData(account,Consts.KEY_LASTNAME,lastname);
+        manager.setUserData(account,Consts.KEY_CLASSNUMBER,Integer.toString(classnumber));
         manager.setUserData(account,AccountManager.KEY_ACCOUNT_NAME,username);
 
         final Intent answer = new Intent();
         answer.putExtra(AccountManager.KEY_ACCOUNT_NAME, username);
-        answer.putExtra("firstname",firstname);
-        answer.putExtra("lastname",lastname);
-        answer.putExtra("classnumber",classnumber);
-        answer.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Consts.MMA_ACCOUNTTYPE);
+        answer.putExtra(Consts.KEY_FIRSTNAME,firstname);
+        answer.putExtra(Consts.KEY_LASTNAME,lastname);
+        answer.putExtra(Consts.KEY_CLASSNUMBER,classnumber);
+        answer.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Consts.ACCOUNT_TYPE);
 
         setAccountAuthenticatorResult(answer.getExtras());
         setResult(RESULT_OK, answer);
@@ -409,5 +289,16 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         outState.putString("username",usernameEditText.getText().toString());
         outState.putString("password",passwordEditText.getText().toString());
         outState.putBoolean("student",studentRadioButton.isChecked());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

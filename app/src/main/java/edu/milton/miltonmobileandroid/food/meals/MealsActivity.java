@@ -24,7 +24,7 @@ public class MealsActivity extends Activity {
         setContentView(R.layout.food_meals_activity);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MealsActivity.this);
-        if (preferences.getBoolean(edu.milton.miltonmobileandroid.util.Consts.FLIK_WARNINGPREFERENCE,true)) {
+        if (preferences.getBoolean(Consts.FLIK_WARNINGPREFERENCE,true)) {
             View checkboxview = View.inflate(this,R.layout.food_meals_view_dialog_allergywarning,null);
             final CheckBox box = (CheckBox) checkboxview.findViewById(R.id.food_meals_view_dialog_allergywarning_hidewarningmessage);
 
@@ -35,7 +35,7 @@ public class MealsActivity extends Activity {
             builder.setMessage("Before placing your order, please inform your server if a person in your party has a food allergy.");
             builder.setPositiveButton("I understand, Continue", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    preferences.edit().putBoolean(edu.milton.miltonmobileandroid.util.Consts.FLIK_WARNINGPREFERENCE,!box.isChecked()).apply();
+                    preferences.edit().putBoolean(Consts.FLIK_WARNINGPREFERENCE,!box.isChecked()).apply();
                     dialog.dismiss();
                 }
             });
@@ -57,6 +57,11 @@ public class MealsActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
 
         return super.onOptionsItemSelected(item);
     }

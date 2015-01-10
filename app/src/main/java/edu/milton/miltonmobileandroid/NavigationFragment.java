@@ -7,7 +7,6 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 
 import edu.milton.miltonmobileandroid.events.saa.SaaActivity;
@@ -15,14 +14,6 @@ import edu.milton.miltonmobileandroid.food.meals.MealsActivity;
 import edu.milton.miltonmobileandroid.me.mailbox.MailboxActivity;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NavigationFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NavigationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NavigationFragment extends Fragment {
     ImageButton flik;
     ImageButton saa;
@@ -102,13 +93,13 @@ public class NavigationFragment extends Fragment {
     public void onAttach(Activity activity) {
         parentActivity = activity;
         super.onAttach(activity);
-        try {
+        /*try {
             mListener = (OnFragmentInteractionListener) activity;
 
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
 

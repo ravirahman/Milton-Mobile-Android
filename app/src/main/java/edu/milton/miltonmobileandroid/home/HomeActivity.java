@@ -1,14 +1,15 @@
-package edu.milton.miltonmobileandroid;
+package edu.milton.miltonmobileandroid.home;
 
-import android.accounts.AccountAuthenticatorActivity;
-import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,23 +23,30 @@ import android.widget.TextView;
 
 import java.lang.reflect.Field;
 
+import edu.milton.miltonmobileandroid.NavigationFragment;
+import edu.milton.miltonmobileandroid.R;
 import edu.milton.miltonmobileandroid.events.saa.SaaActivity;
 import edu.milton.miltonmobileandroid.food.meals.MealsActivity;
 import edu.milton.miltonmobileandroid.me.mailbox.MailboxActivity;
-import edu.milton.miltonmobileandroid.settings.account.LoginActivity;
-import edu.milton.miltonmobileandroid.util.Consts;
+import edu.milton.miltonmobileandroid.settings.account.AccountMethods;
+import edu.milton.miltonmobileandroid.settings.account.Consts;
+import edu.milton.miltonmobileandroid.util.Callback;
 
 
-public class HomeActivity extends AccountAuthenticatorActivity implements NavigationFragment.OnFragmentInteractionListener {
+public class HomeActivity extends Activity implements NavigationFragment.OnFragmentInteractionListener {
 
-    private static int LOGIN_REQUEST_CODE = 1;
-    private static int LOGOUT_REQUEST_CODE = 2;
-    AccountManager manager;
+    private static final String LOG_TAG = HomeActivity.class.getName();
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private FrameLayout mDrawerFrame;
     private String mDrawerTitle;
     private String mTitle;
+
+    //TEMP
+    ImageButton flik;
+    ImageButton saa;
+    ImageButton mailbox;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,21 +63,19 @@ public class HomeActivity extends AccountAuthenticatorActivity implements Naviga
             // presumably, not relevant
         }
         super.onCreate(savedInstanceState);
-        manager = AccountManager.get(this);
         setContentView(R.layout.home_activity);
 
-        manager = AccountManager.get(this);
-        if (isLoggedIn()) {
-            TextView welcomeLabel = ((TextView) findViewById(R.id.home_fragment_welcomeLabel));
-//            welcomeLabel.setText("Welcome " + manager.getUserData(manager.getAccounts()[0],"firstname") + " " + manager.getUserData(manager.getAccounts()[0],"lastname"));
-  //          ViewGroup.LayoutParams params = welcomeLabel.getLayoutParams();
-    //        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-      //      welcomeLabel.setLayoutParams(params);
+        TextView welcomeLabel = (TextView) findViewById(R.id.home_fragment_welcomeLabel);
+        if (AccountMethods.isLoggedIn(this)) {
+            welcomeLabel.setText("Welcome " + AccountMethods.getFirstName(this) + " " + AccountMethods.getLastName(this));
+        }
+        else {
+            welcomeLabel.setText("Welcome to Milton Academy");
         }
         mTitle = mDrawerTitle = getTitle().toString();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.home_activity);
         mDrawerFrame = (FrameLayout) findViewById(R.id.home_activity_nav_frame);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.dummy_content, R.string.dummy_content) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.dummy_content, R.string.dummy_content) {
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
@@ -90,12 +96,49 @@ public class HomeActivity extends AccountAuthenticatorActivity implements Naviga
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        //TEMP
+        flik = (ImageButton) findViewById(R.id.home_fragment_meals_button);
+        saa = (ImageButton) findViewById(R.id.home_fragment_saa_button);
+        mailbox = (ImageButton) findViewById(R.id.home_fragment_mailbox_button);
+        flik.setOnClickListener(new View.OnClickListener() {
+
+        @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),
+                        MealsActivity.class);
+                startActivity(i);
+
+            }
+        });
+
+
+        saa.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),
+                        SaaActivity.class);
+                startActivity(i);
+            }
+        });
+
+        mailbox.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),
+                        MailboxActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerFrame);
-        if(isLoggedIn()){
+        if(AccountMethods.isLoggedIn(this)){
             menu.removeItem(R.id.action_login);
         }
         else{
@@ -104,12 +147,11 @@ public class HomeActivity extends AccountAuthenticatorActivity implements Naviga
 
         return super.onPrepareOptionsMenu(menu);
     }
-
-
-    public boolean isLoggedIn() {
-        return manager.getAccountsByType(Consts.MMA_ACCOUNTTYPE).length > 0;
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        invalidateOptionsMenu();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,58 +170,44 @@ public class HomeActivity extends AccountAuthenticatorActivity implements Naviga
             return true;
         }
         if (id == R.id.action_login) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            AccountMethods.login(this,new AccountManagerCallback<Bundle>() {
+                @Override
+                public void run(AccountManagerFuture<Bundle> future) {
+                    invalidateOptionsMenu();
+                    TextView welcomeLabel = (TextView) findViewById(R.id.home_fragment_welcomeLabel);
+                    welcomeLabel.setText("Welcome " + AccountMethods.getFirstName(HomeActivity.this) + " " + AccountMethods.getLastName(HomeActivity.this));
+                }
+            });
         }
         if (id == R.id.action_logout) {
-            Intent intent = new Intent(this,LoginActivity.class);
-            intent.putExtra("logout",true);
-            startActivityForResult(intent, LOGOUT_REQUEST_CODE);
+            AccountMethods.logout(this, new Callback() {
+                @Override
+                public void run(Bundle info) {
+                    if (info.getBoolean(Consts.KEY_SUCCESS,false)) {
+                        invalidateOptionsMenu();
+                        TextView welcomeLabel = (TextView) findViewById(R.id.home_fragment_welcomeLabel);
+                        welcomeLabel.setText("Welcome to Milton Academy");
+                        return;
+                    }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                    builder.setCancelable(false);
+                    builder.setTitle("Account Not Removed");
+                    builder.setMessage(info.getString(Consts.KEY_MESSAGE,"You have NOT been logged out because of an error."));
+                    builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                }
+            });
         }
-
-        //noinspection SimplifiableIfStatement
-
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == LOGIN_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                int classnumber = data.getIntExtra("classnumber", 0);
-                String firstname = data.getStringExtra("firstname");
-                String lastname = data.getStringExtra("lastname");
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setCancelable(false);
-                builder.setTitle("Welcome");
-                builder.setMessage(firstname + " " + lastname + " successfully signed in");
-                builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        HomeActivity.this.invalidateOptionsMenu();
-                        TextView welcomeLabel = ((TextView) findViewById(R.id.home_fragment_welcomeLabel));
-//                        welcomeLabel.setText("Welcome " + manager.getUserData(manager.getAccounts()[0],"firstname") + " " + manager.getUserData(manager.getAccounts()[0],"lastname"));
-  //                      ViewGroup.LayoutParams params = welcomeLabel.getLayoutParams();
-    //                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-      //                  welcomeLabel.setLayoutParams(params);
-                    }
-                });
-                builder.create().show();
-            }
-        }
-        if (requestCode == LOGOUT_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
+    public static class HomeFragment extends Fragment {
 
-            }
-        }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class MainFragment extends Fragment {
-
-        public MainFragment() {
+        public HomeFragment() {
         }
 
         @Override

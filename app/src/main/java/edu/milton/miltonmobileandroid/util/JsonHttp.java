@@ -50,11 +50,11 @@ public class JsonHttp {
         }
 
         if (method.equalsIgnoreCase("POST")) {
-            client.post(url,handler);
+            client.post(url,params,handler);
             return;
         }
         if (method.equalsIgnoreCase("PUT")) {
-            client.put(url,handler);
+            client.put(url,params,handler);
             return;
         }
         if (method.equalsIgnoreCase("DELETE")) {
@@ -62,13 +62,12 @@ public class JsonHttp {
             return;
         }
         //if not any of the above, do a get request
-        client.get(url,handler);
+        client.get(url,params,handler);
 
     }
 
     //basic client
     public static void request(final String url, final JsonHttpResponseHandler handler) {
-        AsyncHttpClient client = new AsyncHttpClient();
         request(url, "GET", null, null, null, handler);
     }
 }

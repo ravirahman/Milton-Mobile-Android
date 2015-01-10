@@ -7,26 +7,103 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:id="@+id/main_fragment"
+    android:id="@+id/home_fragment"
     tools:context="edu.milton.miltonmobileandroid.HomeActivity.HomeFragment">
 
 
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_height="wrap_content"
         android:id="@+id/home_fragment_welcomeLabel"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:enabled="false" />
+        android:enabled="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/string_Welcome"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:gravity="center_horizontal"
+        android:paddingBottom="10dp" />
 
     <TextView
+        android:id="@+id/home_fragment_saa_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/home_fragment_meals_label"
+        android:layout_alignBottom="@+id/home_fragment_meals_label"
+        android:layout_alignLeft="@+id/home_fragment_saa_button"
+        android:layout_alignRight="@+id/home_fragment_saa_button"
+        android:gravity="center"
+        android:text="@string/string_SAA"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/home_fragment_meals_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/home_fragment_meals_button"
+        android:layout_alignRight="@+id/home_fragment_meals_button"
+        android:layout_below="@+id/home_fragment_saa_button"
+        android:gravity="center"
+        android:text="@string/string_FLIK"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/home_fragment_mailbox_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/home_fragment_mailbox_button"
+        android:layout_alignRight="@+id/home_fragment_mailbox_button"
+        android:layout_below="@+id/home_fragment_saa_button"
+        android:gravity="center"
+        android:text="@string/string_Mailbox"
+        android:textSize="20sp"
+        />
+
+    <ImageButton
+        android:id="@+id/home_fragment_meals_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:background="@drawable/flik_button_custom"
+        android:scaleType="fitStart"
+        android:src="@drawable/flik_button_custom"
+        android:contentDescription="@string/string_FLIK"
+        android:layout_alignTop="@+id/home_fragment_saa_button"
+        android:layout_toLeftOf="@+id/home_fragment_saa_button"
+        android:layout_toStartOf="@+id/home_fragment_saa_button" />
+
+    <ImageButton
+        android:id="@+id/home_fragment_saa_button"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:background="@drawable/saa_button_custom"
+        android:scaleType="fitStart"
+        android:src="@drawable/saa_button_custom"
+        android:contentDescription="@string/string_SAA"
+        android:layout_below="@+id/home_fragment_welcomeLabel"
+        android:layout_marginLeft="10dp"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:id="@+id/home_fragment_mailbox_button"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:background="@drawable/saa_button_custom"
+        android:scaleType="fitStart"
+        android:src="@drawable/saa_button_custom"
+        android:contentDescription="@string/string_SAA"
+        android:layout_toEndOf="@+id/home_fragment_saa_label"
+        android:layout_below="@+id/home_fragment_welcomeLabel"
+        android:layout_toRightOf="@+id/home_fragment_saa_label"
+        android:layout_marginLeft="10dp" />
+
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/main_fragment_holderText"
         android:layout_alignTop="@+id/home_fragment_welcomeLabel"
         android:layout_alignLeft="@+id/home_fragment_welcomeLabel"
-        android:text="A Google Now for Milton Academy. Will Be Coming Soon."/>
+        android:text="A Google-Now Style Interface will be here soon. Stay tuned! In the meantime, use the navigation drawer or the buttons below. "/> -->
 
 </RelativeLayout>
