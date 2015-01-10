@@ -1,7 +1,5 @@
 package edu.milton.miltonmobileandroid.food.meals;
-
 import android.annotation.SuppressLint;
-import android.app.ListFragment;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,10 +33,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.milton.miltonmobileandroid.R;
-import edu.milton.miltonmobileandroid.util.JsonHttp;
+import edu.milton.miltonmobileandroid.settings.account.AccountMethods;
 
 @SuppressLint({ "SimpleDateFormat", "ValidFragment" })
-public class MealsListFrag { /* extends ListFragment implements
+public class MealsListFrag extends ListFragment implements
         LoaderCallbacks<Cursor> {
 
     private ProgressDialog pDialog;
@@ -52,23 +51,23 @@ public class MealsListFrag { /* extends ListFragment implements
     private JSONArray retrievedSides = null;
     private JSONArray retrievedSoups = null;
     private JSONArray retrievedVotes = null;
-    private ArrayList<MenuItem> Foods;
-    private ArrayList<VoteObject> votes;
+    private ArrayList<MealsMenuItem> Foods;
+    private ArrayList<MealsVoteObject> votes;
     // private ArrayList<Integer> voteState;
     // point -> x stores mealid, y stores vote
     private ArrayList<Point> votesToSend;
     private ArrayList<Point> votesToUpdate;
-    private HashMap<Integer, VoteObject> myvotes;
+    private HashMap<Integer, MealsVoteObject> myvotes;
     private String date;
     private int dateShift;
 
     // private String type = "Entree";
 
     @SuppressLint("ValidFragment")
-    public FlikListFrag(int position, String email) {
+    public MealsListFrag(int position, Context context) {
         // TODO Auto-generated constructor stub
         dateShift = position;
-        this.email = email;
+        this.email = AccountMethods.getFirstName(context) + "_" + AccountMethods.getLastName(context) + "00@milton.edu";
     }
 
     @Override
@@ -89,28 +88,28 @@ public class MealsListFrag { /* extends ListFragment implements
 
     public void updateJSONdata() {
 
-        Foods = new ArrayList<MenuItem>();
-        votes = new ArrayList<VoteObject>();
+        Foods = new ArrayList<MealsMenuItem>();
+        votes = new ArrayList<MealsVoteObject>();
         votesToSend = new ArrayList<Point>();
-        myvotes = new HashMap<Integer, VoteObject>();
+        myvotes = new HashMap<Integer, MealsVoteObject>();
         votesToUpdate = new ArrayList<Point>();
 
         //Lunch
         // get Entrees
         try {
 
-            JsonHttp jParserEntrees = new JsonHttp();
+            JSONParser jParserEntrees = new JSONParser();
             JSONObject jsonEntrees = jParserEntrees
                     .getJSONFromUrl(READ_EVENTS_URL + "?type=Entree&date="
                             + date+"&time=Lunch");
 
             retrievedEntrees = jsonEntrees.getJSONArray("Entree");
-            Foods.add(new MenuItem(true, "Lunch"));
-            Foods.add(new MenuItem(true, "Entrees"));
+            Foods.add(new MealsMenuItem(true, "Lunch"));
+            Foods.add(new MealsMenuItem(true, "Entrees"));
             for (int i = 0; i < retrievedEntrees.length(); i++) {
                 JSONObject c = retrievedEntrees.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
 
         } catch (JSONException e) {
@@ -119,34 +118,34 @@ public class MealsListFrag { /* extends ListFragment implements
 
         // get Sides
         try {
-            JsonHttp jParserSides = new JsonHttp();
+            JSONParser jParserSides = new JSONParser();
             JSONObject jsonSides = jParserSides.getJSONFromUrl(READ_EVENTS_URL
                     + "?type=Side&date=" + date+"&time=Lunch");
 
             retrievedSides = jsonSides.getJSONArray("Side");
-            Foods.add(new MenuItem(true, "Sides"));
+            Foods.add(new MealsMenuItem(true, "Sides"));
             for (int i = 0; i < retrievedSides.length(); i++) {
                 JSONObject c = retrievedSides.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         // get Flik Live
         try {
-            JsonHttp jParserFlikLive = new JsonHttp();
+            JSONParser jParserFlikLive = new JSONParser();
             JSONObject jsonFlikLive = jParserFlikLive
                     .getJSONFromUrl(READ_EVENTS_URL + "?type=Flik+Live&date="
                             + date+"&time=Lunch");
 
 
             retrievedFlikLive = jsonFlikLive.getJSONArray("Flik Live");
-            Foods.add(new MenuItem(true, "Flik Live"));
+            Foods.add(new MealsMenuItem(true, "Flik Live"));
             for (int i = 0; i < retrievedFlikLive.length(); i++) {
                 JSONObject c = retrievedFlikLive.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
 
         } catch (JSONException e) {
@@ -154,35 +153,35 @@ public class MealsListFrag { /* extends ListFragment implements
         }
         // get Dessert
         try {
-            JsonHttp jParserDessert = new JsonHttp();
+            JSONParser jParserDessert = new JSONParser();
             JSONObject jsonDessert = jParserDessert
                     .getJSONFromUrl(READ_EVENTS_URL + "?type=Dessert&date="
                             + date+"&time=Lunch");
 
 
             retrievedDesserts = jsonDessert.getJSONArray("Dessert");
-            Foods.add(new MenuItem(true, "Desserts"));
+            Foods.add(new MealsMenuItem(true, "Desserts"));
             for (int i = 0; i < retrievedDesserts.length(); i++) {
                 JSONObject c = retrievedDesserts.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         // get Soup
         try {
-            JsonHttp jParserSoups = new JsonHttp();
+            JSONParser jParserSoups = new JSONParser();
             JSONObject jsonSoups = jParserSoups.getJSONFromUrl(READ_EVENTS_URL
                     + "?type=Soup&date=" + date+"&time=Lunch");
 
 
             retrievedSoups = jsonSoups.getJSONArray("Soup");
-            Foods.add(new MenuItem(true, "Soups"));
+            Foods.add(new MealsMenuItem(true, "Soups"));
             for (int i = 0; i < retrievedSoups.length(); i++) {
                 JSONObject c = retrievedSoups.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -193,18 +192,18 @@ public class MealsListFrag { /* extends ListFragment implements
         // get Entrees
         try {
 
-            JsonHttp jParserEntrees = new JsonHttp();
+            JSONParser jParserEntrees = new JSONParser();
             JSONObject jsonEntrees = jParserEntrees
                     .getJSONFromUrl(READ_EVENTS_URL + "?type=Entree&date="
                             + date+"&time=Dinner");
 
             retrievedEntrees = jsonEntrees.getJSONArray("Entree");
-            Foods.add(new MenuItem(true, "Dinner"));
-            Foods.add(new MenuItem(true, "Entrees"));
+            Foods.add(new MealsMenuItem(true, "Dinner"));
+            Foods.add(new MealsMenuItem(true, "Entrees"));
             for (int i = 0; i < retrievedEntrees.length(); i++) {
                 JSONObject c = retrievedEntrees.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
 
         } catch (JSONException e) {
@@ -213,34 +212,34 @@ public class MealsListFrag { /* extends ListFragment implements
 
         // get Sides
         try {
-            JsonHttp jParserSides = new JsonHttp();
+            JSONParser jParserSides = new JSONParser();
             JSONObject jsonSides = jParserSides.getJSONFromUrl(READ_EVENTS_URL
                     + "?type=Side&date=" + date+"&time=Dinner");
 
             retrievedSides = jsonSides.getJSONArray("Side");
-            Foods.add(new MenuItem(true, "Sides"));
+            Foods.add(new MealsMenuItem(true, "Sides"));
             for (int i = 0; i < retrievedSides.length(); i++) {
                 JSONObject c = retrievedSides.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         // get Flik Live
         try {
-            JsonHttp jParserFlikLive = new JsonHttp();
+            JSONParser jParserFlikLive = new JSONParser();
             JSONObject jsonFlikLive = jParserFlikLive
                     .getJSONFromUrl(READ_EVENTS_URL + "?type=Flik+Live&date="
                             + date+"&time=Dinner");
 
 
             retrievedFlikLive = jsonFlikLive.getJSONArray("Flik Live");
-            Foods.add(new MenuItem(true, "Flik Live"));
+            Foods.add(new MealsMenuItem(true, "Flik Live"));
             for (int i = 0; i < retrievedFlikLive.length(); i++) {
                 JSONObject c = retrievedFlikLive.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
 
         } catch (JSONException e) {
@@ -248,35 +247,35 @@ public class MealsListFrag { /* extends ListFragment implements
         }
         // get Dessert
         try {
-            JsonHttp jParserDessert = new JsonHttp();
+            JSONParser jParserDessert = new JSONParser();
             JSONObject jsonDessert = jParserDessert
                     .getJSONFromUrl(READ_EVENTS_URL + "?type=Dessert&date="
                             + date+"&time=Dinner");
 
 
             retrievedDesserts = jsonDessert.getJSONArray("Dessert");
-            Foods.add(new MenuItem(true, "Desserts"));
+            Foods.add(new MealsMenuItem(true, "Desserts"));
             for (int i = 0; i < retrievedDesserts.length(); i++) {
                 JSONObject c = retrievedDesserts.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         // get Soup
         try {
-            JsonHttp jParserSoups = new JsonHttp();
+            JSONParser jParserSoups = new JSONParser();
             JSONObject jsonSoups = jParserSoups.getJSONFromUrl(READ_EVENTS_URL
                     + "?type=Soup&date=" + date+"&time=Dinner");
 
 
             retrievedSoups = jsonSoups.getJSONArray("Soup");
-            Foods.add(new MenuItem(true, "Soups"));
+            Foods.add(new MealsMenuItem(true, "Soups"));
             for (int i = 0; i < retrievedSoups.length(); i++) {
                 JSONObject c = retrievedSoups.getJSONObject(i);
                 // System.out.println(c);
-                Foods.add(new MenuItem(false, c));
+                Foods.add(new MealsMenuItem(false, c));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -286,19 +285,19 @@ public class MealsListFrag { /* extends ListFragment implements
 
         // get all votes
         try {
-            JsonHttp jParserVotes = new JsonHttp();
+            JSONParser jParserVotes = new JSONParser();
             JSONObject jsonVotes = jParserVotes.getJSONFromUrl(READ_VOTES_URL
                     + "?date=" + date);
             //Log.d("test2", jsonVotes.toString());
             retrievedVotes = jsonVotes.getJSONArray("Votes");
             for (int i = 0; i < retrievedVotes.length(); i++) {
                 JSONObject j = retrievedVotes.getJSONObject(i);
-                VoteObject vobj = new VoteObject(j);
+                MealsVoteObject vobj = new MealsVoteObject(j);
                 votes.add(vobj);
                 if (vobj.getEmail().equalsIgnoreCase(email)) {
                     myvotes.put(vobj.getMealID(), vobj);
                 }
-                for (MenuItem food : Foods) {
+                for (MealsMenuItem food : Foods) {
                     if (vobj.getMealID() == food.getNumericalID()) {
                         food.setVotes(food.getVotes() + vobj.getVote());
                         if(vobj.getVote()>=1){
@@ -361,7 +360,7 @@ public class MealsListFrag { /* extends ListFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.food_meals_fragment, null);
+        View view = inflater.inflate(R.layout.food_meals_listfrag, null);
         return view;
     }
 
@@ -398,7 +397,7 @@ public class MealsListFrag { /* extends ListFragment implements
     public void updateVotes() {
         List<NameValuePair> send = new ArrayList<NameValuePair>();
         List<NameValuePair> update = new ArrayList<NameValuePair>();
-        JsonHttp parser = new JsonHttp();
+        JSONParser parser = new JSONParser();
         for (Point p : votesToSend) {
             send.add(new BasicNameValuePair("email", email));
             send.add(new BasicNameValuePair("mealid", "" + p.x));
@@ -456,7 +455,7 @@ public class MealsListFrag { /* extends ListFragment implements
         @SuppressWarnings("unchecked")
         public FlikArrayAdapter(Context context,
                                 ArrayList<? extends Object> Values) {
-            super(context, R.layout.food_meals_viewfood, (ArrayList<Object>) Values);
+            super(context, R.layout.food_meals_foodview, (ArrayList<Object>) Values);
             this.context = context;
             this.Values = Values;
 
@@ -467,17 +466,17 @@ public class MealsListFrag { /* extends ListFragment implements
             final int position = pos;
             View rowView;
 
-            final MenuItem rowItem = (MenuItem) Values.get(position);
+            final MealsMenuItem rowItem = (MealsMenuItem) Values.get(position);
 
             if (!rowItem.isHeading()) {
                 LayoutInflater inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                rowView = inflater.inflate(R.layout.food_meals_viewfood, parent,
+                rowView = inflater.inflate(R.layout.food_meals_foodview, parent,
                         false);
                 TextView textView = (TextView) rowView
                         .findViewById(R.id.food_text_view);
                 final TextView vd = (TextView) rowView
-                        .findViewById(R.id.FlikDesc);
+                        .findViewById(R.id.ApacheTextView);
                 vd.setTextIsSelectable(false);
                 vd.getPaint().setAntiAlias(true);
                 vd.setTextSize(8);
@@ -508,24 +507,53 @@ public class MealsListFrag { /* extends ListFragment implements
                     }
                 }
 
-                good.setOnClickListener(new OnClickListener() {
+                if (rowItem.getItemName().equalsIgnoreCase("None Entered")) {
+                    //disable the good and bad button
+                    good.setEnabled(false);
+                    bad.setEnabled(false);
 
-                    @Override
-                    public void onClick(View v) {
-                        // TODO Auto-generated method stub
+                }
+                else {
+                    good.setOnClickListener(new OnClickListener() {
 
-                        // if i havent voted up already
-                        if (myvotes.get(rowItem.getNumericalID()) != null) {
-                            if (myvotes.get(rowItem.getNumericalID()).getVote() < 0) {
-                                // remove old vote
+                        @Override
+                        public void onClick(View v) {
+                            // TODO Auto-generated method stub
 
-                                VoteObject temp = myvotes.get(rowItem
-                                        .getNumericalID());
-                                temp.setVote(1);
-                                myvotes.remove(rowItem.getNumericalID());
+                            // if i havent voted up already
+                            if (myvotes.get(rowItem.getNumericalID()) != null) {
+                                if (myvotes.get(rowItem.getNumericalID()).getVote() < 0) {
+                                    // remove old vote
+
+                                    MealsVoteObject temp = myvotes.get(rowItem
+                                            .getNumericalID());
+                                    temp.setVote(1);
+                                    myvotes.remove(rowItem.getNumericalID());
+                                    myvotes.put(rowItem.getNumericalID(), temp);
+                                    votesToUpdate.add(new Point(rowItem
+                                            .getNumericalID(), 1));
+                                    good.setImageResource(R.drawable.ic_action_good_green);
+                                    bad.setImageResource(R.drawable.ic_action_bad);
+                                    int likes = Integer.parseInt(vu.getText()
+                                            .toString());
+
+                                    likes++;
+
+                                    vu.setText(likes + "");
+
+                                    int dislikes = Integer.parseInt(vd.getText()
+                                            .toString());
+                                    dislikes++;
+                                    vd.setText(dislikes + "");
+                                    new Vote().execute();
+
+                                }
+                            } else {
+
+                                votesToSend.add(new Point(rowItem.getNumericalID(),
+                                        1));
+                                MealsVoteObject temp = new MealsVoteObject(rowItem.getNumericalID(), email, 1, rowItem.getDateString());
                                 myvotes.put(rowItem.getNumericalID(), temp);
-                                votesToUpdate.add(new Point(rowItem
-                                        .getNumericalID(), 1));
                                 good.setImageResource(R.drawable.ic_action_good_green);
                                 bad.setImageResource(R.drawable.ic_action_bad);
                                 int likes = Integer.parseInt(vu.getText()
@@ -534,95 +562,74 @@ public class MealsListFrag { /* extends ListFragment implements
                                 likes++;
 
                                 vu.setText(likes + "");
-
-                                int dislikes = Integer.parseInt(vd.getText()
-                                        .toString());
-                                dislikes++;
-                                vd.setText(dislikes+"");
                                 new Vote().execute();
-
                             }
-                        } else {
 
-                            votesToSend.add(new Point(rowItem.getNumericalID(),
-                                    1));
-                            VoteObject temp = new VoteObject(rowItem.getNumericalID(),email,1,rowItem.getDateString());
-                            myvotes.put(rowItem.getNumericalID(), temp);
-                            good.setImageResource(R.drawable.ic_action_good_green);
-                            bad.setImageResource(R.drawable.ic_action_bad);
-                            int likes = Integer.parseInt(vu.getText()
-                                    .toString());
-
-                            likes++;
-
-                            vu.setText(likes + "");
-                            new Vote().execute();
                         }
+                    });
+                    bad.setOnClickListener(new OnClickListener() {
 
-                    }
-                });
-                bad.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // TODO Auto-generated method stub
 
-                    @Override
-                    public void onClick(View v) {
-                        // TODO Auto-generated method stub
+                            // if i havent voted up already
+                            if (myvotes.get(rowItem.getNumericalID()) != null) {
+                                if (myvotes.get(rowItem.getNumericalID()).getVote() > 0) {
+                                    // remove old vote
 
-                        // if i havent voted up already
-                        if (myvotes.get(rowItem.getNumericalID()) != null) {
-                            if (myvotes.get(rowItem.getNumericalID()).getVote() > 0) {
-                                // remove old vote
+                                    MealsVoteObject temp = myvotes.get(rowItem
+                                            .getNumericalID());
+                                    temp.setVote(-1);
+                                    myvotes.remove(rowItem.getNumericalID());
+                                    myvotes.put(rowItem.getNumericalID(), temp);
+                                    votesToUpdate.add(new Point(rowItem
+                                            .getNumericalID(), -1));
+                                    bad.setImageResource(R.drawable.ic_action_bad_red);
+                                    good.setImageResource(R.drawable.ic_action_good);
+                                    int likes = Integer.parseInt(vu.getText()
+                                            .toString());
 
-                                VoteObject temp = myvotes.get(rowItem
-                                        .getNumericalID());
-                                temp.setVote(-1);
-                                myvotes.remove(rowItem.getNumericalID());
+                                    likes--;
+
+                                    vu.setText(likes + "");
+
+                                    int dislikes = Integer.parseInt(vd.getText()
+                                            .toString());
+                                    dislikes--;
+                                    vd.setText(dislikes + "");
+                                    new Vote().execute();
+                                }
+                            } else {
+
+                                votesToSend.add(new Point(rowItem.getNumericalID(),
+                                        -1));
+                                MealsVoteObject temp = new MealsVoteObject(rowItem.getNumericalID(), email, -1, rowItem.getDateString());
                                 myvotes.put(rowItem.getNumericalID(), temp);
-                                votesToUpdate.add(new Point(rowItem
-                                        .getNumericalID(), -1));
                                 bad.setImageResource(R.drawable.ic_action_bad_red);
                                 good.setImageResource(R.drawable.ic_action_good);
-                                int likes = Integer.parseInt(vu.getText()
+                                int likes = Integer.parseInt(vd.getText()
                                         .toString());
 
                                 likes--;
-
-                                vu.setText(likes + "");
-
-                                int dislikes = Integer.parseInt(vd.getText()
-                                        .toString());
-                                dislikes--;
-                                vd.setText(dislikes+"");
+                                vd.setText(likes + "");
                                 new Vote().execute();
+
                             }
-                        } else {
-
-                            votesToSend.add(new Point(rowItem.getNumericalID(),
-                                    -1));
-                            VoteObject temp = new VoteObject(rowItem.getNumericalID(),email,-1,rowItem.getDateString());
-                            myvotes.put(rowItem.getNumericalID(), temp);
-                            bad.setImageResource(R.drawable.ic_action_bad_red);
-                            good.setImageResource(R.drawable.ic_action_good);
-                            int likes = Integer.parseInt(vd.getText()
-                                    .toString());
-
-                            likes--;
-                            vd.setText(likes + "");
-                            new Vote().execute();
-
                         }
-                    }
-                });
+                    });
+                }
             } else {
                 LayoutInflater inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                rowView = inflater.inflate(R.layout.food_meals_viewfood, parent,
+                rowView = inflater.inflate(R.layout.food_meals_foodview, parent,
                         false);
                 TextView textView = (TextView) rowView
                         .findViewById(R.id.food_text_view);
                 textView.setText(rowItem.getItemName());
                 textView.setTextSize(18);
                 textView.getPaint().setAntiAlias(true);
-                TextView vd = (TextView) rowView.findViewById(R.id.FlikDesc);
+                TextView vd = (TextView) rowView.findViewById(R.id.ApacheTextView);
                 ImageButton good = (ImageButton) rowView
                         .findViewById(R.id.good_button);
                 ImageButton bad = (ImageButton) rowView
@@ -640,6 +647,6 @@ public class MealsListFrag { /* extends ListFragment implements
 
             return rowView;
         }
-    }*/
+    }
 
 }

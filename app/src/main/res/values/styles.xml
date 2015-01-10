@@ -1,3 +1,5 @@
+
+
 <resources>
 
     <!-- Base application theme. -->
@@ -7,4 +9,22 @@
     <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">#ff9600</item>
     </style>
+
+        <!--
+            Base application theme, dependent on API level. This theme is replaced
+            by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        -->
+        <style name="AppBaseTheme" parent="android:Theme.Holo.Light.NoActionBar">
+            <!--
+                Theme customizations available in newer API levels can go in
+                res/values-vXX/styles.xml, while customizations related to
+                backward-compatibility can go here.
+            -->
+        </style>
+
+
+
+
 </resources>
+
+

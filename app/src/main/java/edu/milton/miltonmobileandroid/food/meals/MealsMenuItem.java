@@ -11,16 +11,16 @@ import java.util.Date;
 @SuppressLint("SimpleDateFormat")
 public class MealsMenuItem {
 
-    private int numericalID;
-    private Date itemDate;
-    private String itemName;
-    private String itemClass;
-    private String itemTime;
-    private SimpleDateFormat dateParser;
-    private boolean isHeading;
-    private int votes;
-    private int upvotes;
-    private int downvotes;
+	private int numericalID;
+	private Date itemDate;
+	private String itemName;
+	private String itemClass;
+	private String itemTime;
+	private SimpleDateFormat dateParser;
+	private boolean isHeading;
+	private int votes;
+	private int upvotes;
+	private int downvotes;
 
     public MealsMenuItem(boolean heading, String itemName) {
         setHeading(heading);
@@ -40,102 +40,102 @@ public class MealsMenuItem {
 			 * if (!jobj.isNull("votes")) { votes =
 			 * Integer.parseInt(jobj.getString("votes")); }
 			 */
-            if (!jobj.isNull("mealName")) {
-                setItemName(jobj.getString("mealName"));
-            }
-            if (!jobj.isNull("date")) {
-                setItemDate(dateParser.parse(jobj.getString("date")));
-            }
-            if (!jobj.isNull("mealClass")) {
-                setItemClass(jobj.getString("mealClass"));
-            }
-            if (!jobj.isNull("mealTime")) {
-                setItemTime(jobj.getString("mealTime"));
-            }
-            if (!jobj.isNull("likes")) {
-                setVotes(Integer.parseInt(jobj.getString("votes")));
+			if (!jobj.isNull("mealName")) {
+				setItemName(jobj.getString("mealName"));
+			}
+			if (!jobj.isNull("date")) {
+				setItemDate(dateParser.parse(jobj.getString("date")));
+			}
+			if (!jobj.isNull("mealClass")) {
+				setItemClass(jobj.getString("mealClass"));
+			}
+			if (!jobj.isNull("mealTime")) {
+				setItemTime(jobj.getString("mealTime"));
+			}
+			if (!jobj.isNull("likes")) {
+				setVotes(Integer.parseInt(jobj.getString("votes")));
 
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    }
+	}
 
-    public int getNumericalID() {
-        return numericalID;
-    }
+	public int getNumericalID() {
+		return numericalID;
+	}
 
-    public void setNumericalID(int numericalID) {
-        this.numericalID = numericalID;
-    }
+	public void setNumericalID(int numericalID) {
+		this.numericalID = numericalID;
+	}
 
-    public Date getItemDate() {
-        return itemDate;
-    }
+	public Date getItemDate() {
+		return itemDate;
+	}
 
-    public String getDateString() {
-        return (dateParser.format(itemDate));
-    }
+	public String getDateString() {
+		return (dateParser.format(itemDate));
+	}
 
-    public void setItemDate(Date itemDate) {
-        this.itemDate = itemDate;
-    }
+	public void setItemDate(Date itemDate) {
+		this.itemDate = itemDate;
+	}
 
-    public String getItemName() {
-        return itemName;
-    }
+	public String getItemName() {
+		return itemName;
+	}
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
 
-    public String getItemClass() {
-        return itemClass;
-    }
+	public String getItemClass() {
+		return itemClass;
+	}
 
-    public void setItemClass(String itemClass) {
-        this.itemClass = itemClass;
-    }
+	public void setItemClass(String itemClass) {
+		this.itemClass = itemClass;
+	}
 
-    public String getItemTime() {
-        return itemTime;
-    }
+	public String getItemTime() {
+		return itemTime;
+	}
 
-    public void setItemTime(String itemTime) {
-        this.itemTime = itemTime;
-    }
+	public void setItemTime(String itemTime) {
+		this.itemTime = itemTime;
+	}
 
-    public boolean isHeading() {
-        return isHeading;
-    }
+	public boolean isHeading() {
+		return isHeading;
+	}
 
-    public void setHeading(boolean isHeading) {
-        this.isHeading = isHeading;
-    }
+	public void setHeading(boolean isHeading) {
+		this.isHeading = isHeading;
+	}
 
-    public int getVotes() {
-        return votes;
-    }
+	public int getVotes() {
+		return votes;
+	}
 
-    public void setDownvotes(int downvotes) {
-        this.downvotes = downvotes;
-    }
-    public int getDownvotes() {
-        return downvotes;
-    }
+	public void setDownvotes(int downvotes) {
+		this.downvotes = downvotes;
+	}
+	public int getDownvotes() {
+		return downvotes;
+	}
 
-    public void setVotes(int votes) {
-        this.votes = votes;
-    }
-    public int getUpvotes() {
-        return upvotes;
-    }
+	public void setVotes(int votes) {
+		this.votes = votes;
+	}
+	public int getUpvotes() {
+		return upvotes;
+	}
 
-    public void setUpvotes(int upvotes) {
-        this.upvotes = upvotes;
-    }
-
+	public void setUpvotes(int upvotes) {
+		this.upvotes = upvotes;
+	}
+	
 }

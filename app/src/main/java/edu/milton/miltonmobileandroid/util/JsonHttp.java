@@ -1,5 +1,6 @@
 package edu.milton.miltonmobileandroid.util;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -16,6 +17,7 @@ import java.util.Iterator;
 public class JsonHttp {
     public static String LOG_TAG = JsonHttp.class.getName();
     //full client
+
     public static void request(
             final String url,
             final String method,
@@ -23,6 +25,17 @@ public class JsonHttp {
             final CookieStore cookies,
             final JSONArray headers,
             final JsonHttpResponseHandler handler) {
+        request(url,method,params,cookies,headers,handler,null);
+    }
+
+    public static void request(
+            final String url,
+            final String method,
+            final RequestParams params,
+            final CookieStore cookies,
+            final JSONArray headers,
+            final JsonHttpResponseHandler handler,
+            final Context context) {
         AsyncHttpClient client = new AsyncHttpClient();
         if (cookies != null) {
             client.setCookieStore(cookies);
@@ -50,24 +63,42 @@ public class JsonHttp {
         }
 
         if (method.equalsIgnoreCase("POST")) {
+            if (context != null) {
+                client.post(context,url,params,handler);
+                return;
+            }
             client.post(url,params,handler);
             return;
         }
         if (method.equalsIgnoreCase("PUT")) {
+            if (context != null) {
+                client.put(context,url,params,handler);
+                return;
+            }
             client.put(url,params,handler);
             return;
         }
         if (method.equalsIgnoreCase("DELETE")) {
+            if (context != null) {
+                client.delete(context,url,handler);
+                return;
+            }
             client.delete(url,handler);
             return;
         }
-        //if not any of the above, do a get request
-        client.get(url,params,handler);
+        if (context != null) {
+            client.get(context,url,handler);
+            return;
+        }
+        client.get(url,handler);
 
     }
 
     //basic client
     public static void request(final String url, final JsonHttpResponseHandler handler) {
-        request(url, "GET", null, null, null, handler);
+        request(url, handler, null);
+    }
+    public static void request(final String url, final JsonHttpResponseHandler handler, Context context) {
+        request(url, "GET", null, null, null, handler, context);
     }
 }

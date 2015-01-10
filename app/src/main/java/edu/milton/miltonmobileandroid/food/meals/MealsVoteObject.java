@@ -1,9 +1,10 @@
 package edu.milton.miltonmobileandroid.food.meals;
 
-import android.annotation.SuppressLint;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.annotation.SuppressLint;
 
 @SuppressLint("SimpleDateFormat")
 public class MealsVoteObject {
@@ -39,68 +40,68 @@ public class MealsVoteObject {
 			 * if (!jobj.isNull("votes")) { votes =
 			 * Integer.parseInt(jobj.getString("votes")); }
 			 */
-            if (!jobj.isNull("mealid")) {
-                setMealID(Integer.parseInt(jobj.getString("mealid")));
-            }
+			if (!jobj.isNull("mealid")) {
+				setMealID(Integer.parseInt(jobj.getString("mealid")));
+			}
 
-            if (!jobj.isNull("email")) {
-                setEmail(jobj.getString("email"));
-            }
+			if (!jobj.isNull("email")) {
+				setEmail(jobj.getString("email"));
+			}
 
-            if (!jobj.isNull("vote")) {
-                setVote(Integer.parseInt(jobj.getString("vote")));
+			if (!jobj.isNull("vote")) {
+				setVote(Integer.parseInt(jobj.getString("vote")));
 
-            }
-            if(!jobj.isNull("date")){
-                setDate(jobj.getString("date"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			}
+			if(!jobj.isNull("date")){
+				setDate(jobj.getString("date"));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    }
+	}
 
-    public void setDate(String date) {
-        this.date = date;
+	public void setDate(String date) {
+		this.date = date;
+		
+	}
+	public String getDate(){
+		return date;
+	}
+	public int getNumericalID() {
+		return numericalID;
+	}
 
-    }
-    public String getDate(){
-        return date;
-    }
-    public int getNumericalID() {
-        return numericalID;
-    }
+	public void setNumericalID(int numericalID) {
+		this.numericalID = numericalID;
+	}
 
-    public void setNumericalID(int numericalID) {
-        this.numericalID = numericalID;
-    }
+	public int getMealID() {
+		return mealID;
+	}
 
-    public int getMealID() {
-        return mealID;
-    }
+	public void setMealID(int mealID) {
+		this.mealID = mealID;
+	}
 
-    public void setMealID(int mealID) {
-        this.mealID = mealID;
-    }
+	public int getVote() {
+		return vote;
+	}
 
-    public int getVote() {
-        return vote;
-    }
-
-    public void setVote(int vote) {
-        this.vote = vote;
-    }
+	public void setVote(int vote) {
+		this.vote = vote;
+	}
 
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 
 }

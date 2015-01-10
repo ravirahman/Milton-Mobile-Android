@@ -204,7 +204,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
                         else {
                             String toParse = things.first().toString();
                             String lastName = toParse.substring(toParse.indexOf(">")+9,toParse.indexOf(","));
-                            String firstName = toParse.substring(toParse.indexOf(",")+1,toParse.indexOf("[")-1);
+                            String firstName = toParse.substring(toParse.indexOf(",")+2,toParse.indexOf("[")-1);
                             String classRoman = toParse.substring(toParse.indexOf("[")+8,toParse.indexOf("::")-1);
                             int classnumber = 0;
                             if (classRoman.equals("IV")) {

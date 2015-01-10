@@ -69,7 +69,7 @@ public class SaaActivity extends Activity {
                 adapter.notifyDataSetChanged();
                 SaaEvent saaEvent = eventsToShow.get(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(SaaActivity.this);
-                builder.setTitle("SaaEvent Details");
+                builder.setTitle("Event Details");
                 LayoutInflater inflater = SaaActivity.this.getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.events_saa_view_expanded_event, null);
                 builder.setView(dialogView);
@@ -81,7 +81,7 @@ public class SaaActivity extends Activity {
                 descView.setText(saaEvent.getEventDescription());
 
                 TextView locView = (TextView) dialogView.findViewById(R.id.events_saa_view_expanded_event_location_textview);
-                locView.setText(saaEvent.getEventTitle());
+                locView.setText(saaEvent.getEventLocation());
 
                 //builder.setView((View) findViewById(R.id.view_expanded_event_view));
                 //now customize the view
