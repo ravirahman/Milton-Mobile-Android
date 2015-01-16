@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.milton.miltonmobileandroid.campus.doorlock.DoorlockErrorFragment">
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/abc_text_size_body_1_material"
+        android:id="@+id/campus_doorlock_error_description" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/campus_doorlock_error_button"
+        android:layout_below="@+id/campus_doorlock_error_description"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

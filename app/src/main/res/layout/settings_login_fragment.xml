@@ -51,7 +51,6 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/settings_login_fragment_teacher"
         android:layout_below="@+id/settings_login_fragment_password"
         android:layout_centerHorizontal="true"
         android:id="@+id/settings_login_fragment_typeGroup">

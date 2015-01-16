@@ -49,10 +49,10 @@ public class MailboxActivity extends Activity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Please Log-In");
             builder.setMessage("In order to retreive your mailbox combination, please login first");
-            builder.setPositiveButton("Login",new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("Login", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    AccountMethods.login(MailboxActivity.this,new AccountManagerCallback<Bundle>() {
+                    AccountMethods.login(MailboxActivity.this, new AccountManagerCallback<Bundle>() {
                         @Override
                         public void run(AccountManagerFuture<Bundle> future) {
                             if (!AccountMethods.isLoggedIn(MailboxActivity.this)) {
@@ -71,6 +71,12 @@ public class MailboxActivity extends Activity {
             builder.setNegativeButton("No Thanks, Go Back", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    MailboxActivity.this.finish();
+                }
+            });
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
                     MailboxActivity.this.finish();
                 }
             });
