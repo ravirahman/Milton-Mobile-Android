@@ -2,7 +2,14 @@ package edu.milton.miltonmobileandroid.campus.doorlock;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +19,18 @@ import android.view.ViewGroup;
 import edu.milton.miltonmobileandroid.R;
 
 public class DoorLockActivity extends Activity {
+    public boolean isHasBle() {
+        return hasBle;
+    }
+
+    private boolean hasBle = false;
+    private boolean bleEnabled = false;
+    private BluetoothAdapter mBluetoothAdapter;
+
+    private boolean mScanning;
+    private Handler mHandler;
+
+    private static final int REQUEST_ENABLE_BT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +39,9 @@ public class DoorLockActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    public void findBleDevices() {
+        
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
