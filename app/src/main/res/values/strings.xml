@@ -75,5 +75,7 @@
     <string name="goToLogin">Go to Login</string>
     <string name="go_to_register">Go to Register</string>
     <string name="logout">Logout</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="campus_doorlock_fragment_Helper">Please Select a Lock</string>
 
 </resources>
