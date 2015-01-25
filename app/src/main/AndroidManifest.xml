@@ -109,7 +109,7 @@
 
         <!-- Campus -->
         <activity
-            android:name=".campus.doorlock.DoorlockActivity"
+            android:name="edu.milton.miltonmobileandroid.campus.doorlock.DoorLockActivity"
             android:label="@string/title_activity_door_lock"
             android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
             <meta-data

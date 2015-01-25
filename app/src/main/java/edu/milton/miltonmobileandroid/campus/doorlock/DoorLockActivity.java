@@ -10,20 +10,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import edu.milton.miltonmobileandroid.R;
 
@@ -45,12 +41,24 @@ public class DoorLockActivity extends Activity {
     private static final long SCAN_PERIOD = 10000;
 
     private BluetoothAdapter mBluetoothAdapter;
+    DoorLockListAdapter adapter;
 
+    private Runnable scanEndRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mScanning = false;
+            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.campus_doorlock_activity);
+        adapter = new DoorLockListAdapter(this);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        ListView doorLockListView = (ListView) findViewById(R.id.campus_doorlock_fragment_listview);
+
+        doorLockListView.setAdapter(adapter);
         //  COPYRIGHT NOTICE
         // ALL CODE In the "DoorLock" package (package edu.milton.miltonmobileandroid.campus.doorlock) and referenced layouts/other assets are (c)
         // Copyright Ravi Rahman, 2015 (except code written by others and cited), as an individual, and are not owned by Milton Academy, nor may these be used for any other purpose or reproduced
@@ -127,14 +135,15 @@ public class DoorLockActivity extends Activity {
             new BluetoothAdapter.LeScanCallback() {
                 @Override
                 public void onLeScan(final BluetoothDevice device, int rssi,
-                                     byte[] scanRecord) {
+                                     final byte[] scanRecord) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             //PRocess the devices, add to the list of doorlocks
-
-                            //mLeDeviceListAdapter.addDevice(device);
-                            //mLeDeviceListAdapter.notifyDataSetChanged();
+                            String name = device.getName();
+                            String mac = device.getAddress();
+                            DoorLock lock = new DoorLock(name,null,0,mac);
+                            adapter.addLockToList(lock);
                         }
                     });
                 }
@@ -143,14 +152,9 @@ public class DoorLockActivity extends Activity {
     private void findDoorLocks() {
         boolean enable = true;
         if (enable) {
+            adapter.removeAll();
             // Stops scanning after a pre-defined scan period.
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mScanning = false;
-                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                }
-            }, SCAN_PERIOD);
+            mHandler.postDelayed(scanEndRunnable, SCAN_PERIOD);
 
             mScanning = true;
             mBluetoothAdapter.startLeScan(mLeScanCallback);
@@ -168,6 +172,7 @@ public class DoorLockActivity extends Activity {
             mBluetoothAdapter = bluetoothManager.getAdapter();
             if (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled()) {
                 bleEnabled = true;
+                mHandler.removeCallbacks(scanEndRunnable);
                 findDoorLocks();
             }
             if (!bleEnabled) {
@@ -180,7 +185,7 @@ public class DoorLockActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_door_lock, menu);
+        getMenuInflater().inflate(R.menu.campus_doorlock_menu, menu);
         return true;
     }
 
@@ -195,7 +200,11 @@ public class DoorLockActivity extends Activity {
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.campus_doorlock_activity_refresh:
+                findDoorLocks();
+                break;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -203,6 +212,7 @@ public class DoorLockActivity extends Activity {
     public static class DoorLockFragment extends Fragment {
 
         public DoorLockFragment() {
+
         }
 
         @Override
