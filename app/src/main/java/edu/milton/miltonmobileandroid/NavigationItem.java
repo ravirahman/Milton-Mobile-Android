@@ -6,9 +6,11 @@ package edu.milton.miltonmobileandroid;
 public class NavigationItem {
     public final String title;
     public final int id;
+    public final Class aClass;
 
-    public NavigationItem(String title, int id) {
+    public NavigationItem(String title, int id, Class aClass) {
         this.title = title;
         this.id = id;
+        this.aClass = aClass;
     }
 }

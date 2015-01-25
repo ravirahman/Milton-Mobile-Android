@@ -7,8 +7,14 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import edu.milton.miltonmobileandroid.campus.doorlock.DoorLockActivity;
 import edu.milton.miltonmobileandroid.events.saa.SaaActivity;
 import edu.milton.miltonmobileandroid.food.meals.MealsActivity;
 import edu.milton.miltonmobileandroid.me.mailbox.MailboxActivity;
@@ -43,49 +49,55 @@ public class NavigationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.navigation_fragment, container, false);
-        flik = (ImageButton) view.findViewById(R.id.navigation_fragment_flik_button);
-        saa = (ImageButton) view.findViewById(R.id.navigation_fragment_saa_button);
-        mailbox = (ImageButton) view.findViewById(R.id.navigation_fragment_mailbox_button);
 
-        flik.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(parentActivity.getApplicationContext(),
-                        MealsActivity.class);
-                parentActivity.startActivity(i);
-            }
-        });
-
-        saa.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(parentActivity.getApplicationContext(),
-                        SaaActivity.class);
-                parentActivity.startActivity(i);
-            }
-        });
-
-        mailbox.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(parentActivity.getApplicationContext(),
-                        MailboxActivity.class);
-                parentActivity.startActivity(i);
-            }
-        });
         // get the listview
-        //ExpandableListView expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
+        ExpandableListView navigationListView = (ExpandableListView) parentActivity.findViewById(R.id.navigation_fragment_listView);
 
-        // preparing list data
-        //prepareListData();
+        final ArrayList<NavigationGroup> navigationGroups = new ArrayList<NavigationGroup>();
+        final HashMap<NavigationGroup, ArrayList<NavigationItem>> navigationItems = new HashMap<NavigationGroup, ArrayList<NavigationItem>>();
 
-        //NavigationListAdapter listAdapter = new NavigationListAdapter(this, listDataHeader, listDataChild);
+        NavigationGroup campus = new NavigationGroup("Campus",0);
+        navigationGroups.add(campus);
+        ArrayList<NavigationItem> campusNavigationItems = new ArrayList<>();
+        NavigationItem doorLock = new NavigationItem("Door Lock",1, DoorLockActivity.class);
+        campusNavigationItems.add(doorLock);
+
+        NavigationGroup events = new NavigationGroup("Events",10);
+        navigationGroups.add(events);
+        ArrayList<NavigationItem> eventNavigationItems = new ArrayList<>();
+        NavigationItem saa = new NavigationItem("SAA",11, SaaActivity.class);
+        eventNavigationItems.add(saa);
+
+        NavigationGroup food = new NavigationGroup("Food",20);
+        navigationGroups.add(food);
+        ArrayList<NavigationItem> foodNavigationItems = new ArrayList<>();
+        NavigationItem meals = new NavigationItem("Flik",21, MealsActivity.class);
+        foodNavigationItems.add(meals);
+
+        NavigationGroup me = new NavigationGroup("Me",30);
+        navigationGroups.add(me);
+        ArrayList<NavigationItem> meNavigationItems = new ArrayList<>();
+        NavigationItem mailbox = new NavigationItem("MailBox",1, MailboxActivity.class);
+        meNavigationItems.add(mailbox);
+
+
+        NavigationListAdapter listAdapter = new NavigationListAdapter(parentActivity, navigationGroups, navigationItems);
 
         // setting list adapter
-        //expListView.setAdapter(listAdapter);
+        navigationListView.setAdapter(listAdapter);
+
+        navigationListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                NavigationGroup group = navigationGroups.get(groupPosition);
+                NavigationItem item = navigationItems.get(group).get(childPosition);
+                Intent i = new Intent(parentActivity.getApplicationContext(),
+                        item.aClass);
+                startActivity(i);
+                return true;
+            }
+        });
         return view;
     }
 

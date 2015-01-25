@@ -37,12 +37,12 @@ public class NavigationListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getGroup(int groupPosition) {
+    public NavigationGroup getGroup(int groupPosition) {
         return navigationGroups.get(groupPosition);
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosition) {
+    public NavigationItem getChild(int groupPosition, int childPosition) {
         return navigationItems.get(getGroup(groupPosition)).get(childPosition);
     }
 
@@ -67,11 +67,11 @@ public class NavigationListAdapter extends BaseExpandableListAdapter {
             if (convertView == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this.context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = infalInflater.inflate(R.layout.navigation_group, null);
+                convertView = infalInflater.inflate(R.layout.navigation_fragment_listview_group, null);
             }
 
             TextView lblListHeader = (TextView) convertView
-                    .findViewById(R.id.navigation_group_title);
+                    .findViewById(R.id.navigation_fragment_listview_group_desc);
             lblListHeader.setTypeface(null, Typeface.BOLD);
             lblListHeader.setText(headerTitle);
 
@@ -83,11 +83,11 @@ public class NavigationListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.navigation_item, null);
+            convertView = infalInflater.inflate(R.layout.navigation_fragment_listview_item, null);
         }
 
         TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.navigation_item_title);
+                .findViewById(R.id.navigation_fragment_listview_item_desc);
 
         txtListChild.setText(((NavigationItem) getChild(groupPosition,childPosition)).title);
         return convertView;
