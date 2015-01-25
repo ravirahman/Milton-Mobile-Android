@@ -14,7 +14,13 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
 
-    <!--
+    <!-- Frr the DoorLock components -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
+
+    <!-- For the locator
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -103,7 +109,7 @@
 
         <!-- Campus -->
         <activity
-            android:name="edu.milton.miltonmobileandroid.campus.doorlock.DoorLockActivity"
+            android:name=".campus.doorlock.DoorlockActivity"
             android:label="@string/title_activity_door_lock"
             android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
             <meta-data
