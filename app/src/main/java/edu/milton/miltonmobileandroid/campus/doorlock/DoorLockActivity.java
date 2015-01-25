@@ -1,10 +1,12 @@
 package edu.milton.miltonmobileandroid.campus.doorlock;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -36,7 +38,7 @@ public class DoorLockActivity extends Activity {
     private boolean bleEnabled = false;
 
     private boolean mScanning;
-    private Handler mHandler;
+    private Handler mHandler = new Handler();
 
     private static final int REQUEST_ENABLE_BT = 1;
 
@@ -62,7 +64,15 @@ public class DoorLockActivity extends Activity {
             hasMinOs = true;
         }
         if (!hasMinOs) {
-            //TODO display error and break;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Feature Not Available");
+            builder.setMessage("To use this feature, you must be running Android 4.3 or Higher");
+            builder.setNeutralButton("Go Back",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
             return;
         }
 
@@ -71,7 +81,15 @@ public class DoorLockActivity extends Activity {
             hasBle = true;
         }
         if (!hasBle) {
-            // TODO display error as alert and break
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Feature Not Available");
+            builder.setMessage("To use this feature, your device must have Bluetooth LE 4.0 or Higher");
+            builder.setNeutralButton("Go Back",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
             return;
         }
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
@@ -87,11 +105,22 @@ public class DoorLockActivity extends Activity {
     }
 
     private void enableBle() {
-        //TODO display an alert saying that this app needs BLE enabled; press ok and follow the prompts to enable
-        //TODO if no pressed, exit activity
-        //TODO if yes pressed, do the following
-        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Please Enable BLE");
+        builder.setMessage("To use this feature, please enable Bluetooth Low Energy");
+        builder.setNegativeButton("No Thanks, Go Back", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("Enable BLE (follow the prompts)",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+        });
     }
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
@@ -146,10 +175,6 @@ public class DoorLockActivity extends Activity {
 
             }
         }
-    }
-
-    public void findBleDevices() {
-        
     }
 
     @Override

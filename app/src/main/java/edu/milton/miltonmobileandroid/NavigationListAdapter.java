@@ -19,12 +19,10 @@ public class NavigationListAdapter extends BaseExpandableListAdapter {
     private ArrayList<NavigationGroup> navigationGroups;
     private HashMap<NavigationGroup, ArrayList<NavigationItem>> navigationItems;
 
-    public NavigationListAdapter(Context context, ArrayList<NavigationGroup> navigationGroups,
-                                 HashMap<NavigationGroup, ArrayList<NavigationItem>> navigationItems) {
+    public NavigationListAdapter(Context context, HashMap<NavigationGroup, ArrayList<NavigationItem>> navigationItems) {
         this.context = context;
-        this.navigationGroups = navigationGroups;
+        this.navigationGroups = new ArrayList<>(navigationItems.keySet());
         this.navigationItems = navigationItems;
-
     }
     @Override
     public int getGroupCount() {
