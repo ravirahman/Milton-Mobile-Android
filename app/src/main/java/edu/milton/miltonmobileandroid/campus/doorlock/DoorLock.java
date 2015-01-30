@@ -1,19 +1,17 @@
 package edu.milton.miltonmobileandroid.campus.doorlock;
 
-/**
- * Created by ravi on 1/25/15.
- */
+import android.bluetooth.BluetoothDevice;
+
 public class DoorLock {
 
-    public String name;
-    public String location;
-    public int id;
-    public String mac;
+    public final String name;
+    public final String mac;
+    public final BluetoothDevice device;
 
-    public DoorLock(String name, String location, int id, String mac) {
-        this.name = name;
-        this.location = location;
-        this.id = id;
-        this.mac = mac;
+
+    public DoorLock(BluetoothDevice device) {
+        name = device.getName();
+        mac = device.getAddress().replace(":","");
+        this.device = device;
     }
 }

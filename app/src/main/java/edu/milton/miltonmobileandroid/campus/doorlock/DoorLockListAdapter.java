@@ -31,10 +31,6 @@ public class DoorLockListAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
-    public void removeLockFromList(DoorLock lock) {
-        locks.remove(lock);
-        this.notifyDataSetChanged();
-    }
     public void removeAll() {
         locks.clear();
         this.notifyDataSetChanged();
@@ -51,7 +47,7 @@ public class DoorLockListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return locks.get(position).id;
+        return locks.get(position).hashCode();
     }
 
     @Override

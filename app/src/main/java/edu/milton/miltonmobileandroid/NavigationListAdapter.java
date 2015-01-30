@@ -46,12 +46,12 @@ public class NavigationListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return ((NavigationGroup) getGroup(groupPosition)).id;
+        return getGroup(groupPosition).id;
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return ((NavigationItem) getChild(groupPosition,childPosition)).id;
+        return getChild(groupPosition,childPosition).id;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class NavigationListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            String headerTitle = ((NavigationGroup) getGroup(groupPosition)).title;
+            String headerTitle = getGroup(groupPosition).title;
             if (convertView == null) {
                 LayoutInflater infalInflater = (LayoutInflater) this.context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -87,7 +87,7 @@ public class NavigationListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.navigation_fragment_listview_item_desc);
 
-        txtListChild.setText(((NavigationItem) getChild(groupPosition,childPosition)).title);
+        txtListChild.setText(getChild(groupPosition,childPosition).title);
         return convertView;
     }
 

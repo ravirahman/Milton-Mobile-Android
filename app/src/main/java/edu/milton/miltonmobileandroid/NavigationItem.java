@@ -1,7 +1,5 @@
 package edu.milton.miltonmobileandroid;
 
-import android.graphics.drawable.Drawable;
-
 /**
  * Created by ravi on 12/14/14.
  */

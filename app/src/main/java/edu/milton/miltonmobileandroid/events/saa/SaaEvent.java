@@ -2,8 +2,6 @@
 package edu.milton.miltonmobileandroid.events.saa;
 
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

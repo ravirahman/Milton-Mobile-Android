@@ -32,11 +32,6 @@ public class NavigationFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -110,12 +105,6 @@ public class NavigationFragment extends Fragment {
         }*/
     }
 
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //mListener = null;
-    }
 
     /**
      * This interface must be implemented by activities that contain this
