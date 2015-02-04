@@ -1,8 +1,12 @@
 package edu.milton.miltonmobileandroid.campus.doorlock;
 
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGatt;
@@ -27,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -54,19 +59,10 @@ public class DoorLockActivity extends Activity {
     private static final int REQUEST_ENABLE_BT = 1;
     private BluetoothAdapter mBluetoothAdapter;
     private DoorLockListAdapter adapter;
-    private ArrayList<BluetoothGatt> gatts = new ArrayList<>();
+    private BluetoothGatt connectedGatt;
 
     private final String LOG_TAG = this.getClass().toString();
     private final HashMap<String,String> lockMacName = new HashMap<>();
-
-    private boolean isRunning() {
-        return running;
-    }
-    private void setRunning(boolean running) {
-        this.running = running;
-    }
-    private boolean running = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,19 +73,20 @@ public class DoorLockActivity extends Activity {
         ListView doorLockListView = (ListView) findViewById(R.id.campus_doorlock_fragment_listview);
 
         doorLockListView.setOnItemClickListener(new ListView.OnItemClickListener() {
-
             ProgressDialog progressDialog;
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                if (connectedGatt != null) {
+                    Log.v(LOG_TAG,"trying to run when gatt is not null");
+                    return;
+                }
                 mBluetoothAdapter.stopLeScan(callback);
                 progressDialog = new ProgressDialog(DoorLockActivity.this,ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("Please Wait");
-                progressDialog.setCancelable(true);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
                 final DoorLock lock = adapter.getItem(position);
                 final BluetoothDevice device = lock.device;
-                setRunning(true);
 
                 final BluetoothGatt gatt = device.connectGatt(
                         DoorLockActivity.this,
@@ -109,183 +106,182 @@ public class DoorLockActivity extends Activity {
                             private int descriptorsWritten = 0;
 
                             @Override
-                            public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+                            public void onConnectionStateChange(final BluetoothGatt gatt, final int status, final int newState) {
                                 super.onConnectionStateChange(gatt, status, newState);
-                                if (newState == BluetoothGatt.STATE_CONNECTED && status == BluetoothGatt.GATT_SUCCESS && getServicesDiscovered() && isRunning()) {
-                                    gatt.connect();
-                                    gatt.discoverServices();
-                                    gatt.getServices();
-                                    setServicesDiscovered();
-                                    return;
-                                }
-                                progressDialog.dismiss();
-                                //setRunning(false);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (newState == BluetoothGatt.STATE_CONNECTED && status == BluetoothGatt.GATT_SUCCESS && getServicesDiscovered()) {
+                                            gatt.connect();
+                                            gatt.discoverServices();
+                                            gatt.getServices();
+                                            setServicesDiscovered();
+                                            return;
+                                        }
+                                        if (connectedGatt != null) {
+                                            connectedGatt.disconnect();
+                                            connectedGatt = null;
+                                        }
+                                        if (status == BluetoothGatt.GATT_FAILURE) { //unknown reason, so let's restart the app
+                                            Intent mStartActivity = new Intent(DoorLockActivity.this, DoorLockActivity.class);
+                                            int mPendingIntentId = 123456;
+                                            PendingIntent mPendingIntent = PendingIntent.getActivity(DoorLockActivity.this, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                                            AlarmManager mgr = (AlarmManager) DoorLockActivity.this.getSystemService(Context.ALARM_SERVICE);
+                                            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                                            System.exit(0);
+                                            return;
+                                        }
+                                        progressDialog.dismiss(); //gatt was disconnected
+                                    }
+                                });
                             }
 
                             @Override
                             public void onServicesDiscovered(final BluetoothGatt gatt, int status) {
                                 super.onServicesDiscovered(gatt, status);
-                                if (!isRunning()) {
-                                    return;
-                                }
-                                ArrayList<BluetoothGattService> services = (ArrayList<BluetoothGattService>) gatt.getServices();
-                                outerloop:
-                                for (BluetoothGattService service : services) {
-                                    String uuid = service.getUuid().toString();
-                                    if (uuid.equalsIgnoreCase("713d0000-503e-4c75-ba94-3148f18d941e")) { //this is the service we want
-                                        ArrayList<BluetoothGattCharacteristic> characteristics = (ArrayList<BluetoothGattCharacteristic>) service.getCharacteristics();
-                                        for (BluetoothGattCharacteristic characteristic : characteristics) {
-                                            if (characteristic.getUuid().toString().equalsIgnoreCase("713d0003-503e-4c75-ba94-3148f18d941e")) { //this is the char we use to write
-                                                writeChar = characteristic;
-                                            }
-                                            if (characteristic.getUuid().toString().equalsIgnoreCase("713d0002-503e-4c75-ba94-3148f18d941e")) { //this is the char we are notified on
-                                                notifyChar = characteristic;
-                                                ArrayList<BluetoothGattDescriptor> tdescriptors = (ArrayList<BluetoothGattDescriptor>) notifyChar.getDescriptors();
-                                                for (BluetoothGattDescriptor descriptor : tdescriptors) {
-                                                    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                                                    descriptors.add(descriptor);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ArrayList<BluetoothGattService> services = (ArrayList<BluetoothGattService>) gatt.getServices();
+                                        outerloop:
+                                        for (BluetoothGattService service : services) {
+                                            String uuid = service.getUuid().toString();
+                                            if (uuid.equalsIgnoreCase("713d0000-503e-4c75-ba94-3148f18d941e")) { //this is the service we want
+                                                ArrayList<BluetoothGattCharacteristic> characteristics = (ArrayList<BluetoothGattCharacteristic>) service.getCharacteristics();
+                                                for (BluetoothGattCharacteristic characteristic : characteristics) {
+                                                    if (characteristic.getUuid().toString().equalsIgnoreCase("713d0003-503e-4c75-ba94-3148f18d941e")) { //this is the char we use to write
+                                                        writeChar = characteristic;
+                                                    }
+                                                    if (characteristic.getUuid().toString().equalsIgnoreCase("713d0002-503e-4c75-ba94-3148f18d941e")) { //this is the char we are notified on
+                                                        notifyChar = characteristic;
+                                                        ArrayList<BluetoothGattDescriptor> tdescriptors = (ArrayList<BluetoothGattDescriptor>) notifyChar.getDescriptors();
+                                                        for (BluetoothGattDescriptor descriptor : tdescriptors) {
+                                                            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                                                            descriptors.add(descriptor);
+                                                        }
+                                                    }
+                                                    if (writeChar != null && notifyChar != null) {
+                                                        break outerloop;
+                                                    }
                                                 }
                                             }
-                                            if (writeChar != null && notifyChar != null) {
-                                                break outerloop;
-                                            }
+
+                                        }
+                                        if (writeChar == null || notifyChar == null) {
+                                            progressDialog.dismiss();
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
+                                            builder.setMessage("This is not a doorlock");
+                                            builder.setTitle("Error");
+                                            builder.setCancelable(true);
+                                            builder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                            builder.create().show();
+                                            gatt.disconnect();
+                                            connectedGatt = null;
+                                            return;
+                                        }
+                                        for (BluetoothGattDescriptor descriptor : descriptors) {
+                                            gatt.writeDescriptor(descriptor);
                                         }
                                     }
-
-                                }
-                                if (writeChar == null || notifyChar == null) {
-                                    progressDialog.dismiss();
-
-                                    if (!isRunning()) {
-                                        return;
-                                    }
-                                    setRunning(false);
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
-                                    builder.setMessage("This is not a doorlock");
-                                    builder.setTitle("Error");
-                                    builder.setCancelable(true);
-                                    builder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    builder.create().show();
-                                    gatt.disconnect();
-                                    return;
-                                }
-                                for (BluetoothGattDescriptor descriptor : descriptors) {
-                                    gatt.writeDescriptor(descriptor);
-                                }
+                                });
                             }
 
                             @Override
-                            public void onCharacteristicChanged(final BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+                            public void onCharacteristicChanged(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
                                 super.onCharacteristicChanged(gatt, characteristic);
-                                if (!isRunning()) {
-                                    return;
-                                }
-                                byte[] values = characteristic.getValue();
-                                if (values[0] == 0x52 && values[1] == 0x45) { //we are getting back the request code
-                                    //STEP 2
-                                    //the first 10 bytes are teh sha1 hash
-                                    //the last 8 bytes are the timestamp
-                                    byte[] sha1 = new byte[10];
-                                    System.arraycopy(values, 2, sha1, 0, sha1.length);
-                                    byte[] timestamp = new byte[8];
-                                    System.arraycopy(values, 12, timestamp, 0, 8);
-                                    long timeLong = Hex.rebase(Hex.bytesToHex(timestamp), 16);
-                                    /**
-                                     * Ok, now do the http request
-                                     * We have the
-                                     *      code
-                                     *      time
-                                     *      username (AccountMethods.getUsername();)
-                                     *      password
-                                     *      lock mac
-                                     */
-                                    String code = Hex.bytesToHex(sha1);
-                                    String time = Long.toString(timeLong);
-                                    String mac = lock.mac;
-                                    String username = AccountMethods.getUsername(DoorLockActivity.this);
-                                    String password = AccountMethods.getPassword(DoorLockActivity.this);
-                                    RequestParams params = new RequestParams();
-                                    params.add("code",code);
-                                    params.add("time",time);
-                                    params.add("mac",mac);
-                                    params.add("username",username);
-                                    params.add("password",password);
-                                    AsyncHttpClient client = new AsyncHttpClient();
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        byte[] values = characteristic.getValue();
+                                        if (values[0] == 0x52 && values[1] == 0x45) { //we are getting back the request code
+                                            //STEP 2
+                                            //the first 10 bytes are teh sha1 hash
+                                            //the last 8 bytes are the timestamp
+                                            byte[] sha1 = new byte[10];
+                                            System.arraycopy(values, 2, sha1, 0, sha1.length);
+                                            byte[] timestamp = new byte[8];
+                                            System.arraycopy(values, 12, timestamp, 0, 8);
+                                            long timeLong = Hex.rebase(Hex.bytesToHex(timestamp), 16);
+                                            /**
+                                             * Ok, now do the http request
+                                             * We have the
+                                             *      code
+                                             *      time
+                                             *      username (AccountMethods.getUsername();)
+                                             *      password
+                                             *      lock mac
+                                             */
+                                            String code = Hex.bytesToHex(sha1);
+                                            String time = Long.toString(timeLong);
+                                            String mac = lock.mac;
+                                            String username = AccountMethods.getUsername(DoorLockActivity.this);
+                                            String password = AccountMethods.getPassword(DoorLockActivity.this);
+                                            RequestParams params = new RequestParams();
+                                            params.add("code",code);
+                                            params.add("time",time);
+                                            params.add("mac",mac);
+                                            params.add("username",username);
+                                            params.add("password",password);
+                                            AsyncHttpClient client = new AsyncHttpClient();
 
-                                    client.post(DoorLockActivity.this,"http://backend.ma1geek.org/campus/doorlock/unlock",params,new TextHttpResponseHandler(){
-                                        @Override
-                                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                            if (!isRunning()) {
-                                                return;
-                                            }
-                                            try{
-                                                final JSONObject response = new JSONObject(responseString);
-                                                boolean success = response.getBoolean("success");
-                                                if (!success) {
-                                                    final String message = response.getString("message");
+                                            client.post(DoorLockActivity.this,"http://backend.ma1geek.org/campus/doorlock/unlock",params,new TextHttpResponseHandler(){
+                                                @Override
+                                                public void onSuccess(final int statusCode, final Header[] headers, final String responseString) {
                                                     DoorLockActivity.this.runOnUiThread(new Runnable() {
                                                         @Override
                                                         public void run() {
-                                                            progressDialog.dismiss();
-                                                            if (!isRunning())  {
-                                                                return;
-                                                            }
-                                                            setRunning(false);
-                                                            AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
-                                                            builder.setTitle("There was an error");
-                                                            builder.setMessage(message);
-                                                            builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    dialog.dismiss();
+                                                            try {
+                                                                final JSONObject response = new JSONObject(responseString);
+                                                                boolean success = response.getBoolean("success");
+                                                                if (!success) {
+                                                                    final String message = response.getString("message");
+                                                                    progressDialog.dismiss();
+                                                                    AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
+                                                                    builder.setTitle("There was an error");
+                                                                    builder.setMessage(message);
+                                                                    builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface dialog, int which) {
+                                                                            dialog.dismiss();
+                                                                        }
+                                                                    });
+                                                                    builder.create().show();
+                                                                    gatt.setCharacteristicNotification(notifyChar, false);
+                                                                    gatt.disconnect();
+                                                                    connectedGatt = null;
+                                                                    return;
                                                                 }
-                                                            });
-                                                            builder.create().show();
+                                                                String token = response.getString("token");
+                                                                byte[] tokenAsBytes = Hex.HexStringToByteArray(token);
+                                                                long time = response.getLong("time");
+                                                                byte[] timeBytes = ByteBuffer.allocate(8).putLong(time).array();
+                                                                //now bundle these for ble
+                                                                byte[] answer = new byte[20];
+                                                                answer[0] = 0x53;
+                                                                answer[1] = 0x55;
+                                                                //bytes 2-11 (inclusive) will be for the token
+                                                                System.arraycopy(tokenAsBytes, 0, answer, 2, 10);
+                                                                //bytes 12-19 (inclusive) will be for the time
+                                                                System.arraycopy(timeBytes, 0, answer, 12, 8);
+                                                                writeChar.setValue(answer);
+                                                                gatt.writeCharacteristic(writeChar);
+                                                            } catch (JSONException e) {
+                                                                Log.v(LOG_TAG, e.toString());
+                                                            }
                                                         }
                                                     });
-                                                    gatt.setCharacteristicNotification(notifyChar, false);
-                                                    gatt.disconnect();
-                                                    return;
                                                 }
-                                                String token = response.getString("token");
-                                                byte[] tokenAsBytes = Hex.HexStringToByteArray(token);
-                                                long time = response.getLong("time");
-                                                byte[] timeBytes = ByteBuffer.allocate(8).putLong(time).array();
-                                                //now bundle these for ble
-                                                byte[] answer = new byte[20];
-                                                answer[0] = 0x53;
-                                                answer[1] = 0x55;
-                                                //bytes 2-11 (inclusive) will be for the token
-                                                System.arraycopy(tokenAsBytes, 0, answer, 2, 10);
-                                                //bytes 12-19 (inclusive) will be for the time
-                                                System.arraycopy(timeBytes, 0, answer, 12, 8);
-                                                writeChar.setValue(answer);
-                                                gatt.writeCharacteristic(writeChar);
-                                            }
-                                            catch(JSONException e) {
-                                                Log.v(LOG_TAG,e.toString());
-                                            }
 
+                                            });
+                                            return;
                                         }
-
-                                    });
-                                    return;
-                                }
-                                if (values[0] == 0x53 && values[1] == 0x55) { //the door is open
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
+                                        if (values[0] == 0x53 && values[1] == 0x55) { //the door is open
                                             progressDialog.dismiss();
-                                            if (!isRunning()) {
-                                                return;
-                                            }
-                                            setRunning(false);
                                             AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
                                             builder.setTitle("The door is open!");
                                             builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -295,21 +291,13 @@ public class DoorLockActivity extends Activity {
                                                 }
                                             });
                                             builder.create().show();
+                                            gatt.setCharacteristicNotification(notifyChar,false);
+                                            gatt.disconnect();
+                                            connectedGatt = null;
+                                            return;
                                         }
-                                    });
-                                    gatt.setCharacteristicNotification(notifyChar,false);
-                                    gatt.disconnect();
-                                    return;
-                                }
-                                if (values[0] == 0x45 && values[1] == 0x52) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
+                                        if (values[0] == 0x45 && values[1] == 0x52) {
                                             progressDialog.dismiss();
-                                            if (!isRunning()) {
-                                                return;
-                                            }
-                                            setRunning(false);
                                             AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
                                             builder.setTitle("There was an error");
                                             builder.setMessage("Please try again");
@@ -320,68 +308,69 @@ public class DoorLockActivity extends Activity {
                                                 }
                                             });
                                             builder.create().show();
+                                            gatt.setCharacteristicNotification(notifyChar,false);
+                                            gatt.disconnect();
+                                            connectedGatt = null;
+                                            return;
                                         }
-                                    });
-                                    gatt.setCharacteristicNotification(notifyChar,false);
-                                    gatt.disconnect();
-                                    return;
-                                }
+                                    }
+                                });
+
                             }
 
                             @Override
-                            public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+                            public void onDescriptorWrite(final BluetoothGatt gatt, final BluetoothGattDescriptor descriptor, final int status) {
                                 super.onDescriptorWrite(gatt, descriptor, status);
-                                if (!isRunning()) {
-                                    return;
-                                }
-                                descriptorsWritten++;
-                                if (descriptors.size() == descriptorsWritten) { //no more descriptors to write
-                                    //IMPORTANT STEP 1 Request Code
-
-                                    gatt.setCharacteristicNotification(notifyChar,true);
-                                    //ok, now write the three bytes to the read. These spell REQ
-                                    //gatt.writeCharacteristic(notifyChar);
-                                    long tsLong = System.currentTimeMillis()/1000;
-                                    byte[] timeBytes = ByteBuffer.allocate(8).putLong(tsLong).array(); //length should be 8
-                                    byte[] answer = new byte[10];
-                                    answer[0] = 0x52; //R
-                                    answer[1] = 0x45; //E
-                                    System.arraycopy(timeBytes, 0, answer, 2, timeBytes.length);
-                                    writeChar.setValue(answer);
-                                    gatt.writeCharacteristic(writeChar);
-                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        descriptorsWritten++;
+                                        if (descriptors.size() == descriptorsWritten) { //no more descriptors to write
+                                            //IMPORTANT STEP 1 Request Code
+                                            gatt.setCharacteristicNotification(notifyChar,true);
+                                            //ok, now write the three bytes to the read. These spell REQ
+                                            //gatt.writeCharacteristic(notifyChar);
+                                            long tsLong = System.currentTimeMillis()/1000;
+                                            byte[] timeBytes = ByteBuffer.allocate(8).putLong(tsLong).array(); //length should be 8
+                                            byte[] answer = new byte[10];
+                                            answer[0] = 0x52; //R
+                                            answer[1] = 0x45; //E
+                                            System.arraycopy(timeBytes, 0, answer, 2, timeBytes.length);
+                                            writeChar.setValue(answer);
+                                            gatt.writeCharacteristic(writeChar);
+                                        }
+                                    }
+                                });
                             }
                         }
                 );
-                gatts.add(gatt);
-                progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        gatt.disconnect();
-                        dialog.dismiss();
-                    }
-                });
-                progressDialog.show();
+                connectedGatt = gatt;
+
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
-                        //if the progress dialog is still showing after 10 seconds, dismiss it and show that there was an error
-                        if (isRunning()) {
-                            setRunning(false);
-                            progressDialog.dismiss();
-                            AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
-                            builder.setTitle("There was an error");
-                            builder.setMessage("Please try again");
-                            builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (connectedGatt == null) {
+                                    return;
                                 }
-                            });
-                        }
-                        gatt.disconnect();
+                                //if the progress dialog is still showing after 10 seconds, dismiss it and show that there was an error
+                                AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
+                                builder.setTitle("There was an error");
+                                builder.setMessage("Please try again");
+                                builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                progressDialog.dismiss();
+                                connectedGatt.disconnect();
+                                connectedGatt = null;
+                            }
+                        });
                     }
                 }, 10000);
             }
@@ -438,6 +427,44 @@ public class DoorLockActivity extends Activity {
             enableBle();
             return;
         }
+        if (!AccountMethods.isLoggedIn(this)) {
+            Log.v(LOG_TAG,"Not logged in");
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please Log-In");
+            builder.setMessage("In order to use DoorLock, please login first");
+            builder.setPositiveButton("Login", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    AccountMethods.login(DoorLockActivity.this, new AccountManagerCallback<Bundle>() {
+                        @Override
+                        public void run(AccountManagerFuture<Bundle> future) {
+                            if (!AccountMethods.isLoggedIn(DoorLockActivity.this)) {
+                                finish();
+                                return;
+                            }
+                            findDoorLocks();
+                        }
+                    });
+                }
+            });
+            builder.setNegativeButton("No Thanks, Go Back", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DoorLockActivity.this.finish();
+                }
+            });
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    DoorLockActivity.this.finish();
+                }
+            });
+            builder.create().show();
+            //display an alert saying you must log in
+            //give two options, one to go back, and one to go to the login page
+            return;
+        }
+
         findDoorLocks();
     }
 
@@ -463,6 +490,7 @@ public class DoorLockActivity extends Activity {
     BluetoothAdapter.LeScanCallback callback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+
             if (lockMacName.containsKey(device.getAddress().replace(":",""))) { //we only want to show actual door locks, not other ble devices that might be floating around
                 runOnUiThread(new Runnable() { //not sure why it has to be runOnUiThread
                     @Override
@@ -475,6 +503,11 @@ public class DoorLockActivity extends Activity {
     };
 
     private void findDoorLocks() {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Retrieving List of DoorLocks");
+        dialog.setTitle("Please wait");
+        dialog.show();
+        dialog.setCancelable(false);
         JsonHttp.request("http://backend.ma1geek.org/campus/doorlock/list",new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -491,12 +524,19 @@ public class DoorLockActivity extends Activity {
                     e.printStackTrace();
                 }
                 adapter.removeAll();
+                dialog.hide();
+                if (connectedGatt != null) {
+                    connectedGatt.disconnect();
+                    connectedGatt = null;
+                }
+                mBluetoothAdapter.cancelDiscovery();
                 mBluetoothAdapter.stopLeScan(callback);
                 mBluetoothAdapter.startLeScan(callback);
             }
 
             @Override
             public void onFailure(int status, Header[] headers, byte[] bytes, Throwable throwable) {
+                dialog.hide();
                 AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
                 builder.setTitle("Network Connection Required");
                 builder.setMessage("To use this feature, please check your network connection.");
@@ -543,7 +583,10 @@ public class DoorLockActivity extends Activity {
 
         switch (id) {
             case android.R.id.home:
-                setRunning(false);
+                if (connectedGatt != null) {
+                    connectedGatt.disconnect();
+                    connectedGatt = null;
+                }
                 finish();
                 break;
             case R.id.campus_doorlock_activity_refresh:
