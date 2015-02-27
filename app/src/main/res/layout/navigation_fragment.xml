@@ -8,12 +8,83 @@
     tools:context="edu.milton.miltonmobileandroid.NavigationFragment"
     android:background="#ffffff">
 
-
-    <ExpandableListView
+    <!--<ExpandableListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/navigation_fragment_listView"
+        android:id="@+id/main_navigation_listview"
         android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:clickable="false" />-->
+
+    <TextView
+        android:id="@+id/navigation_fragment_SaaDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/navigation_fragment_saa_button"
+        android:gravity="center"
+        android:text="@string/string_SAA"
+        android:textSize="30sp"
+        android:layout_below="@+id/navigation_fragment_saa_button"
+        android:layout_alignRight="@+id/main_navigation_mailbox_desc"
+        android:layout_alignEnd="@+id/main_navigation_mailbox_desc" />
+
+    <TextView
+        android:id="@+id/navigation_fragment_FlikDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/navigation_fragment_flik_button"
+        android:gravity="center"
+        android:text="@string/string_FLIK"
+        android:textSize="30sp"
+        android:layout_below="@+id/navigation_fragment_flik_button"
+        android:layout_alignRight="@+id/navigation_fragment_SaaDesc"
+        android:layout_alignEnd="@+id/navigation_fragment_SaaDesc" />
+
+    <ImageButton
+        android:id="@+id/navigation_fragment_flik_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:background="@drawable/flik_button_custom"
+        android:scaleType="fitStart"
+        android:src="@drawable/flik_button_custom"
+        android:contentDescription="@string/string_FLIK"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:id="@+id/navigation_fragment_saa_button"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:background="@drawable/saa_button_custom"
+        android:scaleType="fitStart"
+        android:src="@drawable/saa_button_custom"
+        android:contentDescription="@string/string_SAA"
+        android:layout_below="@+id/navigation_fragment_FlikDesc"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:id="@+id/navigation_fragment_mailbox_button"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:background="@drawable/saa_button_custom"
+        android:scaleType="fitStart"
+        android:src="@drawable/saa_button_custom"
+        android:contentDescription="@string/string_SAA"
+        android:layout_toEndOf="@+id/navigation_fragment_SaaDesc"
+        android:layout_below="@+id/navigation_fragment_SaaDesc"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/main_navigation_mailbox_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Mailbox"
+        android:textSize="30sp"
+        android:layout_below="@+id/navigation_fragment_mailbox_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

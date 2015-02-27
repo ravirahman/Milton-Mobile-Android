@@ -51,6 +51,7 @@ public class SaaListAdapter extends BaseAdapter {
 
         TextView title = (TextView) convertView.findViewById(R.id.events_saa_view_compact_event_title_textview);
         TextView location = (TextView) convertView.findViewById(R.id.events_saa_view_compact_event_location_textview);
+        TextView time = (TextView) convertView.findViewById(R.id.events_saa_view_compact_event_time_textview);
 
         // getting movie data for the row
         final SaaEvent m = saaEvents.get(position);
@@ -62,6 +63,37 @@ public class SaaListAdapter extends BaseAdapter {
         // rating
         location.setText("Location: " + String.valueOf(m.getEventLocation()));
 
+        //STRING DATE ADJUSTMENT
+        String from = (m.getEventBeginTime().getHours() % 12) + ":";
+        if (m.getEventBeginTime().getMinutes()<10) {
+            from += "0";
+        }
+        from += m.getEventBeginTime().getMinutes();
+        if (m.getEventBeginTime().getHours()>12) {
+            from += " PM";
+        }
+        if (m.getEventBeginTime().getHours()<=12) {
+            from += " AM";
+        }
+
+        //STRING DATE ADJUSTMENT
+        String to = (m.getEventEndTime().getHours() % 12) + ":";
+        if (m.getEventEndTime().getMinutes()<10) {
+            to += "0";
+        }
+        to += m.getEventEndTime().getMinutes();
+        if (m.getEventEndTime().getHours()>12) {
+            to += " PM";
+        }
+        if (m.getEventEndTime().getHours()<=12) {
+            to += " AM";
+        }
+
+
+
+
+
+        time.setText("Time: " + from + " - " + to);
         return convertView;
     }
 
