@@ -7,28 +7,35 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import edu.milton.miltonmobileandroid.campus.doorlock.DoorLockActivity;
 import edu.milton.miltonmobileandroid.events.saa.SaaActivity;
 import edu.milton.miltonmobileandroid.food.meals.MealsActivity;
 import edu.milton.miltonmobileandroid.me.mailbox.MailboxActivity;
 
 
 public class NavigationFragment extends Fragment {
-    //OnFragmentInteractionListener mListener;
+    ImageButton flik;
+    ImageButton saa;
+    ImageButton mailbox;
+    OnFragmentInteractionListener mListener;
     Activity parentActivity;
+
     public static NavigationFragment newInstance() {
         return new NavigationFragment();
     }
 
     public NavigationFragment() {
+
         // Required empty public constructor
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -36,65 +43,55 @@ public class NavigationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.navigation_fragment, container, false);
+        flik = (ImageButton) view.findViewById(R.id.navigation_fragment_flik_button);
+        saa = (ImageButton) view.findViewById(R.id.navigation_fragment_saa_button);
+        mailbox = (ImageButton) view.findViewById(R.id.navigation_fragment_mailbox_button);
 
-        return view;
-    }
-    @Override
-    public void onActivityCreated(Bundle bundle) {
-        super.onActivityCreated(bundle);
-        ExpandableListView navigationListView = (ExpandableListView) parentActivity.findViewById(R.id.navigation_fragment_listView);
+        flik.setOnClickListener(new View.OnClickListener() {
 
-        final HashMap<NavigationGroup, ArrayList<NavigationItem>> navigationItems = new HashMap<NavigationGroup, ArrayList<NavigationItem>>();
-
-        NavigationGroup campus = new NavigationGroup("Campus",0);
-        ArrayList<NavigationItem> campusNavigationItems = new ArrayList<>();
-        NavigationItem doorLock = new NavigationItem("Door Lock",1, DoorLockActivity.class);
-        campusNavigationItems.add(doorLock);
-        navigationItems.put(campus,campusNavigationItems);
-
-        NavigationGroup events = new NavigationGroup("Events",10);
-        ArrayList<NavigationItem> eventsNavigationItems = new ArrayList<>();
-        NavigationItem saa = new NavigationItem("SAA",11, SaaActivity.class);
-        eventsNavigationItems.add(saa);
-        navigationItems.put(events,eventsNavigationItems);
-
-        NavigationGroup food = new NavigationGroup("Food",20);
-        ArrayList<NavigationItem> foodNavigationItems = new ArrayList<>();
-        NavigationItem meals = new NavigationItem("Flik",21, MealsActivity.class);
-        foodNavigationItems.add(meals);
-        navigationItems.put(food,foodNavigationItems);
-
-        NavigationGroup me = new NavigationGroup("Me",30);
-        ArrayList<NavigationItem> meNavigationItems = new ArrayList<>();
-        NavigationItem mailbox = new NavigationItem("MailBox",1, MailboxActivity.class);
-        meNavigationItems.add(mailbox);
-        navigationItems.put(me,meNavigationItems);
-
-        NavigationListAdapter listAdapter = new NavigationListAdapter(parentActivity, navigationItems);
-
-        // setting list adapter
-        navigationListView.setAdapter(listAdapter);
-
-        navigationListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                ArrayList<NavigationGroup> groups = new ArrayList<NavigationGroup>(navigationItems.keySet());
-                ArrayList<NavigationItem> items = navigationItems.get(groups.get(groupPosition));
-                NavigationItem item = items.get(childPosition);
-                Intent i = new Intent(parentActivity.getApplicationContext(), item.aClass);
-                startActivity(i);
-                return true;
+            public void onClick(View v) {
+                Intent i = new Intent(parentActivity.getApplicationContext(),
+                        MealsActivity.class);
+                parentActivity.startActivity(i);
             }
         });
+
+        saa.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(parentActivity.getApplicationContext(),
+                        SaaActivity.class);
+                parentActivity.startActivity(i);
+            }
+        });
+
+        mailbox.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(parentActivity.getApplicationContext(),
+                        MailboxActivity.class);
+                parentActivity.startActivity(i);
+            }
+        });
+        // get the listview
+        //ExpandableListView expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
+
+        // preparing list data
+        //prepareListData();
+
+        //NavigationListAdapter listAdapter = new NavigationListAdapter(this, listDataHeader, listDataChild);
+
+        // setting list adapter
+        //expListView.setAdapter(listAdapter);
+        return view;
     }
 
     @Override
     public void onAttach(Activity activity) {
         parentActivity = activity;
-
-
-
-
         super.onAttach(activity);
         /*try {
             mListener = (OnFragmentInteractionListener) activity;
@@ -105,6 +102,12 @@ public class NavigationFragment extends Fragment {
         }*/
     }
 
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        //mListener = null;
+    }
 
     /**
      * This interface must be implemented by activities that contain this

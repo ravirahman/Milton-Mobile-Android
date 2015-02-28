@@ -6,12 +6,9 @@ package edu.milton.miltonmobileandroid;
 public class NavigationItem {
     public final String title;
     public final int id;
-    public final Class aClass;
-    //public final Drawable icon;
 
-    public NavigationItem(String title, int id, Class aClass) {
+    public NavigationItem(String title, int id) {
         this.title = title;
         this.id = id;
-        this.aClass = aClass;
     }
 }

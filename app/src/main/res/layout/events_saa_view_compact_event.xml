@@ -47,6 +47,16 @@
         android:paddingRight="10dp"
         android:textSize="14sp" />
 
+    <!--new-->  <TextView
+        android:id="@+id/events_saa_view_compact_event_time_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/events_saa_view_compact_event_location_textview"
+        android:layout_toRightOf="@+id/events_saa_view_compact_event_icon"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="14sp" />
+
     <!--<ImageButton
         android:id="@+id/expand_button"
         android:layout_width="32dp"
