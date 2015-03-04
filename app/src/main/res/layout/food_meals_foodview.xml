@@ -14,7 +14,6 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/good_button"
         android:paddingLeft="10dp"
-        android:text="@string/long_placeholder"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="12sp"
         android:typeface="normal"

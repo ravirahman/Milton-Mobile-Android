@@ -1,6 +1,5 @@
 package edu.milton.miltonmobileandroid.food.meals;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.support.v4.app.FragmentManager;
 import android.content.DialogInterface;

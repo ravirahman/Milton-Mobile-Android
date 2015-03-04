@@ -75,7 +75,7 @@ public class HomeActivity extends Activity implements NavigationFragment.OnFragm
         mTitle = mDrawerTitle = getTitle().toString();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.home_activity);
         mDrawerFrame = (FrameLayout) findViewById(R.id.home_activity_nav_frame);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.dummy_content, R.string.dummy_content) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.app_name, R.string.app_name) {
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {

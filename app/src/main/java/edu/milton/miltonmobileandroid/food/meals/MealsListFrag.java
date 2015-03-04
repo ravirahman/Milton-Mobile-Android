@@ -387,13 +387,6 @@ public class MealsListFrag extends ListFragment implements
         setListAdapter(adapter);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        //new Vote().execute();
-
-    }
-
     public void updateVotes() {
         List<NameValuePair> send = new ArrayList<NameValuePair>();
         List<NameValuePair> update = new ArrayList<NameValuePair>();
@@ -417,12 +410,6 @@ public class MealsListFrag extends ListFragment implements
     }
 
     public class Vote extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
 
         @Override
         protected Boolean doInBackground(Void... arg0) {

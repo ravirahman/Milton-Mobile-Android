@@ -4,7 +4,7 @@
     android:id="@+id/campus_doorlock_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.milton.miltonmobileandroid.campus.doorlock.DoorLockActivity"
+    tools:context="edu.milton.miltonmobileandroid.campus.doorlock.DoorlockActivity"
     tools:ignore="MergeRootFrame">
 
     <fragment

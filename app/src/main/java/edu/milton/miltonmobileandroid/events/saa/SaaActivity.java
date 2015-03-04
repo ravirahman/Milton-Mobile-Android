@@ -80,37 +80,6 @@ public class SaaActivity extends Activity {
                 TextView descView = (TextView) dialogView.findViewById(R.id.events_saa_view_expanded_event_description_textview);
                 descView.setText(saaEvent.getEventDescription());
 
-                TextView timeView = (TextView) dialogView.findViewById(R.id.events_saa_view_expanded_event_time_textview);
-
-
-               //STRING DATE ADJUSTMENT
-                String from = (saaEvent.getEventBeginTime().getHours() % 12) + ":";
-                if (saaEvent.getEventBeginTime().getMinutes()<10) {
-                    from += "0";
-                }
-                from += saaEvent.getEventBeginTime().getMinutes();
-                if (saaEvent.getEventBeginTime().getHours()>12) {
-                    from += " PM";
-                }
-                if (saaEvent.getEventBeginTime().getHours()<=12) {
-                    from += " AM";
-                }
-
-                //STRING DATE ADJUSTMENT
-                String to = (saaEvent.getEventEndTime().getHours() % 12) + ":";
-                if (saaEvent.getEventEndTime().getMinutes()<10) {
-                    to += "0";
-                }
-                to += saaEvent.getEventEndTime().getMinutes();
-                if (saaEvent.getEventEndTime().getHours()>12) {
-                    to += " PM";
-                }
-                if (saaEvent.getEventEndTime().getHours()<=12) {
-                    to += " AM";
-                }
-
-                timeView.setText(from + " - " + to);
-
                 TextView locView = (TextView) dialogView.findViewById(R.id.events_saa_view_expanded_event_location_textview);
                 locView.setText(saaEvent.getEventLocation());
 
