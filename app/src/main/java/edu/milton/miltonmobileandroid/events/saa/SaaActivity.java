@@ -8,15 +8,18 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.Time;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -29,7 +32,7 @@ import java.util.ArrayList;
 import edu.milton.miltonmobileandroid.R;
 import edu.milton.miltonmobileandroid.util.JsonHttp;
 
-public class SaaActivity extends Activity {
+public class SaaActivity extends Activity implements View.OnClickListener {
     int year;
     int month;
     int day;
@@ -38,6 +41,11 @@ public class SaaActivity extends Activity {
     ArrayList<SaaEvent> eventsToShow = new ArrayList<SaaEvent>();
     private String LOG_TAG;
 
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    private GestureDetector gestureDetector;
+    View.OnTouchListener gestureListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,10 +145,166 @@ public class SaaActivity extends Activity {
         });
         loadEventsForDay(year,month,day,false);
 
+        // Gesture detection
+        gestureDetector = new GestureDetector(this, new MyGestureDetector());
+        gestureListener = new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
+            }
+        };
 
+        // Gesture detection
+        gestureDetector = new GestureDetector(this, new MyGestureDetector());
+        gestureListener = new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
+            }
+        };
+        findViewById(R.id.events_saa_fragment).setOnClickListener(SaaActivity.this);
+        findViewById(R.id.events_saa_fragment).setOnTouchListener(gestureListener);
 
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            try {
+                if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                    return false;
+                // right to left swipe
+                if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) { //Left Swipe, go forward
+                    switch(month) {
+                        case 1:
+                        case 3:
+                        case 5:
+                        case 7:
+                        case 8:
+                        case 10:
+                        case 12: //31 day months
+                            if (day < 31) {
+                                loadEventsForDay(year,month,day+1,false);
+                                break;
+                            }
+                            //next month
+                            if (month < 12) {
+                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                break;
+                            }
+                            //next year
+                            loadEventsForDay(year+1,1,1,false); //first day of next month
+                            break;
+                        case 4:
+                        case 6:
+                        case 9:
+                        case 11: //30 day months
+                            if (day < 30) {
+                                loadEventsForDay(year,month,day+1,false);
+                                break;
+                            }
+                            //next month
+                            if (month < 12) {
+                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                break;
+                            }
+                            //next year
+                            loadEventsForDay(year+1,1,1,false); //first day of next month
+                            break;
+                        case 2:
+                            //it's february :(
+                            //determine if leap year
+                            if (year % 400 == 0) {
+                                if (day < 29) {
+                                    loadEventsForDay(year,month,day+1,false);
+                                    break;
+                                }
+                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                break;
+                            }
+                            if (year % 100 == 0 || year % 4 > 0) {
+                                //not a leap year. 28 days in month
+                                if (day < 28) {
+                                    loadEventsForDay(year,month,day+1,false);
+                                    break;
+                                }
+                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                break;
+                            }
+                            if (year % 4 == 0) {
+                                //a leap year. 29 days in month
+                                if (day < 29) {
+                                    loadEventsForDay(year,month,day+1,false);
+                                    break;
+                                }
+                                loadEventsForDay(year,month+1,1,false); //first day of next month
+                                break;
+                            }
+                    }
+                }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {//Right swipe. going backwards
+                    if (day > 1) {
+                        loadEventsForDay(year,month,day-1,false);
+                        return false;
+                    }
+                    //ok first day of month and we're swiping. figure out the next day
+                    switch(month -1) { //we want to know the month that we're going in to
+                        case 1:
+                        case 3:
+                        case 5:
+                        case 7:
+                        case 8:
+                        case 10:
+                        case 0: //31 day months
+                            if (month -1 > 0) {
+                                loadEventsForDay(year,month-1,31,false); //last day of previous month
+                                break;
+                            }
+                            loadEventsForDay(year-1,12,31,false); //last day of previous year
+                            break;
+                        case 4:
+                        case 6:
+                        case 9:
+                        case 11: //30 day months
+                            loadEventsForDay(year,month-1,30,false); //last day of previous month
+                            break;
+                        case 2:
+                            //it's february :(
+                            //determine if leap year
+                            if (year % 400 == 0) { //29 day feb
+                                loadEventsForDay(year,month-1,29,false); //last day of previous month
+                                break;
+                            }
+                            if (year % 100 == 0 || year % 4 > 0) {
+                                //not a leap year. 28 days in month
+                                loadEventsForDay(year,month-1,28,false); //last day of previous month
+                                break;
+                            }
+                            if (year % 4 == 0) {
+                                //a leap year. 29 days in month
+                                loadEventsForDay(year,month-1,29,false); //last day of previous month
+                                break;
+                            }
+                    }
+                }
+            } catch (Exception e) {
+                // nothing
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+    }
+
     private void loadEventsForDay(int year, int month, int day, boolean forcerefresh) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
         eventsToShow.clear();
         dateLabel.setText("Date: " + month + "/" + day + "/" + year);
         adapter.notifyDataSetChanged();
