@@ -26,6 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,6 +63,8 @@ public class MealsListFrag extends ListFragment implements
     private String date;
     private int dateShift;
 
+    private boolean connect = false;
+
     // private String type = "Entree";
 
     @SuppressLint("ValidFragment")
@@ -83,6 +87,7 @@ public class MealsListFrag extends ListFragment implements
         // date = "2013-11-23";
         // use to demonstrate if there are no items for current date
         new LoadMeals().execute();
+
         Log.d("FlikListFrag", "fragment created");
     }
 
@@ -334,7 +339,12 @@ public class MealsListFrag extends ListFragment implements
             // we will develop this method in version 2
             Log.d("LoadEvents", "attempting to load meals");
             try {
-                updateJSONdata();
+                InetAddress serverAddress = InetAddress.getByName("ma1geek.org");
+                connect = serverAddress.isReachable(5000);
+                Log.d("Flik Connection Alpha", ""+connect);
+                if(connect) {
+                    updateJSONdata();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
