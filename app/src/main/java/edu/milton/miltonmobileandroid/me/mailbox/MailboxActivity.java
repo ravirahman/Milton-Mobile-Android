@@ -1,5 +1,6 @@
 package edu.milton.miltonmobileandroid.me.mailbox;
 
+import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -105,7 +106,7 @@ public class MailboxActivity extends Activity {
         params.add("password",AccountMethods.getPassword(this));
         JsonHttp.request(LOGIN_URL,"POST",params,null,null,new JsonHttpResponseHandler(){
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 pDialog.dismiss();
                 try {
                     mailbox = response.getString(TAG_MAILBOX);
@@ -116,7 +117,7 @@ public class MailboxActivity extends Activity {
                 }
             }
             @Override
-            public void onFailure(Throwable e, JSONObject errorResponse) {
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 pDialog.dismiss();
                 AlertDialog.Builder builder = new AlertDialog.Builder(MailboxActivity.this);
                 builder.setTitle("Error retrieving combination");

@@ -27,7 +27,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.loopj.android.http.*;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.jsoup.*;
@@ -190,11 +192,11 @@ public class LoginActivity extends AccountAuthenticatorActivity {
                 url = "https://my.milton.edu/student/index.cfm";
                 params.put("UserLogin", username);
                 params.put("UserPassword", password);
-                client.post(url, params, new AsyncHttpResponseHandler() {
+                client.setTimeout(100000);
+                client.post(url, params, new TextHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                    public void onSuccess(int i, Header[] headers, String decoded) {
                         ringProgressDialog.dismiss();
-                        String decoded = new String(bytes);
                         Document doc = Jsoup.parse(decoded);
                         Elements things = doc.getElementsByClass("bluelabel");
                         if (things.isEmpty()) {
@@ -224,7 +226,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
                     }
 
                     @Override
-                    public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                    public void onFailure(int i, Header[] headers, String response, Throwable throwable) {
                         usernameEditText.setError("Sorry, there was an error. Please try again.");
                         usernameEditText.requestFocus();
                         ringProgressDialog.dismiss();

@@ -21,7 +21,7 @@ public class NavigationListAdapter extends BaseExpandableListAdapter {
 
     public NavigationListAdapter(Context context, HashMap<NavigationGroup, ArrayList<NavigationItem>> navigationItems) {
         this.context = context;
-        this.navigationGroups = new ArrayList<>(navigationItems.keySet());
+        this.navigationGroups = new ArrayList<NavigationGroup>(navigationItems.keySet());
         this.navigationItems = navigationItems;
     }
     @Override

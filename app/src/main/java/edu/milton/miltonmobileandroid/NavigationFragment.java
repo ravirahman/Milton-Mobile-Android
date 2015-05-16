@@ -47,25 +47,25 @@ public class NavigationFragment extends Fragment {
         final HashMap<NavigationGroup, ArrayList<NavigationItem>> navigationItems = new HashMap<NavigationGroup, ArrayList<NavigationItem>>();
 
         NavigationGroup campus = new NavigationGroup("Campus",0);
-        ArrayList<NavigationItem> campusNavigationItems = new ArrayList<>();
+        ArrayList<NavigationItem> campusNavigationItems = new ArrayList<NavigationItem>();
         NavigationItem doorLock = new NavigationItem("Door Lock",1, DoorLockActivity.class);
         campusNavigationItems.add(doorLock);
         navigationItems.put(campus,campusNavigationItems);
 
         NavigationGroup events = new NavigationGroup("Events",10);
-        ArrayList<NavigationItem> eventsNavigationItems = new ArrayList<>();
+        ArrayList<NavigationItem> eventsNavigationItems = new ArrayList<NavigationItem>();
         NavigationItem saa = new NavigationItem("SAA",11, SaaActivity.class);
         eventsNavigationItems.add(saa);
         navigationItems.put(events,eventsNavigationItems);
 
         NavigationGroup food = new NavigationGroup("Food",20);
-        ArrayList<NavigationItem> foodNavigationItems = new ArrayList<>();
+        ArrayList<NavigationItem> foodNavigationItems = new ArrayList<NavigationItem>();
         NavigationItem meals = new NavigationItem("Flik",21, MealsActivity.class);
         foodNavigationItems.add(meals);
         navigationItems.put(food,foodNavigationItems);
 
         NavigationGroup me = new NavigationGroup("Me",30);
-        ArrayList<NavigationItem> meNavigationItems = new ArrayList<>();
+        ArrayList<NavigationItem> meNavigationItems = new ArrayList<NavigationItem>();
         NavigationItem mailbox = new NavigationItem("MailBox",1, MailboxActivity.class);
         meNavigationItems.add(mailbox);
         navigationItems.put(me,meNavigationItems);

@@ -13,7 +13,7 @@ import edu.milton.miltonmobileandroid.R;
 
 public class DoorLockListAdapter extends BaseAdapter {
 
-    private ArrayList<DoorLock> locks = new ArrayList<>();
+    private ArrayList<DoorLock> locks = new ArrayList<DoorLock>();
     private LayoutInflater inflater;
     private Activity activity;
 

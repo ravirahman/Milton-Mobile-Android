@@ -19,10 +19,10 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -341,15 +341,16 @@ public class SaaActivity extends Activity implements View.OnClickListener {
         if (dayS.length() < 2) {
             dayS = "0" + "" + day;
         }
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http")
+        Uri.Builder builder = new Uri.Builder()
+                .scheme("http")
                 .authority("saa.ma1geek.org")
                 .appendPath("getActivities.php")
                 .appendQueryParameter("date", yearS + "-" + monthS + "-" + dayS + "");
         String myUrl = builder.build().toString();
         JsonHttp.request(myUrl, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
                 JSONArray activities;
                 try {
                     activities = response.getJSONArray("Activities");
