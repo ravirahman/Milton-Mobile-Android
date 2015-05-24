@@ -1,5 +1,7 @@
 package edu.milton.miltonmobileandroid.me.mailbox;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,6 +96,15 @@ public class MailboxActivity extends Activity {
 
     }
     private void retrieveCombination() {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MailboxActivity.this);
+        String mbox = preferences.getString("mailbox",null);
+        String combination = preferences.getString("combination",null);
+        if (combination != null && mbox != null) {
+            combo = combination;
+            mailbox = mbox;
+            updateText();
+            return;
+        }
         pDialog = new ProgressDialog(MailboxActivity.this);
         pDialog.setMessage("Please wait while we retrieve your mailbox combination");
         pDialog.setIndeterminate(false);
@@ -111,6 +122,7 @@ public class MailboxActivity extends Activity {
                 try {
                     mailbox = response.getString(TAG_MAILBOX);
                     combo = response.getString(TAG_COMBO);
+                    preferences.edit().putString("combination",combo).putString("mailbox",mailbox).apply();
                     updateText();
                 } catch (JSONException e) {
                     Log.v(LOG_TAG,"Error with JSON parsing");

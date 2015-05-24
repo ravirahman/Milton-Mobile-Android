@@ -10,10 +10,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import java.io.IOException;
 
+import android.preference.PreferenceManager;
 import edu.milton.miltonmobileandroid.util.Callback;
 
 public class AccountMethods {
@@ -50,32 +52,34 @@ public class AccountMethods {
                         Bundle info = new Bundle();
                         if (future.getResult().booleanValue()) {
                             info.putBoolean(Consts.KEY_SUCCESS,true);
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                            preferences.edit().clear().apply();
                             callback.run(info);
                             return;
                         }
                         info.putBoolean(Consts.KEY_SUCCESS,false);
-                        info.putString(Consts.KEY_MESSAGE,username + " has could not be logged out");
+                        info.putString(Consts.KEY_MESSAGE,username + " could not be logged out");
                         callback.run(info);
                     } catch (OperationCanceledException e) {
                         Bundle info = new Bundle();
                         info.putBoolean(Consts.KEY_SUCCESS,false);
-                        info.putString(Consts.KEY_MESSAGE,username + " has could not be logged out");
+                        info.putString(Consts.KEY_MESSAGE,username + " could not be logged out");
                         callback.run(info);
                     } catch (IOException e) {
                         Bundle info = new Bundle();
                         info.putBoolean(Consts.KEY_SUCCESS,false);
-                        info.putString(Consts.KEY_MESSAGE,username + " has could not be logged out");
+                        info.putString(Consts.KEY_MESSAGE,username + " could not be logged out");
                         callback.run(info);
                     } catch (AuthenticatorException e) {
                         Bundle info = new Bundle();
                         info.putBoolean(Consts.KEY_SUCCESS,false);
-                        info.putString(Consts.KEY_MESSAGE,username + " has could not be logged out");
+                        info.putString(Consts.KEY_MESSAGE,username + " could not be logged out");
                         callback.run(info);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setCancelable(false);
                         builder.setTitle("Account Not Removed");
-                        builder.setMessage(username + " has could not be logged out");
+                        builder.setMessage(username + " could not be logged out");
                         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();

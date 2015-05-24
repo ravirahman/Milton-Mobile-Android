@@ -30,7 +30,8 @@ public class MealsActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.food_meals_activity);
+        setContentView(R.layout.food_meals_fragment);
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MealsActivity.this);
         if (preferences.getBoolean(Consts.FLIK_WARNINGPREFERENCE,true)) {
@@ -46,25 +47,16 @@ public class MealsActivity extends FragmentActivity {
                 public void onClick(DialogInterface dialog, int id) {
                     preferences.edit().putBoolean(Consts.FLIK_WARNINGPREFERENCE,!box.isChecked()).apply();
                     dialog.dismiss();
-                    mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-                    // Set up the ViewPager with the sections adapter.
-                    mViewPager = (ViewPager) findViewById(R.id.food_meals_fragment);
-                    mViewPager.setAdapter(mSectionsPagerAdapter);
-                    // Create the adapter that will return a fragment for each of the three
-                    // primary sections of the app.
                 }
             });
             builder.create().show();
-            return;
         }
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.food_meals_fragment);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Set up the ViewPager with the sections adapter.
         mViewPager.setAdapter(mSectionsPagerAdapter);
-    }
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
