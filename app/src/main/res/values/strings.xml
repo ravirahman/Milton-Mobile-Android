@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Milton Academy</string>
     <string name="thumbs_up">Thumbs Up!</string>
     <string name="thumbs_down">Thumbs Down!</string>
     <string name="string_Back">Back</string>
@@ -66,5 +65,7 @@
     <string name="go_to_register">Go to Register</string>
     <string name="logout">Logout</string>
     <string name="campus_doorlock_fragment_Helper">Please Select a Lock</string>
+    <string name="string_About">About</string>
+    <string name="string_Milton_Academy">Milton Academy</string>
 
 </resources>

@@ -11,13 +11,26 @@ android {
         versionCode 7
         versionName "1.1.4"
     }
+    signingConfigs {
+        release {
+            storeFile file("publish/MiltonMobileAndroid.jks")
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string","app_name", "Milton Mobile"
+        }
+        debug {
+            applicationIdSuffix ".debug" //that way, you can have both the store version and the debug version at the same time
+            versionNameSuffix "-debug"
+            resValue "string","app_name", "MMA Debug"
         }
     }
     sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/ScrappedCode'] } }
+
 }
 
 dependencies {

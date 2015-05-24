@@ -7,6 +7,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -66,7 +68,7 @@ public class HomeActivity extends Activity implements NavigationFragment.OnFragm
         setContentView(R.layout.home_activity);
 
         TextView welcomeLabel = (TextView) findViewById(R.id.home_fragment_welcomeLabel);
-        if (AccountMethods.isLoggedIn(this)) {
+        if (AccountMethods.isLoggedIn(this) && AccountMethods.getFirstName(this) != null && AccountMethods.getLastName(this) != null) {
             welcomeLabel.setText("Welcome " + AccountMethods.getFirstName(this) + " " + AccountMethods.getLastName(this));
         }
         else {
@@ -201,6 +203,32 @@ public class HomeActivity extends Activity implements NavigationFragment.OnFragm
                     builder.create().show();
                 }
             });
+        }
+        if (id == R.id.action_about) {
+            String strVersion = "Version: ";
+
+            PackageInfo packageInfo;
+            try {
+                packageInfo = getApplicationContext()
+                        .getPackageManager()
+                        .getPackageInfo(
+                                getApplicationContext().getPackageName(),
+                                0
+                        );
+                strVersion += packageInfo.versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                strVersion += "Unknown";
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+            builder.setCancelable(false);
+            builder.setTitle("About Milton Mobile Android");
+            builder.setMessage(strVersion);
+            builder.setNeutralButton("Close", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            builder.create().show();
         }
         return super.onOptionsItemSelected(item);
     }
