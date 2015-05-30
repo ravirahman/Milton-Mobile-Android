@@ -8,8 +8,8 @@ android {
         applicationId "edu.milton.miltonmobileandroid"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 7
-        versionName "1.1.4"
+        versionCode 8
+        versionName "1.1.5"
     }
     signingConfigs {
         release {
@@ -19,14 +19,12 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "string","app_name", "Milton Mobile"
         }
         debug {
             applicationIdSuffix ".debug" //that way, you can have both the store version and the debug version at the same time
             versionNameSuffix "-debug"
-            resValue "string","app_name", "MMA Debug"
         }
     }
     sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/ScrappedCode'] } }

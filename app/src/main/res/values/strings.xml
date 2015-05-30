@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="app_name">Milton Academy</string>
     <string name="thumbs_up">Thumbs Up!</string>
     <string name="thumbs_down">Thumbs Down!</string>
     <string name="string_Back">Back</string>
