@@ -189,10 +189,12 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             RequestParams params = new RequestParams();
             if (studentRadioButton.isChecked()) {
 
-                url = "https://my.milton.edu/student/index.cfm";
+                url = "http://my.milton.edu/student/index.cfm";
                 params.put("UserLogin", username);
                 params.put("UserPassword", password);
                 client.setTimeout(100000);
+                client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+
                 client.post(url, params, new TextHttpResponseHandler() {
                     @Override
                     public void onSuccess(int i, Header[] headers, String decoded) {

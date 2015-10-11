@@ -47,6 +47,8 @@ public class MealsListAdapter extends ArrayAdapter<Object> {
             update.add("date", date);
         }
         AsyncHttpClient client = new AsyncHttpClient();
+        client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+
         client.post(context,SUBMIT_VOTE_URL,send,new TextHttpResponseHandler(){
 
             @Override

@@ -52,6 +52,8 @@ public class SchoolEventsActivity extends Activity {
                 .appendQueryParameter("days", "1")
                 .appendQueryParameter("startdate", year + month + day + "");
         String myUrl = builder.build().toString();
+        client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+
         client.get(this, myUrl, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] s) {

@@ -76,6 +76,7 @@ public class MealsListFrag extends ListFragment implements
         // date = "2013-11-23";
         // use to demonstrate if there are no items for current date
         AsyncHttpClient client = new AsyncHttpClient();
+        client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
 
         client.get(context, READ_MEALS_URL,params,new JsonHttpResponseHandler() {
             @Override
@@ -109,6 +110,8 @@ public class MealsListFrag extends ListFragment implements
                             }
                             Log.v(LOG_TAG, "Foods is this big: " + Foods.size());
                             AsyncHttpClient client2 = new AsyncHttpClient();
+                            client2.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+
                             client2.get(context, READ_VOTES_URL, params, new JsonHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, final JSONObject jsonVotes) {

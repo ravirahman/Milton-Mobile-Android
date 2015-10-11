@@ -225,6 +225,7 @@ public class DoorLockActivity extends Activity {
                                             params.add("username",username);
                                             params.add("password", password);
                                             AsyncHttpClient client = new AsyncHttpClient();
+                                            client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
 
                                             client.post(DoorLockActivity.this,"http://backend.ma1geek.org/campus/doorlock/unlock",params,new JsonHttpResponseHandler(){
                                                 @Override
