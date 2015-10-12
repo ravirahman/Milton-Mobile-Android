@@ -36,7 +36,7 @@ public class MailboxActivity extends Activity {
     private TextView mailboxText, comboText;
     private static String LOG_TAG = MailboxActivity.class.getName();
 
-    private static final String LOGIN_URL = "http://ma1geek.org/mailbox2.php";
+    private static final String LOGIN_URL = "http://backend.ma1geek.org/me/mailbox/get";
 
     private static final String TAG_MAILBOX = "mailbox";
     private static final String TAG_COMBO = "combo";
@@ -115,7 +115,7 @@ public class MailboxActivity extends Activity {
         params.add("username",AccountMethods.getUsername(this));
 
         params.add("password",AccountMethods.getPassword(this));
-        JsonHttp.request(LOGIN_URL,"POST",params,null,null,new JsonHttpResponseHandler(){
+        JsonHttp.request(LOGIN_URL,"GET",params,null,null,new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 pDialog.dismiss();

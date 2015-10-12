@@ -87,10 +87,10 @@ public class JsonHttp {
             return;
         }
         if (context != null) {
-            client.get(context,url,handler);
+            client.get(context,url,params,handler);
             return;
         }
-        client.get(url,handler);
+        client.get(url,params,handler);
 
     }
 
