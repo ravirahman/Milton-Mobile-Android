@@ -17,21 +17,12 @@
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:name=".util.MiltonMobileAndroid"
-        android:theme="@style/AppTheme" >
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        android:theme="@style/Theme.MyTheme" >
 
         <!-- Settings -->
 
@@ -49,17 +40,18 @@
         </service>
 
         <activity
-            android:name="edu.milton.miltonmobileandroid.settings.account.LoginActivity"
+            android:name=".settings.account.LoginActivity"
             android:label="@string/string_Login"
             android:screenOrientation="portrait"
-            android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
+            android:parentActivityName=".home.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.home.HomeActivity" />
+                android:value=".home.HomeActivity" />
         </activity>
+
         <!-- Home -->
         <activity
-            android:name="edu.milton.miltonmobileandroid.home.HomeActivity"
+            android:name=".home.HomeActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
@@ -68,84 +60,17 @@
             </intent-filter>
         </activity>
 
-        <!-- Food -->
-        <activity
-            android:name="edu.milton.miltonmobileandroid.food.meals.MealsActivity"
-            android:label="@string/string_FLIK"
-            android:screenOrientation="portrait"
-            android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.home.HomeActivity" />
-        </activity>
-
-        <!-- Events -->
-        <activity
-            android:name="edu.milton.miltonmobileandroid.events.saa.SaaActivity"
-            android:label="@string/string_SAA"
-            android:screenOrientation="portrait"
-            android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.home.HomeActivity" />
-        </activity>
-        <activity
-            android:name="edu.milton.miltonmobileandroid.events.school.SchoolEventsActivity"
-            android:label="@string/title_activity_school_events"
-            android:screenOrientation="portrait"
-            android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.home.HomeActivity" />
-        </activity>
-
-        <!-- Me -->
-        <activity
-            android:name="edu.milton.miltonmobileandroid.me.mailbox.MailboxActivity"
-            android:label="@string/string_Mailbox"
-            android:screenOrientation="portrait"
-            android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.home.HomeActivity" />
-        </activity>
-
         <!-- Campus -->
         <activity
-            android:name="edu.milton.miltonmobileandroid.campus.doorlock.DoorLockActivity"
+            android:name=".campus.doorlock.DoorLockActivity"
             android:label="@string/title_activity_door_lock"
             android:screenOrientation="portrait"
-            android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
+            android:parentActivityName=".home.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.home.HomeActivity" />
+                android:value=".home.HomeActivity" />
         </activity>
-        <activity
-                android:screenOrientation="portrait"
-            android:name="edu.milton.miltonmobileandroid.campus.buspass.BusPassActivity"
-            android:label="@string/title_activity_bus_pass" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.home.HomeActivity" />
-        </activity>
-        <activity
-                android:screenOrientation="portrait"
-            android:name="edu.milton.miltonmobileandroid.campus.navigator.NavigatorActivity"
-            android:label="@string/title_activity_navigator"
-            android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.home.HomeActivity" />
-        </activity>
-        <activity
-                android:screenOrientation="portrait"
-            android:name="edu.milton.miltonmobileandroid.events.athletics.AthleticsActivity"
-            android:label="@string/title_activity_athletics"
-            android:parentActivityName="edu.milton.miltonmobileandroid.home.HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.milton.miltonmobileandroid.home.HomeActivity" />
-        </activity>
+
     </application>
 
 </manifest>

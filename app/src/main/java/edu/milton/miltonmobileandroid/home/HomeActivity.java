@@ -2,53 +2,34 @@ package edu.milton.miltonmobileandroid.home;
 
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Fragment;
+import android.app.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import java.lang.reflect.Field;
 
-import edu.milton.miltonmobileandroid.NavigationFragment;
 import edu.milton.miltonmobileandroid.R;
-import edu.milton.miltonmobileandroid.events.saa.SaaActivity;
-import edu.milton.miltonmobileandroid.food.meals.MealsActivity;
-import edu.milton.miltonmobileandroid.me.mailbox.MailboxActivity;
+import edu.milton.miltonmobileandroid.campus.doorlock.DoorLockActivity;
+import edu.milton.miltonmobileandroid.events.activities.ActivitiesFragment;
+import edu.milton.miltonmobileandroid.food.meals.MealsFragment;
+import edu.milton.miltonmobileandroid.me.mailbox.MailboxFragment;
 import edu.milton.miltonmobileandroid.settings.account.AccountMethods;
 import edu.milton.miltonmobileandroid.settings.account.Consts;
 import edu.milton.miltonmobileandroid.util.Callback;
 
 
-public class HomeActivity extends Activity implements NavigationFragment.OnFragmentInteractionListener {
+public class HomeActivity extends Activity {
 
     private static final String LOG_TAG = HomeActivity.class.getName();
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private FrameLayout mDrawerFrame;
-    private String mDrawerTitle;
-    private String mTitle;
-
-    //TEMP
-    ImageButton flik;
-    ImageButton saa;
-    ImageButton mailbox;
-
+    private static final String EVENTS_SAA_TAB_TAG = "EVENTS_SAA";
+    private static final String FOOD_MEALS_TAB_TAG = "FOOD_MEALS";
+    private static final String ME_MAILBOX_TAB_TAG = "ME_MAILBOX";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,79 +48,29 @@ public class HomeActivity extends Activity implements NavigationFragment.OnFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
-        TextView welcomeLabel = (TextView) findViewById(R.id.home_fragment_welcomeLabel);
-        if (AccountMethods.isLoggedIn(this) && AccountMethods.getFirstName(this) != null && AccountMethods.getLastName(this) != null) {
-            welcomeLabel.setText("Welcome " + AccountMethods.getFirstName(this) + " " + AccountMethods.getLastName(this));
-        }
-        else {
-            welcomeLabel.setText("Welcome to Milton Academy");
-        }
-        mTitle = mDrawerTitle = getTitle().toString();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.home_activity);
-        mDrawerFrame = (FrameLayout) findViewById(R.id.home_activity_nav_frame);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.app_name, R.string.app_name) {
+        ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowTitleEnabled(true);
 
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
+        actionBar.addTab(actionBar.newTab()
+                .setText("Meals")
+                .setIcon(R.drawable.food)
+                .setTabListener(new TabListener<MealsFragment>(this, "meals",MealsFragment.class)));
 
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
+        actionBar.addTab(actionBar.newTab()
+                .setText("Activities")
+                .setIcon(R.drawable.theatre_mask)
+                .setTabListener(new TabListener<ActivitiesFragment>(this, "activities",ActivitiesFragment.class)));
 
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-
-        //TEMP
-        flik = (ImageButton) findViewById(R.id.home_fragment_meals_button);
-        saa = (ImageButton) findViewById(R.id.home_fragment_saa_button);
-        mailbox = (ImageButton) findViewById(R.id.home_fragment_mailbox_button);
-        flik.setOnClickListener(new View.OnClickListener() {
-
-        @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),
-                        MealsActivity.class);
-                startActivity(i);
-
-            }
-        });
-
-
-        saa.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),
-                        SaaActivity.class);
-                startActivity(i);
-            }
-        });
-
-        mailbox.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),
-                        MailboxActivity.class);
-                startActivity(i);
-            }
-        });
+        actionBar.addTab(actionBar.newTab()
+                .setText("Mailbox")
+                .setIcon(R.drawable.message)
+                .setTabListener(new TabListener<MailboxFragment>(this,"mailbox",MailboxFragment.class)));
 
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerFrame);
         if(AccountMethods.isLoggedIn(this)){
             menu.removeItem(R.id.action_login);
         }
@@ -158,7 +89,7 @@ public class HomeActivity extends Activity implements NavigationFragment.OnFragm
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.home_menu, menu);
         return true;
     }
 
@@ -168,16 +99,11 @@ public class HomeActivity extends Activity implements NavigationFragment.OnFragm
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
         if (id == R.id.action_login) {
             AccountMethods.login(this,new AccountManagerCallback<Bundle>() {
                 @Override
                 public void run(AccountManagerFuture<Bundle> future) {
                     invalidateOptionsMenu();
-                    TextView welcomeLabel = (TextView) findViewById(R.id.home_fragment_welcomeLabel);
-                    welcomeLabel.setText("Welcome " + AccountMethods.getFirstName(HomeActivity.this) + " " + AccountMethods.getLastName(HomeActivity.this));
                 }
             });
         }
@@ -187,8 +113,6 @@ public class HomeActivity extends Activity implements NavigationFragment.OnFragm
                 public void run(Bundle info) {
                     if (info.getBoolean(Consts.KEY_SUCCESS,false)) {
                         invalidateOptionsMenu();
-                        TextView welcomeLabel = (TextView) findViewById(R.id.home_fragment_welcomeLabel);
-                        welcomeLabel.setText("Welcome to Milton Academy");
                         return;
                     }
                     AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
@@ -230,33 +154,53 @@ public class HomeActivity extends Activity implements NavigationFragment.OnFragm
             });
             builder.create().show();
         }
+
+        if (id == R.id.action_door_lock) {
+            Intent intent = new Intent(this, DoorLockActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
+    public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
+        private Fragment mFragment;
+        private final Activity mActivity;
+        private final String mTag;
+        private final Class<T> mClass;
 
-    public static class HomeFragment extends Fragment {
-
-        public HomeFragment() {
+        /** Constructor used each time a new tab is created.
+         * @param activity  The host Activity, used to instantiate the fragment
+         * @param tag  The identifier tag for the fragment
+         * @param clz  The fragment's Class, used to instantiate the fragment
+         */
+        public TabListener(Activity activity, String tag, Class<T> clz) {
+            mActivity = activity;
+            mTag = tag;
+            mClass = clz;
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.home_fragment, container, false);
-            return rootView;
+    /* The following are each of the ActionBar.TabListener callbacks */
+
+        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+            // Check if the fragment is already initialized
+            if (mFragment == null) {
+                // If not, instantiate and add it to the activity
+                mFragment = Fragment.instantiate(mActivity, mClass.getName());
+                ft.add(android.R.id.content, mFragment, mTag);
+            } else {
+                // If it exists, simply attach it in order to show it
+                ft.attach(mFragment);
+            }
+        }
+
+        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            if (mFragment != null) {
+                // Detach the fragment, because another one is being attached
+                ft.detach(mFragment);
+            }
+        }
+
+        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            // User selected the already selected tab. Usually do nothing.
         }
     }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
 }
