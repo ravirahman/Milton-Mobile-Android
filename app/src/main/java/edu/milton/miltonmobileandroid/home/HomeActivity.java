@@ -160,7 +160,7 @@ public class HomeActivity extends Activity {
             final AlertDialog d = new AlertDialog.Builder(this)
                     .setTitle(R.string.full_app_name)
                     .setPositiveButton(android.R.string.ok, null)
-                    .setMessage(Html.fromHtml(strVersion + "<br ><br />Icons by <a href=\"https://icons8.com\">Icons8</a>"))
+                    .setMessage(Html.fromHtml(strVersion + "<br ><br />Meals, Activities, and Mailbox Icons by <a href=\"https://icons8.com\">Icons8</a>"))
                     .create();
             d.show();
 // Make the textview clickable. Must be called after show()

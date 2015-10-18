@@ -12,8 +12,6 @@
     <string name="string_OK">OK</string>
     <string name="string_Please_try_again">Please try again.</string>
     <string name="string_Check_Your_Network_Connection">Check Your myMilton Connection</string>
-    <string name="app_icon_credits">Icons by <a href="https://icons8.com">Icons8</a></string>
-
 
     <!-- Login/Logout -->
     <string name="string_Login">Login</string>
