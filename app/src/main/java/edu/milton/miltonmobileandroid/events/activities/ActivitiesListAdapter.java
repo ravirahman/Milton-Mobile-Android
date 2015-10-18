@@ -93,7 +93,7 @@ public class ActivitiesListAdapter extends BaseAdapter {
 
 
 
-        time.setText("Time: " + from + " - " + to);
+        time.setText(from + " - " + to);
         return convertView;
     }
 

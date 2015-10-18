@@ -16,6 +16,7 @@ import java.util.Iterator;
 
 public class JsonHttp {
     public static String LOG_TAG = JsonHttp.class.getName();
+    public static String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36";
     //full client
 
     public static void request(
@@ -61,7 +62,7 @@ public class JsonHttp {
                 }
             }
         }
-        client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+        client.setUserAgent(USER_AGENT);
         if (method.equalsIgnoreCase("POST")) {
             if (context != null) {
                 client.post(context,url,params,handler);

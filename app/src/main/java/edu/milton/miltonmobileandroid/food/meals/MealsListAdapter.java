@@ -14,6 +14,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import edu.milton.miltonmobileandroid.R;
+import edu.milton.miltonmobileandroid.util.JsonHttp;
 import org.apache.http.Header;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 
 public class MealsListAdapter extends ArrayAdapter<Object> {
     private final Context context;
-    private ArrayList<? extends Object> Values;
+    private ArrayList<?> Values;
     private static final String SUBMIT_VOTE_URL = "http://flik.ma1geek.org/vote.php";
     private static final String UPDATE_VOTE_URL = "http://flik.ma1geek.org/update.php";
     private ArrayList<Point> votesToSend = new ArrayList<>();
@@ -47,7 +48,7 @@ public class MealsListAdapter extends ArrayAdapter<Object> {
             update.add("date", date);
         }
         AsyncHttpClient client = new AsyncHttpClient();
-        client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+        client.setUserAgent(JsonHttp.USER_AGENT);
 
         client.post(context,SUBMIT_VOTE_URL,send,new TextHttpResponseHandler(){
 
@@ -77,8 +78,7 @@ public class MealsListAdapter extends ArrayAdapter<Object> {
         votesToUpdate.clear();
     }
 
-    @SuppressWarnings("unchecked")
-    public MealsListAdapter(Context context, ArrayList<? extends Object> Values,String email, HashMap<Integer, MealsVoteObject> myvotes, String date) {
+    public MealsListAdapter(Context context, ArrayList<?> Values,String email, HashMap<Integer, MealsVoteObject> myvotes, String date) {
         super(context, R.layout.food_meals_foodview, (ArrayList<Object>) Values);
         this.context = context;
         this.Values = Values;
@@ -87,16 +87,12 @@ public class MealsListAdapter extends ArrayAdapter<Object> {
         this.date = date;
     }
 
-
-
-
     @Override
     public View getView(int pos, View convertView, ViewGroup parent) {
         Log.d(LOG_TAG, "getting the view for position " + pos);
-        final int position = pos;
         View rowView;
 
-        final MealsMenuItem rowItem = (MealsMenuItem) Values.get(position);
+        final MealsMenuItem rowItem = (MealsMenuItem) Values.get(pos);
 
         if (!rowItem.isHeading()) {
             LayoutInflater inflater = (LayoutInflater) context

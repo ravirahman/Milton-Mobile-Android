@@ -27,16 +27,6 @@
         android:textSize="18sp"
         android:typeface="normal" />
 
-    <!--<TextView
-        android:id="@+id/events_saa_signup_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/events_saa_date_location_textview"
-        android:layout_centerInParent="false"
-        android:layout_toRightOf="@+id/event_icon"
-        android:paddingLeft="10dp"
-        android:textSize="14dp" />-->
-
     <TextView
         android:id="@+id/events_saa_view_compact_event_location_textview"
         android:layout_width="wrap_content"
@@ -47,7 +37,7 @@
         android:paddingRight="10dp"
         android:textSize="14sp" />
 
-    <!--new-->  <TextView
+    <TextView
         android:id="@+id/events_saa_view_compact_event_time_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,15 +47,5 @@
         android:paddingRight="10dp"
         android:textSize="14sp" />
 
-    <!--<ImageButton
-        android:id="@+id/expand_button"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignBottom="@+id/events_saa_signup_textview"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
-        android:background="@color/white"
-        android:src="@drawable/ic_action_expand" />-->
 
 </RelativeLayout>

@@ -31,6 +31,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import edu.milton.miltonmobileandroid.util.JsonHttp;
 import org.apache.http.Header;
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
@@ -43,11 +44,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     private static final String LOG_TAG = LoginActivity.class.getName();
     private EditText usernameEditText;
     private EditText passwordEditText;
-    private RadioGroup typeRadioGroup;
-    private RadioButton teacherRadioButton;
-    private RadioButton studentRadioButton;
     private AccountManager manager;
-    private Button signInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +59,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         usernameEditText = (EditText) findViewById(R.id.settings_login_fragment_username);
         passwordEditText = (EditText) findViewById(R.id.settings_login_fragment_password);
 
-        typeRadioGroup = (RadioGroup) findViewById(R.id.settings_login_fragment_typeGroup);
-        teacherRadioButton = (RadioButton) findViewById(R.id.settings_login_fragment_teacher);
-        studentRadioButton = (RadioButton) findViewById(R.id.settings_login_fragment_student);
 
-        signInButton = (Button) findViewById(R.id.settings_login_fragment_login);
+        Button signInButton = (Button) findViewById(R.id.settings_login_fragment_login);
         signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,18 +71,14 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         if (savedInstanceState != null) {
             usernameEditText.setText(savedInstanceState.getString("username"));
             passwordEditText.setText(savedInstanceState.getString("username"));
-            if (!savedInstanceState.getBoolean("student",true)) {
-                teacherRadioButton.setChecked(true);
-                studentRadioButton.setChecked(false);
-            }
         }
 
         if (AccountMethods.isLoggedIn(this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);
-            builder.setTitle("Not yet available");
-            builder.setMessage("Sorry, only one account allowed at a time.");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            builder.setTitle(getString(R.string.string_Error));
+            builder.setMessage(getString(R.string.settings_login_already_logged_in));
+            builder.setPositiveButton(getString(R.string.string_OK), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.dismiss();
                     finish();
@@ -117,7 +107,6 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     public void attemptLogin() {
         usernameEditText.setError(null);
         passwordEditText.setError(null);
-        teacherRadioButton.setError(null);
         // Store values at the time of the login attempt.
         final String username = usernameEditText.getText().toString();
         final String password = passwordEditText.getText().toString();
@@ -140,28 +129,12 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             cancel = true;
         }
 
-        if (teacherRadioButton.isChecked()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-            builder.setTitle("Not yet available");
-            builder.setMessage("Sorry, teacher logins are not supported yet. Look for an app update soon!");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
-            builder.create().show();
-            teacherRadioButton.setError("Sorry, teacher logins are not supported yet. Look for an app update soon!");
-            messageView = teacherRadioButton;
-            cancel = true;
-        }
-
         if (AccountMethods.isLoggedIn(this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);
-            builder.setTitle("Not yet available");
-            builder.setMessage("Sorry, only one account allowed at a time.");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            builder.setTitle(getString(R.string.string_Error));
+            builder.setMessage(getString(R.string.settings_login_already_logged_in));
+            builder.setPositiveButton(getString(R.string.string_OK), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.dismiss();
                     finish();
@@ -180,66 +153,59 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             InputMethodManager imm = (InputMethodManager)getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(usernameEditText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-            final ProgressDialog ringProgressDialog = ProgressDialog.show(LoginActivity.this, "Signing in ...", "Signing in...", true);
+            final ProgressDialog ringProgressDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.string_Sign_In), getString(R.string.string_Please_Wait), true);
             ringProgressDialog.setCancelable(false);
             ringProgressDialog.show();
 
             AsyncHttpClient client = new AsyncHttpClient();
             String url;
             RequestParams params = new RequestParams();
-            if (studentRadioButton.isChecked()) {
 
-                url = "http://my.milton.edu/student/index.cfm";
-                params.put("UserLogin", username);
-                params.put("UserPassword", password);
-                client.setTimeout(100000);
-                client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+            url = "http://my.milton.edu/student/index.cfm";
+            params.put("UserLogin", username);
+            params.put("UserPassword", password);
+            client.setTimeout(100000);
+            client.setUserAgent(JsonHttp.USER_AGENT);
 
-                client.post(url, params, new TextHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int i, Header[] headers, String decoded) {
-                        ringProgressDialog.dismiss();
-                        Document doc = Jsoup.parse(decoded);
-                        Elements things = doc.getElementsByClass("bluelabel");
-                        if (things.isEmpty()) {
-                            usernameEditText.setError("Please double-check your username, password, and student/teacher selection.");
-                            usernameEditText.requestFocus();
-                        }
-                        else {
-                            String toParse = things.first().toString();
-                            String lastName = toParse.substring(toParse.indexOf(">")+9,toParse.indexOf(","));
-                            String firstName = toParse.substring(toParse.indexOf(",")+2,toParse.indexOf("[")-1);
-                            String classRoman = toParse.substring(toParse.indexOf("[")+8,toParse.indexOf("::")-1);
-                            int classnumber = 0;
-                            if (classRoman.equals("IV")) {
-                                classnumber = 4;
-
-                            } else if (classRoman.equals("III")) {
-                                classnumber = 3;
-
-                            } else if (classRoman.equals("II")) {
-                                classnumber = 2;
-
-                            } else if (classRoman.equals("I")) {
-                                classnumber = 1;
-                            }
-                            finishLogin(username, password, firstName, lastName, classnumber, Consts.STUDENT);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int i, Header[] headers, String response, Throwable throwable) {
-                        usernameEditText.setError("Sorry, there was an error. Please try again.");
+            client.post(url, params, new TextHttpResponseHandler() {
+                @Override
+                public void onSuccess(int i, Header[] headers, String decoded) {
+                    ringProgressDialog.dismiss();
+                    Document doc = Jsoup.parse(decoded);
+                    Elements things = doc.getElementsByClass("bluelabel");
+                    if (things.isEmpty()) {
+                        usernameEditText.setError(getString(R.string.string_Please_check_your_credentials));
                         usernameEditText.requestFocus();
-                        ringProgressDialog.dismiss();
                     }
-                });
-            } else { //is a teacher
-                ringProgressDialog.dismiss();
-            }
-            /*String u = manager.getUserData(manager.getAccounts()[0],AccountManager.KEY_ACCOUNT_NAME);
-            Account account = new Account(u, Consts.MMA_ACCOUNTTYPE);
-            String p = manager.getPassword(account);*/
+                    else {
+                        String toParse = things.first().toString();
+                        String lastName = toParse.substring(toParse.indexOf(">")+9,toParse.indexOf(","));
+                        String firstName = toParse.substring(toParse.indexOf(",")+2,toParse.indexOf("[")-1);
+                        String classRoman = toParse.substring(toParse.indexOf("[")+8,toParse.indexOf("::")-1);
+                        int classnumber = 0;
+                        if (classRoman.equals("IV")) {
+                            classnumber = 4;
+
+                        } else if (classRoman.equals("III")) {
+                            classnumber = 3;
+
+                        } else if (classRoman.equals("II")) {
+                            classnumber = 2;
+
+                        } else if (classRoman.equals("I")) {
+                            classnumber = 1;
+                        }
+                        finishLogin(username, password, firstName, lastName, classnumber);
+                    }
+                }
+
+                @Override
+                public void onFailure(int i, Header[] headers, String response, Throwable throwable) {
+                    usernameEditText.setError(getString(R.string.string_Please_try_again));
+                    usernameEditText.requestFocus();
+                    ringProgressDialog.dismiss();
+                }
+            });
         }
     }
 
@@ -252,7 +218,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         finish();
     }
 
-    private void finishLogin(String username, String password, String firstname, String lastname, int classnumber, String userType) {
+    private void finishLogin(String username, String password, String firstname, String lastname, int classnumber) {
         final Account account = new Account(username, Consts.ACCOUNT_TYPE);
         manager.addAccountExplicitly(account,password,null);
         manager.setAuthToken(account, Consts.ACCOUNT_TYPE, password);
@@ -281,8 +247,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.settings_login_fragment, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.settings_login_fragment, container, false);
 
         }
     }
@@ -292,7 +257,6 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         super.onSaveInstanceState(outState);
         outState.putString("username",usernameEditText.getText().toString());
         outState.putString("password",passwordEditText.getText().toString());
-        outState.putBoolean("student",studentRadioButton.isChecked());
     }
 
     @Override

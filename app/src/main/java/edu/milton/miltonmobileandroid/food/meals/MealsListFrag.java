@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import edu.milton.miltonmobileandroid.util.JsonHttp;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,12 +57,14 @@ public class MealsListFrag extends ListFragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (Foods.size() > 0) {
+            return;
+        }
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, dateShift);
         // System.out.println("Current time => " + c.getTime());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = df.format(c.getTime());
-        date = formattedDate;
+        date = df.format(c.getTime());
         final RequestParams params = new RequestParams();
         params.add("date",date);
         params.add("version","2"); //using the second version of the api
@@ -69,7 +72,7 @@ public class MealsListFrag extends ListFragment implements
         // date = "2013-11-23";
         // use to demonstrate if there are no items for current date
         AsyncHttpClient client = new AsyncHttpClient();
-        client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+        client.setUserAgent(JsonHttp.USER_AGENT);
 
         client.get(context, READ_MEALS_URL,params,new JsonHttpResponseHandler() {
             @Override
@@ -103,7 +106,7 @@ public class MealsListFrag extends ListFragment implements
                             }
                             Log.v(LOG_TAG, "Foods is this big: " + Foods.size());
                             AsyncHttpClient client2 = new AsyncHttpClient();
-                            client2.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+                            client2.setUserAgent(JsonHttp.USER_AGENT);
 
                             client2.get(context, READ_VOTES_URL, params, new JsonHttpResponseHandler() {
                                 @Override
@@ -172,19 +175,18 @@ public class MealsListFrag extends ListFragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
         // TODO Auto-generated method stub
-
+        int x = 0;
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> arg0) {
         // TODO Auto-generated method stub
-
+        int x = 0;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.food_meals_listfrag, null);
-        return view;
+        return inflater.inflate(R.layout.food_meals_listfrag, null);
     }
 }

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import java.io.IOException;
 
 import android.preference.PreferenceManager;
+import edu.milton.miltonmobileandroid.R;
 import edu.milton.miltonmobileandroid.util.Callback;
 
 public class AccountMethods {
@@ -58,29 +59,19 @@ public class AccountMethods {
                             return;
                         }
                         info.putBoolean(Consts.KEY_SUCCESS,false);
-                        info.putString(Consts.KEY_MESSAGE,username + " could not be logged out");
+                        info.putString(Consts.KEY_MESSAGE,context.getResources().getString(R.string.settings_login_logout_error));
                         callback.run(info);
-                    } catch (OperationCanceledException e) {
+                    } catch (OperationCanceledException | IOException | AuthenticatorException e) {
                         Bundle info = new Bundle();
                         info.putBoolean(Consts.KEY_SUCCESS,false);
-                        info.putString(Consts.KEY_MESSAGE,username + " could not be logged out");
-                        callback.run(info);
-                    } catch (IOException e) {
-                        Bundle info = new Bundle();
-                        info.putBoolean(Consts.KEY_SUCCESS,false);
-                        info.putString(Consts.KEY_MESSAGE,username + " could not be logged out");
-                        callback.run(info);
-                    } catch (AuthenticatorException e) {
-                        Bundle info = new Bundle();
-                        info.putBoolean(Consts.KEY_SUCCESS,false);
-                        info.putString(Consts.KEY_MESSAGE,username + " could not be logged out");
+                        info.putString(Consts.KEY_MESSAGE,context.getResources().getString(R.string.settings_login_logout_error));
                         callback.run(info);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setCancelable(false);
-                        builder.setTitle("Account Not Removed");
-                        builder.setMessage(username + " could not be logged out");
-                        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                        builder.setTitle(context.getResources().getString(R.string.string_Error));
+                        builder.setMessage(context.getResources().getString(R.string.settings_login_logout_error));
+                        builder.setPositiveButton(R.string.string_OK, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
                                 callback.run(null);
@@ -94,7 +85,7 @@ public class AccountMethods {
         else {
             Bundle info = new Bundle();
             info.putBoolean(Consts.KEY_SUCCESS,false);
-            info.putString(Consts.KEY_MESSAGE,"You are not logged in.");
+            info.putString(Consts.KEY_MESSAGE,context.getResources().getString(R.string.settings_login_not_logged_in));
             callback.run(info);
         }
     }

@@ -6,9 +6,12 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +27,13 @@ import edu.milton.miltonmobileandroid.R;
 public class MealsFragment extends Fragment {
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
+    boolean[] isLoaded = {false,false,false,false,false};
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.food_meals_fragment, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.food_meals_fragment, container, false);
     }
 
     @Override
@@ -42,10 +46,10 @@ public class MealsFragment extends Fragment {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setCancelable(false);
-            builder.setTitle("Allergy Warning");
+            builder.setTitle(getString(R.string.string_Allergy_Warning));
             builder.setView(checkboxview);
-            builder.setMessage("Before placing your order, please inform your server if a person in your party has a food allergy.");
-            builder.setPositiveButton("I understand, Continue", new DialogInterface.OnClickListener() {
+            builder.setMessage(getString(R.string.food_meals_allergy_warning));
+            builder.setPositiveButton(R.string.string_OK, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     preferences.edit().putBoolean(MealsConsts.FLIK_WARNINGPREFERENCE,!box.isChecked()).apply();
                     dialog.dismiss();
@@ -54,15 +58,16 @@ public class MealsFragment extends Fragment {
             builder.create().show();
         }
         mViewPager = (ViewPager) getActivity().findViewById(R.id.food_meals_fragment);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         // Set up the ViewPager with the sections adapter.
         mViewPager.setAdapter(mSectionsPagerAdapter);
     }
 
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+
         }
 
         @Override
@@ -70,7 +75,7 @@ public class MealsFragment extends Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a DummySectionFragment (defined as a static inner class
             // below) with the page number as its lone argument.
-            return new MealsListFrag(position, getActivity());
+                return new MealsListFrag(position, getActivity());
             //return null;
         }
 

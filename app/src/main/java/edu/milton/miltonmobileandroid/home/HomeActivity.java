@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewConfiguration;
 
 import java.lang.reflect.Field;
 
+import android.widget.TextView;
 import edu.milton.miltonmobileandroid.R;
 import edu.milton.miltonmobileandroid.campus.doorlock.DoorLockActivity;
 import edu.milton.miltonmobileandroid.events.activities.ActivitiesFragment;
@@ -27,9 +30,6 @@ import edu.milton.miltonmobileandroid.util.Callback;
 public class HomeActivity extends Activity {
 
     private static final String LOG_TAG = HomeActivity.class.getName();
-    private static final String EVENTS_SAA_TAB_TAG = "EVENTS_SAA";
-    private static final String FOOD_MEALS_TAB_TAG = "FOOD_MEALS";
-    private static final String ME_MAILBOX_TAB_TAG = "ME_MAILBOX";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,12 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.home_activity);
 
         ActionBar actionBar = getActionBar();
+        actionBar.setTitle(R.string.string_Milton_Academy);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowTitleEnabled(true);
 
         actionBar.addTab(actionBar.newTab()
-                .setText("Meals")
+                .setText(R.string.string_Meals)
                 .setIcon(R.drawable.food)
                 .setTabListener(new TabListener<MealsFragment>(this, "meals",MealsFragment.class)));
 
@@ -113,13 +114,25 @@ public class HomeActivity extends Activity {
                 public void run(Bundle info) {
                     if (info.getBoolean(Consts.KEY_SUCCESS,false)) {
                         invalidateOptionsMenu();
+                        ActionBar actionBar = getActionBar();
+                        actionBar.setSelectedNavigationItem(0);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                        builder.setCancelable(false);
+                        builder.setTitle(R.string.string_Logout);
+                        builder.setMessage(getString(R.string.settings_login_logout_success));
+                        builder.setPositiveButton(R.string.string_OK, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.create().show();
                         return;
                     }
                     AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
                     builder.setCancelable(false);
-                    builder.setTitle("Account Not Removed");
-                    builder.setMessage(info.getString(Consts.KEY_MESSAGE,"You have NOT been logged out because of an error."));
-                    builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                    builder.setTitle(R.string.string_Error);
+                    builder.setMessage(info.getString(Consts.KEY_MESSAGE,getString(R.string.settings_login_logout_error)));
+                    builder.setPositiveButton(R.string.string_OK, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
                         }
@@ -129,7 +142,7 @@ public class HomeActivity extends Activity {
             });
         }
         if (id == R.id.action_about) {
-            String strVersion = "Version: ";
+            String strVersion = "v";
 
             PackageInfo packageInfo;
             try {
@@ -141,18 +154,29 @@ public class HomeActivity extends Activity {
                         );
                 strVersion += packageInfo.versionName;
             } catch (PackageManager.NameNotFoundException e) {
-                strVersion += "Unknown";
+                strVersion += "X.X.X";
             }
-            AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+
+            final AlertDialog d = new AlertDialog.Builder(this)
+                    .setTitle(R.string.full_app_name)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .setMessage(Html.fromHtml(strVersion + "<br ><br />Icons by <a href=\"https://icons8.com\">Icons8</a>"))
+                    .create();
+            d.show();
+// Make the textview clickable. Must be called after show()
+            ((TextView)d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
             builder.setCancelable(false);
-            builder.setTitle("About Milton Mobile Android");
-            builder.setMessage(strVersion);
-            builder.setNeutralButton("Close", new DialogInterface.OnClickListener() {
+            builder.setMessage(Html.fromHtml(strVersion + "<br /><br />" + getResources().));
+            builder.setNeutralButton(R.string.string_OK, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     dialog.dismiss();
                 }
             });
-            builder.create().show();
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            ((TextView)dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());*/
         }
 
         if (id == R.id.action_door_lock) {

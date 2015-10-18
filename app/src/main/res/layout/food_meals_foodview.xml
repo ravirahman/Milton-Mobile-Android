@@ -28,7 +28,7 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/bad_button"
         android:background="@color/white"
-        android:contentDescription="@string/thumbs_up"
+        android:contentDescription="@string/string_Thumbs_Up"
         android:src="@drawable/ic_action_good" />
 
     <ImageButton
@@ -38,7 +38,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/ApacheTextView"
         android:background="@color/white"
-        android:contentDescription="@string/thumbs_down"
+        android:contentDescription="@string/string_Thumbs_Down"
         android:src="@drawable/ic_action_bad" />
 
     <TextView

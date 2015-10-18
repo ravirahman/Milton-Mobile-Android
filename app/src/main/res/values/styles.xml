@@ -1,6 +1,9 @@
 <resources>
     <!-- Base application theme. -->
+    <style name="Theme.MyTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+    </style>
     <style name="ActionBar" parent="@android:style/Widget.Holo.ActionBar.Solid">
-        <item name="android:background">#004685</item>
+        <item name="android:background">@color/milton_blue</item>
     </style>
 </resources>

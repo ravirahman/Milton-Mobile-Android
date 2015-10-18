@@ -87,14 +87,14 @@ public class DoorLockActivity extends Activity {
                 }
                 mBluetoothAdapter.stopLeScan(callback);
                 progressDialog = new ProgressDialog(DoorLockActivity.this,ProgressDialog.STYLE_SPINNER);
-                progressDialog.setMessage("Please Wait");
+                progressDialog.setMessage(getResources().getString(R.string.string_Please_Wait));
                 progressDialog.setCancelable(false);
                 progressDialog.show();
                 final DoorLock lock = adapter.getItem(position);
                 final BluetoothDevice device = lock.device;
 
 
-                final BluetoothGatt gatt = device.connectGatt(
+                connectedGatt = device.connectGatt(
                         DoorLockActivity.this,
                         true,
                         new BluetoothGattCallback() {
@@ -171,10 +171,10 @@ public class DoorLockActivity extends Activity {
                                         if (writeChar == null || notifyChar == null) {
                                             progressDialog.dismiss();
                                             AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
-                                            builder.setMessage("This is not a doorlock");
-                                            builder.setTitle("Error");
+                                            builder.setMessage(R.string.campus_doorlock_not_a_doorlock);
+                                            builder.setTitle(getString(R.string.string_Error));
                                             builder.setCancelable(true);
-                                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            builder.setNegativeButton(getString(R.string.string_Cancel), new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     dialog.dismiss();
@@ -225,7 +225,7 @@ public class DoorLockActivity extends Activity {
                                             params.add("username",username);
                                             params.add("password", password);
                                             AsyncHttpClient client = new AsyncHttpClient();
-                                            client.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36");
+                                            client.setUserAgent(JsonHttp.USER_AGENT);
 
                                             client.post(DoorLockActivity.this,"http://backend.ma1geek.org/campus/doorlock/unlock",params,new JsonHttpResponseHandler(){
                                                 @Override
@@ -239,9 +239,9 @@ public class DoorLockActivity extends Activity {
                                                                     final String message = response.getString("message");
                                                                     progressDialog.dismiss();
                                                                     AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
-                                                                    builder.setTitle("There was an error");
+                                                                    builder.setTitle(getString(R.string.string_Error));
                                                                     builder.setMessage(message);
-                                                                    builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                                                    builder.setNeutralButton(getString(R.string.string_OK), new DialogInterface.OnClickListener() {
                                                                         @Override
                                                                         public void onClick(DialogInterface dialog, int which) {
                                                                             dialog.dismiss();
@@ -277,8 +277,8 @@ public class DoorLockActivity extends Activity {
                                         if (values[0] == 0x53 && values[1] == 0x55) { //the door is open
                                             progressDialog.dismiss();
                                             AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
-                                            builder.setTitle("The door is open!");
-                                            builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                            builder.setTitle(getString(R.string.campus_doorlock_unlocked));
+                                            builder.setNeutralButton(getString(R.string.string_OK), new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     dialog.dismiss();
@@ -294,9 +294,9 @@ public class DoorLockActivity extends Activity {
                                         if (values[0] == 0x45 && values[1] == 0x52) {
                                             progressDialog.dismiss();
                                             AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
-                                            builder.setTitle("There was an error");
-                                            builder.setMessage("Please try again");
-                                            builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                            builder.setTitle(getString(R.string.string_Error));
+                                            builder.setMessage(getString(R.string.string_Please_try_again));
+                                            builder.setNeutralButton(getString(R.string.string_OK), new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     dialog.dismiss();
@@ -307,7 +307,6 @@ public class DoorLockActivity extends Activity {
                                             gatt.disconnect();
                                             connectedGatt = null;
                                             servicesDiscovered = false;
-                                            return;
                                         }
                                     }
                                 });
@@ -337,7 +336,6 @@ public class DoorLockActivity extends Activity {
                             }
                         }
                 );
-                connectedGatt = gatt;
 
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -353,9 +351,9 @@ public class DoorLockActivity extends Activity {
                                 //if the progress dialog is still showing after 10 seconds, dismiss it and show that there was an error
                                 progressDialog.dismiss();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
-                                builder.setTitle("Timed Out");
-                                builder.setMessage("Please try again");
-                                builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                builder.setTitle(getString(R.string.string_Error));
+                                builder.setMessage(getString(R.string.string_Please_try_again));
+                                builder.setNeutralButton(getString(R.string.string_OK), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
@@ -386,9 +384,9 @@ public class DoorLockActivity extends Activity {
         }
         if (!hasMinOs) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Feature Not Available");
-            builder.setMessage("To use this feature, you must be running Android 4.3 or Higher");
-            builder.setNeutralButton("Go Back",new DialogInterface.OnClickListener() {
+            builder.setTitle(getString(R.string.string_Incompatible_Device));
+            builder.setMessage(getString(R.string.campus_doorlock_no_ble_api));
+            builder.setNeutralButton(getString(R.string.string_OK),new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
@@ -403,9 +401,9 @@ public class DoorLockActivity extends Activity {
         }
         if (!hasBle) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Feature Not Available");
-            builder.setMessage("To use this feature, your device must have Bluetooth LE 4.0 or Higher");
-            builder.setNeutralButton("Go Back",new DialogInterface.OnClickListener() {
+            builder.setTitle(getString(R.string.string_Incompatible_Device));
+            builder.setMessage(getString(R.string.campus_doorlock_no_ble_hardware));
+            builder.setNeutralButton(getString(R.string.string_OK),new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
@@ -426,38 +424,16 @@ public class DoorLockActivity extends Activity {
         if (!AccountMethods.isLoggedIn(this)) {
             Log.v(LOG_TAG,"Not logged in");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Please Log-In");
-            builder.setMessage("In order to use DoorLock, please login first");
-            builder.setPositiveButton("Login", new DialogInterface.OnClickListener() {
+            AccountMethods.login(DoorLockActivity.this, new AccountManagerCallback<Bundle>() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    AccountMethods.login(DoorLockActivity.this, new AccountManagerCallback<Bundle>() {
-                        @Override
-                        public void run(AccountManagerFuture<Bundle> future) {
-                            if (!AccountMethods.isLoggedIn(DoorLockActivity.this)) {
-                                finish();
-                                return;
-                            }
-                            findDoorLocks();
-                        }
-                    });
+                public void run(AccountManagerFuture<Bundle> future) {
+                if (!AccountMethods.isLoggedIn(DoorLockActivity.this)) {
+                    finish();
+                    return;
+                }
+                findDoorLocks();
                 }
             });
-            builder.setNegativeButton("No Thanks, Go Back", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    DoorLockActivity.this.finish();
-                }
-            });
-            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    DoorLockActivity.this.finish();
-                }
-            });
-            builder.create().show();
-            //display an alert saying you must log in
-            //give two options, one to go back, and one to go to the login page
             return;
         }
 
@@ -466,15 +442,15 @@ public class DoorLockActivity extends Activity {
 
     private void enableBle() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Please Enable BLE");
-        builder.setMessage("To use this feature, please enable Bluetooth Low Energy");
-        builder.setNegativeButton("No Thanks, Go Back", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.string_Please_Enable_BLE));
+        builder.setMessage(getString(R.string.campus_doorlock_no_ble_enabled));
+        builder.setNegativeButton(getString(R.string.string_Back), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
         });
-        builder.setNegativeButton("Enable BLE (follow the prompts)",new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.string_OK, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -500,8 +476,7 @@ public class DoorLockActivity extends Activity {
 
     private void findDoorLocks() {
         final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Retrieving List of DoorLocks");
-        dialog.setTitle("Please wait");
+        dialog.setTitle(getString(R.string.string_Please_Wait));
         dialog.show();
         dialog.setCancelable(false);
         JsonHttp.request("http://backend.ma1geek.org/campus/doorlock/list",new JsonHttpResponseHandler(){
@@ -535,9 +510,9 @@ public class DoorLockActivity extends Activity {
             public void onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.String responseString, java.lang.Throwable throwable) {
                 dialog.hide();
                 AlertDialog.Builder builder = new AlertDialog.Builder(DoorLockActivity.this);
-                builder.setTitle("Network Connection Required");
-                builder.setMessage("To use this feature, please check your network connection.");
-                builder.setNeutralButton("OK",new DialogInterface.OnClickListener() {
+                builder.setTitle(getString(R.string.string_Check_Your_Network_Connection));
+                builder.setMessage(getString(R.string.string_Please_try_again));
+                builder.setNeutralButton(R.string.string_OK,new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -605,8 +580,7 @@ public class DoorLockActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.campus_doorlock_fragment, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.campus_doorlock_fragment, container, false);
         }
     }
 

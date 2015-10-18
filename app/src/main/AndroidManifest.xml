@@ -63,7 +63,7 @@
         <!-- Campus -->
         <activity
             android:name=".campus.doorlock.DoorLockActivity"
-            android:label="@string/title_activity_door_lock"
+            android:label="@string/string_Door_Lock"
             android:screenOrientation="portrait"
             android:parentActivityName=".home.HomeActivity" >
             <meta-data

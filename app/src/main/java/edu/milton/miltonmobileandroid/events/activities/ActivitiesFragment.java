@@ -8,13 +8,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.Time;
-import android.view.GestureDetector;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.ListView;
@@ -48,10 +42,15 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
     View.OnTouchListener gestureListener;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.events_activities_fragment, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.events_activities_fragment, container, false);
     }
 
     @Override
@@ -80,7 +79,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
                 adapter.notifyDataSetChanged();
                 ActivitesEvent activitesEvent = eventsToShow.get(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Event Details");
+                builder.setTitle(getString(R.string.string_Event_Details));
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.events_activities_view_expanded_event, null);
                 builder.setView(dialogView);
@@ -128,7 +127,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
                 //builder.setView((View) findViewById(R.id.view_expanded_event_view));
                 //now customize the view
 
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.string_OK, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -309,7 +308,7 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
         this.month = month;
         this.day = day;
         eventsToShow.clear();
-        dateLabel.setText("Date: " + month + "/" + day + "/" + year);
+        dateLabel.setText(month + "/" + day + "/" + year);
         adapter.notifyDataSetChanged();
         //the logic:
         //1. Get the all events calendar feed for the day; load from cache first if possible.
@@ -376,14 +375,13 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
 
         });
     }
-//todo add buttons to action bar
-/*
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu,inflater);
         // Inflate the menu; this adds items to the action bar if it is present.
-        getActivity().getMenuInflater().inflate(R.menu.events_activities_menu, menu);
-        return true;
-    }*/
+        inflater.inflate(R.menu.events_activities_menu, menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

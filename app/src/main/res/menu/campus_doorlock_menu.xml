@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="edu.milton.miltonmobileandroid.campus.doorlock.DoorlockActivity">
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="edu.milton.miltonmobileandroid.campus.doorlock.DoorlockActivity">
     <item android:id="@+id/campus_doorlock_activity_refresh" android:title="@string/string_Refresh"
         android:orderInCategory="100" android:showAsAction="always" android:icon="@drawable/ic_refresh_white_24dp" />
 </menu>

@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Login with your MyMilton Credentials"
+        android:text="@string/settings_login_helper_text"
         android:id="@+id/settings_login_fragment_textView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -43,37 +43,7 @@
         android:layout_height="wrap_content"
         android:text="@string/string_Sign_In"
         android:textStyle="bold"
-        android:layout_below="@+id/settings_login_fragment_typeGroup"
+        android:layout_below="@+id/settings_login_fragment_password"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <RadioGroup
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/settings_login_fragment_password"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/settings_login_fragment_typeGroup">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/settings_login_typeHelperText"
-            android:id="@+id/settings_login_fragment_typeGroupHelperLabel" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/string_Teacher"
-            android:id="@+id/settings_login_fragment_teacher"
-            android:longClickable="false" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/string_Student"
-            android:id="@+id/settings_login_fragment_student"
-            android:checked="true" />
-    </RadioGroup>
 </RelativeLayout>

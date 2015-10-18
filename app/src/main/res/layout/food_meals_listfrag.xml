@@ -1,9 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
          android:orientation="vertical"
          android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:paddingLeft="8dp"
-         android:paddingRight="8dp">
+         android:layout_height="match_parent">
 
      <ListView
          android:id="@id/android:list"
@@ -12,7 +10,7 @@
          android:layout_weight="1"
          android:background="#FFFFFF"
          android:drawSelectorOnTop="false"
-         android:divider="#F8991D"
+         android:divider="@color/milton_orange"
     	android:dividerHeight="1dp"/>
 
  </LinearLayout>

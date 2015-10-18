@@ -8,7 +8,6 @@
     android:paddingTop="15dp"
     android:id="@+id/events_saa_view_expanded_event">
 
-
     <TextView
         android:id="@+id/events_saa_view_expanded_event_title_textview"
         android:layout_width="wrap_content"
@@ -27,10 +26,7 @@
         android:layout_height="55dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:contentDescription="@string/string_Event_Icon"
         android:src="@drawable/ic_launcher" />
-
-
 
     <TextView
         android:id="@+id/events_saa_view_expanded_event_description_textview"
@@ -40,16 +36,6 @@
         android:layout_below="@+id/events_saa_view_expanded_event_icon"
         android:paddingTop="15dp"
         android:textSize="14sp" />
-
-    <!--<TextView
-        android:id="@+id/signup_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/view_expanded_event_title_textview"
-        android:layout_below="@+id/date_location_textview"
-        android:paddingLeft="10dp"
-        android:text="Signup Required"
-        android:textSize="14dp" />-->
 
     <TextView
         android:id="@+id/events_saa_view_expanded_event_location_textview"
@@ -61,7 +47,7 @@
         android:paddingRight="10dp"
         android:textSize="14sp" />
 
-    <!--new--> <TextView
+    <TextView
         android:id="@+id/events_saa_view_expanded_event_time_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,15 +57,5 @@
         android:paddingRight="10dp"
         android:textSize="14sp" />
 
-    <!--<ImageButton
-        android:id="@+id/collapse_button"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignBottom="@+id/signup_textview"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
-        android:background="@color/white"
-        android:src="@drawable/ic_action_collapse" />-->
 
 </RelativeLayout>

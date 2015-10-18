@@ -1,65 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Milton</string>
-    <string name="thumbs_up">Thumbs Up!</string>
-    <string name="thumbs_down">Thumbs Down!</string>
+    <string name="full_app_name">Milton Academy Students</string>
     <string name="string_Back">Back</string>
-    <string name="desc_comment">Leave a comment...</string>
+    <string name="string_Refresh">Refresh</string>
+    <string name="string_Milton_Academy">Milton Academy</string>
+    <string name="string_About">About</string>
+    <string name="string_Please_Wait">Please Wait</string>
+    <string name="string_Error">Error</string>
+    <string name="string_Cancel">Cancel</string>
+    <string name="string_OK">OK</string>
+    <string name="string_Please_try_again">Please try again.</string>
+    <string name="string_Check_Your_Network_Connection">Check Your myMilton Connection</string>
+    <string name="app_icon_credits">Icons by <a href="https://icons8.com">Icons8</a></string>
 
-    <!-- Login -->
+
+    <!-- Login/Logout -->
     <string name="string_Login">Login</string>
+    <string name="string_Logout">Logout</string>
     <string name="string_Username">Username</string>
     <string name="string_Password">Password</string>
     <string name="string_Sign_In">Sign In</string>
     <string name="settings_login_errorInvalidUsername">Please enter your myMilton username</string>
     <string name="settings_login_errorInvalidPassword">Please enter your myMilton password</string>
-    <string name="string_Teacher">Teacher</string>
-    <string name="string_Student">Student</string>
-    <string name="settings_login_viewHelperText">Login with your MyMilton Credentials</string>
-    <string name="settings_login_typeHelperText">I am a:</string>
+    <string name="settings_login_helper_text">Login with your student myMilton Credentials</string>
+    <string name="string_Please_check_your_credentials">Please check your credentials.</string>
+    <string name="settings_login_already_logged_in">You are already logged in.</string>
+    <string name="settings_login_not_logged_in">You are not logged in.</string>
+    <string name="settings_login_logout_error">We could not logout because of an error.</string>
+    <string name="settings_login_logout_success">You are now logged out.</string>
 
-    <!-- Logout -->
-    <string name="string_Logout">Logout</string>
 
-    <!-- FLIK -->
-    <string name="string_FLIK">FLIK</string>
-    <string name="title_activity_tabs_test">Flik Menu</string>
-    <string name="altview">This is simply an alternative view</string>
+    <!-- Meals -->
+    <string name="string_Meals">Meals</string>
+    <string name="string_Thumbs_Up">Thumbs Up!</string>
+    <string name="string_Thumbs_Down">Thumbs Down!</string>
+    <string name="string_Allergy_Warning">Allergy Warning</string>
+    <string name="food_meals_allergy_warning">Before placing your order, please inform your server if a person in your party has a food allergy.</string>
 
-    <!-- SAA -->
-    <string name="string_SAA">SAA</string>
+    <!-- Events -->
     <string name="string_Select_Date">Select Date</string>
+    <string name="string_Event_Details">Event Details</string>
     <string name="string_Dont_Show_Again">Don\'t Show Again</string>
-    <string name="string_Refresh">Refresh</string>
-    <string name="title_activity_door_lock">Door Lock</string>
-    <string name="title_activity_bus_pass">Bus Pass</string>
-    <string name="title_activity_navigator">Navigator</string>
-    <string name="title_activity_school_events">School Events</string>
-    <string name="string_Event_Icon">Event Icon</string>
+
+    <!-- Mailbox -->
     <string name="string_Mailbox">Mailbox</string>
-    <string name="title_activity_athletics">Athletics</string>
-    <string name="action_settings">Settings</string>
-    <string name="mainScreenTitle">Milton Academy</string>
-    <string name="action_back">Back</string>
-    <string name="title_activity_saaschedule">SAA Schedule</string>
-    <string name="flik">FLIK</string>
-    <string name="saa">SAA</string>
-    <string name="settings">Settings</string>
-    <string name="title_activity_signup">Signup</string>
-    <string name="title_activity_login">Login</string>
-    <string name="title_activity_welcome">Welcome</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="email">email</string>
-    <string name="password">password</string>
-    <string name="sign_in">Sign in</string>
-    <string name="signing_in">Signing in</string>
-    <string name="password_reset">Password Reset</string>
-    <string name="submit">Submit</string>
-    <string name="goToLogin">Go to Login</string>
-    <string name="go_to_register">Go to Register</string>
-    <string name="logout">Logout</string>
-    <string name="campus_doorlock_fragment_Helper">Please Select a Lock</string>
-    <string name="string_About">About</string>
-    <string name="string_Milton_Academy">Milton Academy</string>
+    <string name="string_Combo">Combo</string>
+    <string name="me_mailbox_instructions">1. Turn dial at least four times to the left to clear the combo and stop at 1st number\n
+2. Turn dial to the right past 1st number and stop at 2nd number\n
+3. Turn dial to the left and stop at 3rd number\n
+4. Turn dial slowly to the right until it sticks then slowly pull open"</string>
+
+
+    <!-- Door Lock -->
+    <string name="string_Door_Lock">Door Lock</string>
+    <string name="campus_doorlock_not_a_doorlock">Sorry, but this device is not a doorlock.</string>
+    <string name="campus_doorlock_unlocked">The door is open!</string>
+    <string name="string_Incompatible_Device">Incompatible Device</string>
+    <string name="campus_doorlock_no_ble_api">"Door Lock requires Android 4.3+."</string>
+    <string name="campus_doorlock_no_ble_hardware">Door Lock requires Bluetooth Low Energy (BLE) 4.0 hardware, which your device lacks.</string>
+    <string name="campus_doorlock_no_ble_enabled">Please enable Bluetooth Low Energy (BLE) 4.0 to use Door Lock.</string>
+    <string name="string_Please_Enable_BLE">Please Enable BLE</string>
+    <string name="string_doorlock_helper">Please Select a Lock</string>
+
 
 </resources>

@@ -42,8 +42,7 @@ public class MailboxFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.me_mailbox_fragment, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.me_mailbox_fragment, container, false);
 
     }
 
@@ -56,8 +55,6 @@ public class MailboxFragment extends Fragment {
                 @Override
                 public void run(AccountManagerFuture<Bundle> future) {
                     if (!AccountMethods.isLoggedIn(getActivity())) {
-                        //todo navigate to another tab
-                        //finish();
                         return;
                     }
                     mailboxText = (TextView) getActivity().findViewById(R.id.me_mailbox_fragment_mailbox);
@@ -67,7 +64,7 @@ public class MailboxFragment extends Fragment {
                 }
             });
             return;
-        };
+        }
 
         mailboxText = (TextView) getActivity().findViewById(R.id.me_mailbox_fragment_mailbox);
         comboText = (TextView) getActivity().findViewById(R.id.me_mailbox_fragment_combo);
@@ -84,7 +81,7 @@ public class MailboxFragment extends Fragment {
             return;
         }
         pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Please wait while we retrieve your mailbox combination");
+        pDialog.setMessage(getString(R.string.string_Please_Wait));
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
@@ -109,10 +106,10 @@ public class MailboxFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 pDialog.dismiss();
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Error retrieving combination");
-                builder.setMessage("There was an error retrieving your Mailbox combination. Please check your network connection.");
-                builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(getString(R.string.string_Check_Your_Network_Connection));
+                builder.setMessage(getString(R.string.string_Please_try_again));
+                builder.setPositiveButton(R.string.string_OK,new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -130,8 +127,8 @@ public class MailboxFragment extends Fragment {
             combo = combo.substring(0, combo.length()-1);
         }
 
-        mailboxText.setText("Mailbox: "+ mailbox);
-        comboText.setText("Combo: " + combo);
+        mailboxText.setText(getString(R.string.string_Mailbox) + ": "+ mailbox);
+        comboText.setText(getString(R.string.string_Combo) + ": " + combo);
     }
 
 }

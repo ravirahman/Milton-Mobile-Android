@@ -10,9 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import edu.milton.miltonmobileandroid.R;
 
-public class AccountAuthenticator extends AbstractAccountAuthenticator {
-    Context mContext;
+class AccountAuthenticator extends AbstractAccountAuthenticator {
+    private Context mContext;
     private static final String LOG_TAG = LoginActivity.class.getName();
 
     public AccountAuthenticator(Context context) {
@@ -77,7 +78,7 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         intent.putExtra(Consts.ACCOUNT_TYPE, account.type);
         intent.putExtra(Consts.AUTHTOKEN_TYPE, authTokenType);
-        intent.putExtra(Consts.ACCOUNT_NAME, account.name);
+        intent.putExtra(mContext.getString(R.string.string_Milton_Academy), account.name);
         final Bundle bundle = new Bundle();
         bundle.putParcelable(AccountManager.KEY_INTENT, intent);
         return bundle;
@@ -85,12 +86,7 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
 
     @Override
     public String getAuthTokenLabel(String authTokenType) {
-        if (Consts.AUTHTOKEN_TYPE.equals(authTokenType)) {
-            return Consts.AUTHTOKEN_TYPE_LABEL;
-        }
-        else {
-            return authTokenType;
-        }
+        return authTokenType;
     }
 
     @Override
