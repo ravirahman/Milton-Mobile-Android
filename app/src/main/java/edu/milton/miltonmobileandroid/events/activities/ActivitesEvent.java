@@ -12,8 +12,8 @@ public class ActivitesEvent {
     private String eventTitle;		//name of the event
     private String eventDescription;//medium length description of the event
     private Date eventDate;			//date the event occurs on. can be obtained in YYYY-MM-DD format via toString()
-    private Date eventBeginTime;	//time of beginning of event. toString() returns time in {t 'hh:mm:ss'} format.
-    private Date eventEndTime;		//time of end of event
+    private String eventBeginTime;	//time of beginning of event. toString() returns time in {t 'hh:mm:ss'} format.
+    private String eventEndTime;		//time of end of event
     private boolean boarders;		//whether the event applies to boarders
     private boolean clI;			//whether the event applies to class I students
     private boolean clII;			//whether the event applies to class II students
@@ -60,7 +60,7 @@ public class ActivitesEvent {
     private boolean signUp;
 
     //request constructor
-    public ActivitesEvent(String eventTitle, String eventDescription, Date eventDate, Date eventBeginTime, Date eventEndTime, boolean boarders, boolean clI, boolean clII, boolean clIII, boolean clIV, boolean dayStudents, String eventCategory) {
+    public ActivitesEvent(String eventTitle, String eventDescription, Date eventDate, String eventBeginTime, String eventEndTime, boolean boarders, boolean clI, boolean clII, boolean clIII, boolean clIV, boolean dayStudents, String eventCategory) {
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.eventDate = eventDate;
@@ -76,7 +76,7 @@ public class ActivitesEvent {
     }
 
     //light constructor, sets availability to all users.
-    public ActivitesEvent(String eventTitle, String eventDescription, Date eventDate, Date eventBeginTime, Date eventEndTime) {
+    public ActivitesEvent(String eventTitle, String eventDescription, Date eventDate, String eventBeginTime, String eventEndTime) {
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.eventDate = eventDate;
@@ -113,16 +113,16 @@ public class ActivitesEvent {
     public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
     }
-    public Date getEventBeginTime() {
+    public String getEventBeginTime() {
         return eventBeginTime;
     }
-    public void setEventBeginTime(Date eventBeginTime) {
+    public void setEventBeginTime(String eventBeginTime) {
         this.eventBeginTime = eventBeginTime;
     }
-    public Date getEventEndTime() {
+    public String getEventEndTime() {
         return eventEndTime;
     }
-    public void setEventEndTime(Date eventEndTime) {
+    public void setEventEndTime(String eventEndTime) {
         this.eventEndTime = eventEndTime;
     }
     public boolean isBoarders() {
@@ -204,10 +204,10 @@ public class ActivitesEvent {
                 eventDate = dateParser.parse(jobj.getString("date"));
             }
             if (!jobj.isNull("startTime")) {
-                eventBeginTime = timeParser.parse(jobj.getString("startTime"));
+                eventBeginTime = jobj.getString("startTime");
             }
             if (!jobj.isNull("endTime")) {
-                eventEndTime = timeParser.parse(jobj.getString("endTime"));
+                eventEndTime = jobj.getString("endTime");
             }
         }
         catch (JSONException e) {

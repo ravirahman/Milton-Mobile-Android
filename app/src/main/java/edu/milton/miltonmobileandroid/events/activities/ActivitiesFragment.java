@@ -94,30 +94,10 @@ public class ActivitiesFragment extends Fragment implements View.OnClickListener
 
 
                //STRING DATE ADJUSTMENT
-                String from = (activitesEvent.getEventBeginTime().getHours() % 12) + ":";
-                if (activitesEvent.getEventBeginTime().getMinutes()<10) {
-                    from += "0";
-                }
-                from += activitesEvent.getEventBeginTime().getMinutes();
-                if (activitesEvent.getEventBeginTime().getHours()>12) {
-                    from += " PM";
-                }
-                if (activitesEvent.getEventBeginTime().getHours()<=12) {
-                    from += " AM";
-                }
+                String from = activitesEvent.getEventBeginTime();
 
                 //STRING DATE ADJUSTMENT
-                String to = (activitesEvent.getEventEndTime().getHours() % 12) + ":";
-                if (activitesEvent.getEventEndTime().getMinutes()<10) {
-                    to += "0";
-                }
-                to += activitesEvent.getEventEndTime().getMinutes();
-                if (activitesEvent.getEventEndTime().getHours()>12) {
-                    to += " PM";
-                }
-                if (activitesEvent.getEventEndTime().getHours()<=12) {
-                    to += " AM";
-                }
+                String to = activitesEvent.getEventEndTime();
 
                 timeView.setText(from + " - " + to);
 

@@ -64,34 +64,10 @@ public class ActivitiesListAdapter extends BaseAdapter {
         location.setText("Location: " + String.valueOf(m.getEventLocation()));
 
         //STRING DATE ADJUSTMENT
-        String from = (m.getEventBeginTime().getHours() % 12) + ":";
-        if (m.getEventBeginTime().getMinutes()<10) {
-            from += "0";
-        }
-        from += m.getEventBeginTime().getMinutes();
-        if (m.getEventBeginTime().getHours()>12) {
-            from += " PM";
-        }
-        if (m.getEventBeginTime().getHours()<=12) {
-            from += " AM";
-        }
+        String from = m.getEventBeginTime();
 
         //STRING DATE ADJUSTMENT
-        String to = (m.getEventEndTime().getHours() % 12) + ":";
-        if (m.getEventEndTime().getMinutes()<10) {
-            to += "0";
-        }
-        to += m.getEventEndTime().getMinutes();
-        if (m.getEventEndTime().getHours()>12) {
-            to += " PM";
-        }
-        if (m.getEventEndTime().getHours()<=12) {
-            to += " AM";
-        }
-
-
-
-
+        String to = m.getEventEndTime();
 
         time.setText(from + " - " + to);
         return convertView;
