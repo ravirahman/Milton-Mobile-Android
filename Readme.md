@@ -14,7 +14,7 @@ My responsibilities included:
 - Optimizing the network requests.
 
 We published it on the [Google Play Store](https://play.google.com/store/apps/details?id=edu.milton.miltonmobileandroid)
-and also developed and released an [iOS Version](https://github.com/milton-programming/Milton-Mobile-iOS).
+and also developed and released an [iOS Version](https://github.com/ravirahman/Milton-Mobile-iOS).
 
 Meals, Activities, and Mailbox icons by [Icons8](https://www.icons8.com).
 
