@@ -18,5 +18,5 @@ and also developed and released an [iOS Version](https://github.com/ravirahman/M
 
 Meals, Activities, and Mailbox icons by [Icons8](https://www.icons8.com).
 
-# License
+## License
 MIT
